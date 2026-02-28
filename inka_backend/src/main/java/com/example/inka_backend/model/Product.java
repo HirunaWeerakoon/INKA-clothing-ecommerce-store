@@ -1,18 +1,16 @@
 package com.example.inka_backend.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+        import lombok.*;
+        import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "Product")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "products") // Use plural for standard DB naming
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
+    private Long id; // Simplified to 'id' is a standard JPA practice
 
     private String name;
     private String description;
@@ -21,6 +19,7 @@ public class Product {
     private Boolean isAvailable;
 
     @ManyToOne
-    @JoinColumn(name = "CategoryID")
+    @JoinColumn(name = "category_id") // Standard snake_case
+    @JsonBackReference // Prevents infinite JSON loops with Category
     private Category category;
 }
