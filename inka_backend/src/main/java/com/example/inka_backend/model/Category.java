@@ -16,6 +16,7 @@ public class Category {
     private Long categoryId;
 
     private String categoryName;
+    private String imageUrl;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> products;

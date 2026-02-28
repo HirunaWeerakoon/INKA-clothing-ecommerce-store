@@ -19,8 +19,10 @@ public class Product {
     private Double price;
     private Integer stock;
     private Boolean isAvailable;
+    private Boolean bestSeller = false;
+    private String imageUrl;
 
     @ManyToOne
-    @JoinColumn(name = "CategoryID")
+    @JoinColumn(name = "category_id")
     private Category category;
 }
