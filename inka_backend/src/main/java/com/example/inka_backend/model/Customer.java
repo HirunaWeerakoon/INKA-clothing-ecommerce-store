@@ -10,20 +10,25 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CustomerID")        
     private Long customerId;
 
+    @Column(name = "Name")              
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "Email", unique = true, nullable = false)
     private String email;
 
+    @Column(name = "Password")          
     private String password;
+
+    @Column(name = "Address")          
     private String address;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "Role")              
     private UserRole role = UserRole.USER;
-
-
 }
