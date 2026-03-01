@@ -49,6 +49,9 @@ public class ProductService {
         dto.setIsAvailable(product.getIsAvailable());
         dto.setCategoryId(product.getCategory().getCategoryId());
         dto.setCategoryName(product.getCategory().getCategoryName());
+        dto.setImageUrl(product.getImageUrl());
+
+
         return dto;
     }
 }
