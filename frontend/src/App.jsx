@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
+import AccountLayout from './pages/Account/AccountLayout';
+import MyDetails from './pages/Account/MyDetails';
+import MyOrders from './pages/Account/MyOrders';
+import MyReviews from './pages/Account/MyReviews';
 
-function App() {
-  const [count, setCount] = useState(0)
-
+function AppLayout() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app-container">
+      <Header />
+      <main className="main-content">
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
+  );
 }
 
-export default App
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<AppLayout />}>
+          <Route index element={<div className="placeholder-page">Home Page Placeholder</div>} />
+          <Route path="shop" element={<div className="placeholder-page">Shop Placeholder</div>} />
+          <Route path="custom" element={<div className="placeholder-page">Custom Placeholder</div>} />
+          <Route path="about" element={<div className="placeholder-page">About Placeholder</div>} />
+
+          <Route path="account" element={<AccountLayout />}>
+            <Route index element={<Navigate to="details" replace />} />
+            <Route path="details" element={<MyDetails />} />
+            <Route path="orders" element={<MyOrders />} />
+            <Route path="reviews" element={<MyReviews />} />
+          </Route>
+        </Route>
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
