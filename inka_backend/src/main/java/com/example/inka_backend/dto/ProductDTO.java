@@ -11,6 +11,7 @@ public class ProductDTO {
     private Double price;
     private Integer stock;
     private Boolean isAvailable;
+    private String imageUrl;
 
     // Instead of sending the whole Category object,
     // we just send the category name as a simple String
