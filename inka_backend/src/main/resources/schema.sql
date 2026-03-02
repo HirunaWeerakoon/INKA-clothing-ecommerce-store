@@ -25,3 +25,14 @@ CREATE TABLE IF NOT EXISTS Customer (
                                         Address TEXT,
                                         Role ENUM('USER', 'ADMIN') DEFAULT 'USER'
 );
+
+-- 4. Cart Items Table
+CREATE TABLE IF NOT EXISTS cart_items (
+                                          id INT PRIMARY KEY AUTO_INCREMENT,
+                                          customer_id INT NOT NULL,
+                                          product_id INT NOT NULL,
+                                          quantity INT NOT NULL DEFAULT 1,
+                                          FOREIGN KEY (customer_id) REFERENCES Customer(CustomerID) ON DELETE CASCADE,
+                                          FOREIGN KEY (product_id) REFERENCES Product(ProductID) ON DELETE CASCADE,
+                                          UNIQUE KEY unique_customer_product (customer_id, product_id)
+);

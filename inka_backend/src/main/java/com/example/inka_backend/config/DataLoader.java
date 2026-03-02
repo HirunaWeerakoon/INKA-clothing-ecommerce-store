@@ -16,6 +16,12 @@ public class DataLoader {
             CategoryRepository categoryRepo,
             CustomerRepository customerRepo) {
         return args -> {
+            // Only seed if the database is empty
+            if (categoryRepo.count() > 0) {
+                System.out.println(">> Database already populated, skipping seed.");
+                return;
+            }
+
             // 1. Create Categories
             Category oversized = new Category();
             oversized.setCategoryName("Oversized Tees");
