@@ -4,6 +4,16 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Logs
+*.log
+logs/
+
+# Secrets & environment
+.env
+application-local.properties
+application-secret.properties
+**/src/main/resources/application-local.properties
+
 ### STS ###
 .apt_generated
 .classpath
@@ -31,3 +41,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### OS ###
+.DS_Store
+Thumbs.db
+
+### Spring Boot ###
+spring-shell.log

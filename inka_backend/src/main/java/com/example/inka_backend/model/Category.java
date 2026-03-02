@@ -15,6 +15,7 @@ public class Category {
 
     @Column(name = "name", nullable = false)
     private String categoryName;
+    private String imageUrl;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     @JsonManagedReference
