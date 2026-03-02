@@ -1,0 +1,31 @@
+# Node / Frontend
+**/node_modules/
+**/dist/
+**/.vite/
+**/.eslintcache
+
+# Java / Maven build output
+**/target/
+**/*.class
+**/*.jar
+!**/mvnw.cmd
+
+# Environment & secrets
+**/.env
+**/.env.local
+**/.env.*.local
+**/application-local.properties
+**/application-secret.properties
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+*.suo
+*.sw?
