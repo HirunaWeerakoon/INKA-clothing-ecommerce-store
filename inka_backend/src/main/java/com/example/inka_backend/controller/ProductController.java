@@ -1,35 +1,27 @@
 package com.example.inka_backend.controller;
 
-import com.example.inka_backend.dto.ProductDTO;
+import com.example.inka_backend.model.Product;
 import com.example.inka_backend.service.ProductService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
-@RequiredArgsConstructor
+@CrossOrigin(origins = "*") // Allows your frontend to connect without CORS errors
 public class ProductController {
 
-    private final ProductService productService;
+    @Autowired
+    private ProductService productService;
 
-    // GET /api/products - all available products
-    @GetMapping
-    public ResponseEntity<List<ProductDTO>> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllAvailableProducts());
+    @PostMapping("/add")
+    public Product addProduct(@RequestBody Product product) {
+        return productService.saveProduct(product);
     }
 
-    // GET /api/products/bestsellers - best-selling products for Home page
-    @GetMapping("/bestsellers")
-    public ResponseEntity<List<ProductDTO>> getBestSellers() {
-        return ResponseEntity.ok(productService.getBestSellerProducts());
-    }
-
-    // GET /api/products/category/{categoryId} - products filtered by category
-    @GetMapping("/category/{categoryId}")
-    public ResponseEntity<List<ProductDTO>> getByCategory(@PathVariable Long categoryId) {
-        return ResponseEntity.ok(productService.getProductsByCategory(categoryId));
+    @GetMapping("/all")
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
     }
 }
