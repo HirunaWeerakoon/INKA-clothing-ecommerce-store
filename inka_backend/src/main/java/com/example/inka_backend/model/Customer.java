@@ -4,23 +4,31 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "customers")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Table(name = "Customer")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Customer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "CustomerID")        
+    private Long customerId;
 
+    @Column(name = "Name")              
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "Email", unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = false) // Passwords should never be null
+    @Column(name = "Password")          
     private String password;
 
+    @Column(name = "Address")          
     private String address;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "Role")              
     private UserRole role = UserRole.USER;
 }

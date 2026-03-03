@@ -1,27 +1,39 @@
 package com.example.inka_backend.controller;
 
-import com.example.inka_backend.model.Product;
+import com.example.inka_backend.dto.ProductDTO;
 import com.example.inka_backend.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/products")
-@CrossOrigin(origins = "*") // Allows your frontend to connect without CORS errors
+@RestController           // Tells Spring: "this handles HTTP requests"
+@RequestMapping("/api/products")  // All endpoints start with /api/products
+@RequiredArgsConstructor
+@CrossOrigin(origins = "*")  // Allows frontend to call this API
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
 
-    @PostMapping("/add")
-    public Product addProduct(@RequestBody Product product) {
-        return productService.saveProduct(product);
+    // ✅ GET /api/products
+    // Returns all available products
+    @GetMapping
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
+        return ResponseEntity.ok(productService.getAllProducts());
     }
 
-    @GetMapping("/all")
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    // ✅ GET /api/products/1
+    // Returns one product by its ID
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.getProductById(id));
+    }
+
+    // ✅ GET /api/products/category/2
+    // Returns all products under a specific category
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<ProductDTO>> getProductsByCategory(
+            @PathVariable Long categoryId) {
+        return ResponseEntity.ok(productService.getProductsByCategory(categoryId));
     }
 }
