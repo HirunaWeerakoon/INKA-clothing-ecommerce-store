@@ -6,6 +6,7 @@ import MyDetails from './pages/Account/MyDetails';
 import MyOrders from './pages/Account/MyOrders';
 import MyReviews from './pages/Account/MyReviews';
 import ProductGrid from './components/ProductGrid';
+import ProductPage from './components/ProductPage';
 import HomePage from './pages/Home/HomePage';
 import './App.css';
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/" element={<AppLayout />}>
           <Route index element={<HomePage />} />
           <Route path="shop" element={<ProductGrid />} />
+          <Route path="product/:id" element={<ProductPage />} />
           <Route path="custom" element={<div className="placeholder-page">Custom Placeholder</div>} />
           <Route path="about" element={<div className="placeholder-page">About Placeholder</div>} />
 
