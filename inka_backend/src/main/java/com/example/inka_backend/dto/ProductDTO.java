@@ -16,4 +16,9 @@ public class ProductDTO {
     private String imageUrl;
     private Long categoryId;
     private String categoryName;
+    private String image1;
+    private String image2;
+    private String image3;
+    private String image4;
+    private String image5;
 }

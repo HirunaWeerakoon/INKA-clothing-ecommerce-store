@@ -43,4 +43,11 @@ public class ProductController {
             @PathVariable Long categoryId) {
         return ResponseEntity.ok(productService.getProductsByCategory(categoryId));
     }
+
+    // ✅ POST /api/products
+    // Creates a new product
+    @PostMapping
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO) {
+        return ResponseEntity.ok(productService.createProduct(productDTO));
+    }
 }

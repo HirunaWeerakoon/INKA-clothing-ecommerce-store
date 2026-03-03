@@ -26,6 +26,11 @@ CREATE TABLE IF NOT EXISTS products (
     is_available BOOLEAN DEFAULT TRUE,
     best_seller BOOLEAN DEFAULT FALSE,
     image_url VARCHAR(255),
+    Image1 VARCHAR(500),
+    Image2 VARCHAR(500),
+    Image3 VARCHAR(500),
+    Image4 VARCHAR(500),
+    Image5 VARCHAR(500),
     FOREIGN KEY (category_id) REFERENCES category(id)
 );
 

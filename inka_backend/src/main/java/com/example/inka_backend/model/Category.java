@@ -21,7 +21,6 @@ public class Category {
     private Long id; // Simplified from categoryId
 
     @Column(name = "name", nullable = false)
-
     private String categoryName;
 
     @Column(name = "image_url")
