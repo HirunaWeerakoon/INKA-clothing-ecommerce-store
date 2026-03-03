@@ -23,6 +23,14 @@ public class ProductService {
                 .collect(Collectors.toList()); // gather results into a list
     }
 
+    // Get best-selling products
+    public List<ProductDTO> getBestSellers() {
+        return productRepository.findByBestSellerTrue()
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     // Get products by category
     public List<ProductDTO> getProductsByCategory(Long categoryId) {
         return productRepository.findByCategoryId(categoryId)
@@ -47,6 +55,7 @@ public class ProductService {
         dto.setPrice(product.getPrice());
         dto.setStock(product.getStock());
         dto.setIsAvailable(product.getIsAvailable());
+        dto.setBestSeller(product.getBestSeller());
         dto.setCategoryId(product.getCategory().getId());
         dto.setCategoryName(product.getCategory().getCategoryName());
         dto.setImageUrl(product.getImageUrl());

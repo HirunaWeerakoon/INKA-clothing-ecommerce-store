@@ -23,7 +23,6 @@ public class Category {
     @Column(name = "name", nullable = false)
 
     private String categoryName;
-    private String imageUrl;
 
     @Column(name = "image_url")
     private String imageUrl;

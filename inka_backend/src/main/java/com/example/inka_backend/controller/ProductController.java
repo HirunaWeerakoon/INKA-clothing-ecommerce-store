@@ -7,10 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-@RestController           // Tells Spring: "this handles HTTP requests"
-@RequestMapping("/api/products")  // All endpoints start with /api/products
+@RestController // Tells Spring: "this handles HTTP requests"
+@RequestMapping("/api/products") // All endpoints start with /api/products
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")  // Allows frontend to call this API
+@CrossOrigin(origins = "*") // Allows frontend to call this API
 public class ProductController {
 
     private final ProductService productService;
@@ -27,6 +27,13 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
         return ResponseEntity.ok(productService.getProductById(id));
+    }
+
+    // ✅ GET /api/products/bestsellers
+    // Returns all best-selling products
+    @GetMapping("/bestsellers")
+    public ResponseEntity<List<ProductDTO>> getBestSellers() {
+        return ResponseEntity.ok(productService.getBestSellers());
     }
 
     // ✅ GET /api/products/category/2
