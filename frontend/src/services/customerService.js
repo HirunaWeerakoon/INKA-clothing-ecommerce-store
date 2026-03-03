@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/api/customers';
+const API_URL = '/api/customers';
 
 export const customerService = {
     getCustomer: async (id) => {
@@ -12,7 +12,7 @@ export const customerService = {
             throw error;
         }
     },
-    
+
     updateCustomer: async (id, data) => {
         try {
             const response = await axios.put(`${API_URL}/${id}`, data);

@@ -8,14 +8,20 @@ function ProductGrid() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/products')
-      .then(response => response.json())
+    fetch('/api/products')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
       .then(data => {
-        setProducts(data);
+        setProducts(Array.isArray(data) ? data : []);
         setLoading(false);
       })
       .catch(error => {
         console.error('Error fetching products:', error);
+        setProducts([]);
         setLoading(false);
       });
   }, []);
