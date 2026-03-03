@@ -2,9 +2,16 @@ package com.example.inka_backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+<<<<<<< HEAD
 
 @Entity
 @Table(name = "product")
+=======
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+@Entity
+@Table(name = "products") // Use plural for standard DB naming
+>>>>>>> c971c6435acab964ff6867b026128d673319fedd
 @Getter
 @Setter
 @NoArgsConstructor
@@ -30,6 +37,7 @@ public class Product {
 
     @Column(name = "is_available")
     private Boolean isAvailable;
+    private Boolean bestSeller;
 
     @Column(name = "image_url")
     private String imageUrl;
