@@ -1,0 +1,200 @@
+.home-page {
+  font-family: 'Inter', sans-serif; /* Optional, assuming Inter is loaded */
+  background-color: #f5f5f5; /* Light grey background similar to the image */
+  min-height: 100vh;
+}
+
+/* Hero Section */
+.hero-section {
+  display: flex;
+  justify-content: space-between;
+  padding: 4rem 5%;
+  align-items: center;
+  gap: 2rem;
+}
+
+.hero-content {
+  flex: 1;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #000;
+  margin-bottom: 1.5rem;
+  letter-spacing: -1px;
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 2.5rem;
+  line-height: 1.5;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+}
+
+.dark-btn {
+  background-color: #000;
+  color: #fff;
+  border: 2px solid #000;
+}
+
+.dark-btn:hover {
+  background-color: #333;
+  border-color: #333;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: #000;
+  border: 2px solid #000;
+}
+
+.btn-outline:hover {
+  background-color: #f0f0f0;
+}
+
+.hero-image-placeholder {
+  flex: 1;
+  background-color: #dcdcdc; /* Lighter placeholder grey */
+  height: 450px;
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Typography Utilities */
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+/* Category Section */
+.category-section {
+  padding: 2rem 5% 4rem;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.category-card {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
+.category-box {
+  background-color: #dcdcdc;
+  aspect-ratio: 1;
+  width: 100%;
+  margin-bottom: 0.75rem;
+  transition: opacity 0.3s ease;
+}
+
+.category-card:hover .category-box {
+  opacity: 0.8;
+}
+
+.category-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Custom Design Banner */
+.custom-design-banner {
+  background-color: #1a1a1a;
+  color: #fff;
+  text-align: center;
+  padding: 4rem 1rem;
+}
+
+.banner-content h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+}
+
+.banner-content p {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  color: #ccc;
+}
+
+.btn-white {
+  background-color: #fff;
+  color: #000;
+  border: 2px solid #fff;
+}
+
+.btn-white:hover {
+  background-color: #f0f0f0;
+  border-color: #f0f0f0;
+}
+
+/* Best Selling Section */
+.best-selling-section {
+  padding: 4rem 5%;
+}
+
+.best-selling-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.product-placeholder {
+  background-color: #dcdcdc;
+  aspect-ratio: 3/4;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    flex-direction: column;
+    text-align: center;
+    padding: 3rem 1rem;
+  }
+  
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+
+  .hero-image-placeholder {
+    height: 300px;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .best-selling-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -5,6 +5,9 @@ import AccountLayout from './pages/Account/AccountLayout';
 import MyDetails from './pages/Account/MyDetails';
 import MyOrders from './pages/Account/MyOrders';
 import MyReviews from './pages/Account/MyReviews';
+import ProductGrid from './components/ProductGrid';
+import Home from './pages/Home';
+import './App.css';
 
 function AppLayout() {
   return (
@@ -23,8 +26,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<AppLayout />}>
-          <Route index element={<div className="placeholder-page">Home Page Placeholder</div>} />
-          <Route path="shop" element={<div className="placeholder-page">Shop Placeholder</div>} />
+          <Route index element={<Home />} />
+          <Route path="shop" element={<ProductGrid />} />
           <Route path="custom" element={<div className="placeholder-page">Custom Placeholder</div>} />
           <Route path="about" element={<div className="placeholder-page">About Placeholder</div>} />
 

@@ -1,21 +1,32 @@
 package com.example.inka_backend.service;
 
+import com.example.inka_backend.dto.CategoryDTO;
 import com.example.inka_backend.model.Category;
 import com.example.inka_backend.repository.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryService {
-    @Autowired
-    private CategoryRepository categoryRepository;
 
-    public Category saveCategory(Category category) {
-        return categoryRepository.save(category);
+    private final CategoryRepository categoryRepository;
+
+    // Get all categories
+    public List<CategoryDTO> getAllCategories() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    // 🔄 Helper: converts Category entity → CategoryDTO
+    private CategoryDTO convertToDTO(Category category) {
+        CategoryDTO dto = new CategoryDTO();
+        dto.setCategoryId(category.getId());
+        dto.setCategoryName(category.getCategoryName());
+        return dto;
     }
 }
