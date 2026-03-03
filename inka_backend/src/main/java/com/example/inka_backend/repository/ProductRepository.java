@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
+<<<<<<< HEAD
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
@@ -13,4 +14,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     // Get products that belong to a specific category
     List<Product> findByCategoryId(Long categoryId);
+=======
+import java.util.List;
+
+public interface ProductRepository extends JpaRepository<Product, Long> {
+    List<Product> findByBestSellerTrue();
+
+    List<Product> findByCategoryId(Long categoryId);
+
+    List<Product> findByIsAvailableTrue();
+>>>>>>> c971c6435acab964ff6867b026128d673319fedd
 }

@@ -1,27 +1,29 @@
 -- 1. Category Table
-CREATE TABLE IF NOT EXISTS Category (
-                                        CategoryID INT PRIMARY KEY AUTO_INCREMENT,
-                                        CategoryName VARCHAR(100) NOT NULL
+CREATE TABLE IF NOT EXISTS categories (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    image_url VARCHAR(255)
 );
 
 -- 2. Product Table
-CREATE TABLE IF NOT EXISTS Product (
-                                       ProductID INT PRIMARY KEY AUTO_INCREMENT,
-                                       CategoryID INT,
-                                       Name VARCHAR(255) NOT NULL,
-                                       Description TEXT,
-                                       Price DECIMAL(10, 2) NOT NULL,
-                                       Stock INT DEFAULT 0,
-                                       IsAvailable BOOLEAN DEFAULT TRUE,
-                                       FOREIGN KEY (CategoryID) REFERENCES Category(CategoryID)
+CREATE TABLE IF NOT EXISTS products (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    category_id BIGINT,
+    name VARCHAR(255),
+    description VARCHAR(255),
+    price DOUBLE NOT NULL,
+    stock INT DEFAULT 0,
+    is_available BOOLEAN DEFAULT TRUE,
+    best_seller BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
 -- 3. Customer Table
-CREATE TABLE IF NOT EXISTS Customer (
-                                        CustomerID INT PRIMARY KEY AUTO_INCREMENT,
-                                        Name VARCHAR(255) NOT NULL,
-                                        Email VARCHAR(255) UNIQUE NOT NULL,
-                                        Password VARCHAR(255) NOT NULL,
-                                        Address TEXT,
-                                        Role ENUM('USER', 'ADMIN') DEFAULT 'USER'
+CREATE TABLE IF NOT EXISTS customers (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    address VARCHAR(255),
+    role ENUM('USER', 'ADMIN') DEFAULT 'USER'
 );
