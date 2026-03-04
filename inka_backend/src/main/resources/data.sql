@@ -87,5 +87,5 @@ INSERT INTO products (product_id, category_id, name, description, price, stock, 
  NULL, NULL, NULL, NULL);
 
 -- Customer (test user)
-INSERT INTO customer (customerid, name, email, password, address, role) VALUES
-(1, 'Lewis Hamilton', 'lewis@mercedes.com', 'password123', '44 Stevenage Road, London, UK', 'USER');
+INSERT INTO customer (customerid, name, email, address, role) VALUES
+(1, 'Lewis Hamilton', 'lewis@mercedes.com', '44 Stevenage Road, London, UK', 'USER');

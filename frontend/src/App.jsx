@@ -10,7 +10,13 @@ import MyReviews from './pages/Account/MyReviews';
 import ProductGrid from './components/ProductGrid';
 import ProductPage from './components/ProductPage';
 import HomePage from './pages/Home/HomePage';
+import OAuth2RedirectHandler from './pages/OAuth2RedirectHandler';
 import './App.css';
+
+import { authService } from './services/authService';
+
+// Initialize axios interceptors globally
+authService.setupAxiosInterceptors();
 
 function AppLayout({ onCartOpen }) {
   return (
@@ -36,6 +42,7 @@ function App() {
           <Route path="product/:id" element={<ProductPage />} />
           <Route path="custom" element={<div className="placeholder-page">Custom Placeholder</div>} />
           <Route path="about" element={<div className="placeholder-page">About Placeholder</div>} />
+          <Route path="oauth2/redirect" element={<OAuth2RedirectHandler />} />
 
           <Route path="account" element={<AccountLayout />}>
             <Route index element={<Navigate to="details" replace />} />
