@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Input from '../../components/common/Input';
 import { customerService } from '../../services/customerService';
+import { authService } from '../../services/authService';
 
 export default function MyDetails() {
     const [customer, setCustomer] = useState({ name: '', address: '' });
@@ -8,10 +9,15 @@ export default function MyDetails() {
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState('');
 
-    // Using ID 1 for now until authentication provides the logged-in user's ID
-    const customerId = 1;
+    const userDetails = authService.getUserDetails();
+    const customerId = userDetails ? userDetails.id : null;
 
     useEffect(() => {
+        if (!customerId) {
+            setLoading(false);
+            setError("You are not logged in.");
+            return;
+        }
         const fetchCustomer = async () => {
             try {
                 setLoading(true);
