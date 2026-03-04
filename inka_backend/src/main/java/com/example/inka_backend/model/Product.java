@@ -1,10 +1,11 @@
 package com.example.inka_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "products") // Use plural for standard DB naming
+@Table(name = "products")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -54,5 +55,6 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @JsonBackReference
     private Category category;
 }

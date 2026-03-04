@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
+import CartSidebar from './components/CartSidebar';
 import AccountLayout from './pages/Account/AccountLayout';
 import MyDetails from './pages/Account/MyDetails';
 import MyOrders from './pages/Account/MyOrders';
@@ -10,10 +12,10 @@ import ProductPage from './components/ProductPage';
 import HomePage from './pages/Home/HomePage';
 import './App.css';
 
-function AppLayout() {
+function AppLayout({ onCartOpen }) {
   return (
     <div className="app-container">
-      <Header />
+      <Header onCartOpen={onCartOpen} />
       <main className="main-content">
         <Outlet />
       </main>
@@ -23,10 +25,12 @@ function AppLayout() {
 }
 
 function App() {
+  const [cartOpen, setCartOpen] = useState(false);
+
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<AppLayout />}>
+        <Route path="/" element={<AppLayout onCartOpen={() => setCartOpen(true)} />}>
           <Route index element={<HomePage />} />
           <Route path="shop" element={<ProductGrid />} />
           <Route path="product/:id" element={<ProductPage />} />
@@ -39,9 +43,11 @@ function App() {
             <Route path="orders" element={<MyOrders />} />
             <Route path="reviews" element={<MyReviews />} />
           </Route>
-        </Route >
-      </Routes >
-    </Router >
+        </Route>
+      </Routes>
+
+      <CartSidebar isOpen={cartOpen} onClose={() => setCartOpen(false)} />
+    </Router>
   );
 }
 
