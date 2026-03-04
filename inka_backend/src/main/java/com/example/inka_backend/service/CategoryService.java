@@ -27,6 +27,7 @@ public class CategoryService {
         CategoryDTO dto = new CategoryDTO();
         dto.setCategoryId(category.getId());
         dto.setCategoryName(category.getCategoryName());
+        dto.setImageUrl(category.getImageUrl());
         return dto;
     }
 }

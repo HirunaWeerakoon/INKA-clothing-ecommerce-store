@@ -1,99 +1,6 @@
-/* ── RESET ─────────────────────────────────────────── */
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html,
-body,
-#root {
-  width: 100%;
-  min-height: 100vh;
-  background: #fff;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #111;
-}
-
-button {
-  font-family: inherit;
-  cursor: pointer;
-}
-
 .pp-root {
   width: 100%;
-  min-height: 100vh;
   background: #fff;
-}
-
-/* NAVBAR */
-.pp-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 48px;
-  height: 64px;
-  background: #fff;
-  border-bottom: 1px solid #e8e8e8;
-}
-
-.pp-logo {
-  font-size: 22px;
-  font-weight: 900;
-  letter-spacing: 1px;
-  color: #111;
-  flex: 0 0 auto;
-}
-
-.pp-navlinks {
-  display: flex;
-  list-style: none;
-  gap: 32px;
-  flex: 1;
-  justify-content: center;
-}
-
-.pp-navlink {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.8px;
-  color: #555;
-  cursor: pointer;
-  padding-bottom: 3px;
-  border-bottom: 2px solid transparent;
-  transition: color 0.15s;
-}
-
-.pp-navlink.active {
-  color: #111;
-  border-bottom-color: #111;
-}
-
-.pp-navlink:hover {
-  color: #111;
-}
-
-.pp-navicons {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  flex: 0 0 auto;
-}
-
-.pp-icon-btn {
-  background: none;
-  border: none;
-  display: flex;
-  align-items: center;
-  color: #111;
-  padding: 4px;
-  transition: opacity 0.15s;
-}
-
-.pp-icon-btn:hover {
-  opacity: 0.6;
 }
 
 /* PRODUCT SECTION */
@@ -218,10 +125,24 @@ button {
   margin-bottom: 18px;
 }
 
+.pp-description {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+
 .pp-stock {
   font-size: 13px;
   color: #444;
   margin-top: 12px;
+}
+
+.pp-cart-message {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 8px;
+  color: #2e7d32;
 }
 
 /* Option rows */
@@ -315,12 +236,17 @@ button {
   transition: background 0.2s, transform 0.1s;
 }
 
-.pp-add-to-cart:hover {
+.pp-add-to-cart:hover:not(:disabled) {
   background: #333;
 }
 
-.pp-add-to-cart:active {
+.pp-add-to-cart:active:not(:disabled) {
   transform: scale(0.99);
+}
+
+.pp-add-to-cart:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .pp-wishlist-btn {

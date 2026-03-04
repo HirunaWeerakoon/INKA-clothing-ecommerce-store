@@ -5,7 +5,7 @@ import './BestSellingSection.css';
 
 function BestSellingSection() {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading]   = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getBestSellerProducts()
@@ -37,7 +37,7 @@ function BestSellingSection() {
       <div className="bestselling__grid">
         {products.map((product) => (
           <Link
-            to={`/shop/${product.productId}`}
+            to={`/product/${product.productId}`}
             key={product.productId}
             className="product-card"
           >

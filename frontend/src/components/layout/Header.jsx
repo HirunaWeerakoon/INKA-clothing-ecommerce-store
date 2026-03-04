@@ -1,7 +1,7 @@
 import { Search, User, ShoppingCart } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
-export default function Header() {
+export default function Header({ onCartOpen }) {
   const location = useLocation();
   const isActive = (path) => location.pathname === path;
 
@@ -19,7 +19,9 @@ export default function Header() {
       <div className="header-actions">
         <button aria-label="Search"><Search size={24} /></button>
         <Link to="/account" aria-label="User Account" className={isActive('/account') ? 'active-icon' : ''}><User size={24} /></Link>
-        <Link to="/cart" aria-label="Shopping Cart"><ShoppingCart size={24} /></Link>
+        <button aria-label="Shopping Cart" onClick={onCartOpen}>
+          <ShoppingCart size={24} />
+        </button>
       </div>
     </header>
   );
