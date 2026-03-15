@@ -10,6 +10,7 @@ import MyReviews from './pages/Account/MyReviews';
 import ProductGrid from './components/ProductGrid';
 import ProductPage from './components/ProductPage';
 import HomePage from './pages/Home/HomePage';
+import CustomPage from './pages/Custom/CustomPage';
 import './App.css';
 
 function AppLayout({ onCartOpen }) {
@@ -34,7 +35,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="shop" element={<ProductGrid />} />
           <Route path="product/:id" element={<ProductPage />} />
-          <Route path="custom" element={<div className="placeholder-page">Custom Placeholder</div>} />
+          <Route path="custom" element={<CustomPage />} />
           <Route path="about" element={<div className="placeholder-page">About Placeholder</div>} />
 
           <Route path="account" element={<AccountLayout />}>
