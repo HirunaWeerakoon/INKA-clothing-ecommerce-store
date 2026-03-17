@@ -1,0 +1,404 @@
+/* ── Wrapper ── */
+.rv-root {
+    padding: 40px 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #111;
+}
+
+/* ── Summary row ── */
+.rv-summary {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 40px;
+    margin-bottom: 48px;
+    align-items: start;
+}
+
+.rv-score {
+    font-size: 60px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin: 0 0 6px 0;
+}
+
+.rv-total {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 8px 0 0 0;
+}
+
+/* ── Rating bars ── */
+.rv-bars {
+    padding-top: 6px;
+}
+
+.rv-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 7px;
+}
+
+.rv-bar-label {
+    font-size: 12px;
+    width: 8px;
+    text-align: right;
+    font-family: monospace;
+}
+
+.rv-bar-track {
+    flex: 1;
+    height: 3px;
+    background: #e5e5e5;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.rv-bar-fill {
+    height: 100%;
+    background: #111;
+    border-radius: 2px;
+    transition: width 0.6s ease;
+}
+
+.rv-bar-count {
+    font-size: 11px;
+    color: #aaa;
+    width: 14px;
+    font-family: monospace;
+}
+
+/* ── Stars ── */
+.rv-stars {
+    display: inline-flex;
+    gap: 2px;
+}
+
+.rv-star {
+    font-size: 16px;
+    color: #111;
+}
+
+.rv-star.empty {
+    color: #ddd;
+}
+
+.rv-star.interactive {
+    cursor: pointer;
+    transition: color 0.1s;
+}
+
+/* ── Submit form ── */
+.rv-form {
+    border: 1px solid #e5e5e5;
+    padding: 28px;
+    margin-bottom: 48px;
+}
+
+.rv-form-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #888;
+    margin: 0 0 20px 0;
+}
+
+.rv-field-label {
+    font-size: 12px;
+    color: #555;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.rv-field {
+    margin-bottom: 14px;
+}
+
+.rv-input,
+.rv-textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d4d4d4;
+    border-radius: 0;
+    font-size: 13px;
+    font-family: inherit;
+    color: #111;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.15s;
+    background: #fff;
+}
+
+.rv-input:focus,
+.rv-textarea:focus {
+    border-color: #111;
+}
+
+.rv-textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* ── Size picker ── */
+.rv-size-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 22px;
+}
+
+.rv-size-btn {
+    width: 38px;
+    height: 38px;
+    border: 1px solid #d4d4d4;
+    background: #fff;
+    color: #111;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+}
+
+.rv-size-btn.selected {
+    border-color: #111;
+    background: #111;
+    color: #fff;
+}
+
+/* ── Submit button ── */
+.rv-submit-btn {
+    width: 100%;
+    padding: 13px;
+    background: #111;
+    color: #fff;
+    border: none;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.rv-submit-btn:disabled {
+    background: #e5e5e5;
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+/* ── Login prompt ── */
+.rv-login-prompt {
+    border: 1px solid #e5e5e5;
+    padding: 32px 28px;
+    text-align: center;
+    background: #fafafa;
+    margin-bottom: 48px;
+}
+
+.rv-login-prompt p {
+    font-size: 14px;
+    color: #555;
+    margin: 0 0 18px;
+    line-height: 1.6;
+}
+
+.rv-login-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 24px;
+    background: #111;
+    color: #fff;
+    border: none;
+    font-size: 13px;
+    font-family: inherit;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+/* ── Sort bar ── */
+.rv-sort-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #111;
+    padding-bottom: 12px;
+    margin-bottom: 32px;
+}
+
+.rv-sort-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #888;
+    margin: 0;
+}
+
+.rv-sort-options {
+    display: flex;
+}
+
+.rv-sort-btn {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 4px 14px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #888;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+}
+
+.rv-sort-btn.active {
+    color: #111;
+    border-bottom-color: #111;
+}
+
+/* ── Review card ── */
+.rv-card {
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 28px;
+    margin-bottom: 28px;
+}
+
+.rv-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.rv-card-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.rv-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #111;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-family: monospace;
+    flex-shrink: 0;
+    object-fit: cover;
+}
+
+.rv-author-name {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.rv-badges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 3px;
+}
+
+.rv-verified {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #555;
+    border-left: 2px solid #111;
+    padding-left: 6px;
+}
+
+.rv-size-tag {
+    font-size: 10px;
+    color: #aaa;
+    letter-spacing: 0.06em;
+}
+
+.rv-card-right {
+    text-align: right;
+}
+
+.rv-card-date {
+    margin: 4px 0 0;
+    font-size: 11px;
+    color: #aaa;
+    font-family: monospace;
+}
+
+.rv-card-title {
+    margin: 0 0 6px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.rv-card-body {
+    margin: 0 0 14px;
+    font-size: 13px;
+    color: #444;
+    line-height: 1.7;
+}
+
+.rv-helpful-btn {
+    background: none;
+    border: 1px solid #d4d4d4;
+    padding: 5px 12px;
+    font-size: 11px;
+    color: #888;
+    cursor: pointer;
+    font-family: inherit;
+    letter-spacing: 0.05em;
+    transition: all 0.15s;
+}
+
+.rv-helpful-btn.voted {
+    border-color: #111;
+    color: #111;
+    cursor: default;
+}
+
+/* ── Empty state ── */
+.rv-empty {
+    font-size: 13px;
+    color: #aaa;
+    text-align: center;
+    padding: 40px 0;
+}
+
+/* ── Success message ── */
+.rv-success {
+    border: 1px solid #111;
+    padding: 28px;
+    text-align: center;
+    background: #111;
+    color: #fff;
+    margin-bottom: 48px;
+}
+
+.rv-success p {
+    margin: 0;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+}
+
+/* ── Error message ── */
+.rv-error {
+    color: #cc0000;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+/* ── Loading ── */
+.rv-loading {
+    font-size: 13px;
+    color: #aaa;
+    padding: 20px 0;
+}

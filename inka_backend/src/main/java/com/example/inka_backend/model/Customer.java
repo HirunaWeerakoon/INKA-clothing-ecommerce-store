@@ -28,4 +28,12 @@ public class Customer {
     @Enumerated(EnumType.STRING)
     @Column(name = "Role")
     private UserRole role = UserRole.USER;
+
+        // The unique ID Google assigns every user — used to find them on login
+    @Column(name = "google_id", unique = true)
+    private String googleId;
+ 
+    // Google profile photo — shown next to their review later
+    @Column(name = "picture_url")
+    private String pictureUrl;
 }
