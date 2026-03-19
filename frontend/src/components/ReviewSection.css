@@ -1,17 +1,19 @@
 /* ── Wrapper ── */
 .rv-root {
-    padding: 40px 0;
+    padding: 40px 60px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     color: #111;
+    max-width: 860px;
+    margin: 0 auto;
 }
 
 /* ── Summary row ── */
 .rv-summary {
     display: grid;
-    grid-template-columns: 180px 1fr;
-    gap: 40px;
+    grid-template-columns: 160px 1fr;
+    gap: 48px;
     margin-bottom: 48px;
-    align-items: start;
+    align-items: center;
 }
 
 .rv-score {
@@ -32,21 +34,22 @@
 
 /* ── Rating bars ── */
 .rv-bars {
-    padding-top: 6px;
+    padding-top: 4px;
 }
 
 .rv-bar-row {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 7px;
+    gap: 12px;
+    margin-bottom: 8px;
 }
 
 .rv-bar-label {
     font-size: 12px;
-    width: 8px;
+    width: 10px;
     text-align: right;
     font-family: monospace;
+    color: #555;
 }
 
 .rv-bar-track {
@@ -67,7 +70,7 @@
 .rv-bar-count {
     font-size: 11px;
     color: #aaa;
-    width: 14px;
+    width: 16px;
     font-family: monospace;
 }
 
@@ -94,8 +97,9 @@
 /* ── Submit form ── */
 .rv-form {
     border: 1px solid #e5e5e5;
-    padding: 28px;
+    padding: 28px 32px;
     margin-bottom: 48px;
+    background: #fafafa;
 }
 
 .rv-form-label {
@@ -114,10 +118,9 @@
 }
 
 .rv-field {
-    margin-bottom: 14px;
+    margin-bottom: 16px;
 }
 
-.rv-input,
 .rv-textarea {
     width: 100%;
     padding: 10px 12px;
@@ -130,41 +133,12 @@
     box-sizing: border-box;
     transition: border-color 0.15s;
     background: #fff;
-}
-
-.rv-input:focus,
-.rv-textarea:focus {
-    border-color: #111;
-}
-
-.rv-textarea {
     min-height: 100px;
     resize: vertical;
 }
 
-/* ── Size picker ── */
-.rv-size-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 22px;
-}
-
-.rv-size-btn {
-    width: 38px;
-    height: 38px;
-    border: 1px solid #d4d4d4;
-    background: #fff;
-    color: #111;
-    font-size: 12px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.15s;
-}
-
-.rv-size-btn.selected {
+.rv-textarea:focus {
     border-color: #111;
-    background: #111;
-    color: #fff;
 }
 
 /* ── Submit button ── */
@@ -224,7 +198,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #111;
+    border-bottom: 1px solid #e5e5e5;
     padding-bottom: 12px;
     margin-bottom: 32px;
 }
@@ -262,69 +236,52 @@
 
 /* ── Review card ── */
 .rv-card {
-    border-bottom: 1px solid #e5e5e5;
-    padding-bottom: 28px;
-    margin-bottom: 28px;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 24px 0;
 }
 
 .rv-card-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .rv-card-left {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
 }
 
+/* Avatar — plain grey circle with user silhouette */
 .rv-avatar {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: #111;
-    color: #fff;
+    flex-shrink: 0;
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 11px;
-    font-family: monospace;
-    flex-shrink: 0;
-    object-fit: cover;
 }
 
 .rv-author-name {
-    margin: 0;
+    margin: 0 0 3px 0;
     font-size: 13px;
     font-weight: 500;
-}
-
-.rv-badges {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 3px;
+    color: #111;
 }
 
 .rv-verified {
     font-size: 10px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #555;
-    border-left: 2px solid #111;
-    padding-left: 6px;
-}
-
-.rv-size-tag {
-    font-size: 10px;
-    color: #aaa;
-    letter-spacing: 0.06em;
+    color: #888;
 }
 
 .rv-card-right {
     text-align: right;
+    flex-shrink: 0;
 }
 
 .rv-card-date {
@@ -332,12 +289,6 @@
     font-size: 11px;
     color: #aaa;
     font-family: monospace;
-}
-
-.rv-card-title {
-    margin: 0 0 6px;
-    font-size: 14px;
-    font-weight: 500;
 }
 
 .rv-card-body {
@@ -350,7 +301,7 @@
 .rv-helpful-btn {
     background: none;
     border: 1px solid #d4d4d4;
-    padding: 5px 12px;
+    padding: 5px 14px;
     font-size: 11px;
     color: #888;
     cursor: pointer;
