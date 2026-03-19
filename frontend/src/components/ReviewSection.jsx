@@ -3,9 +3,20 @@ import { getReviewsByProduct, getAverageRating, createReview } from '../services
 import { authService } from '../services/authService';
 import './ReviewSection.css';
 
-const SIZES = ['S', 'M', 'L', 'XL', 'XXL'];
+// ── User icon SVG (plain grey silhouette) ────────────────────────────────────
+function UserIcon() {
+    return (
+        <div className="rv-avatar">
+            <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
+                <circle cx="18" cy="18" r="18" fill="#d4d4d4"/>
+                <circle cx="18" cy="14" r="6" fill="#fff"/>
+                <ellipse cx="18" cy="30" rx="10" ry="7" fill="#fff"/>
+            </svg>
+        </div>
+    );
+}
 
-// ── Stars display ────────────────────────────────────────────────────────────
+// ── Stars ────────────────────────────────────────────────────────────────────
 function Stars({ rating, interactive = false, size = 16, onChange }) {
     const [hovered, setHovered] = useState(0);
     const display = interactive && hovered ? hovered : rating;
@@ -47,10 +58,6 @@ function ReviewCard({ review }) {
     const [helpful, setHelpful] = useState(0);
     const [voted, setVoted] = useState(false);
 
-    const initials = review.customerName
-        ? review.customerName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
-        : '??';
-
     const formattedDate = new Date(review.createdAt).toLocaleDateString('en-GB', {
         day: '2-digit', month: 'short', year: 'numeric'
     });
@@ -59,19 +66,10 @@ function ReviewCard({ review }) {
         <div className="rv-card">
             <div className="rv-card-header">
                 <div className="rv-card-left">
-                    {/* Show Google profile photo if available, else initials */}
-                    {review.customerPictureUrl
-                        ? <img src={review.customerPictureUrl} alt={review.customerName} className="rv-avatar" />
-                        : <div className="rv-avatar">{initials}</div>
-                    }
+                    <UserIcon />
                     <div>
                         <p className="rv-author-name">{review.customerName}</p>
-                        <div className="rv-badges">
-                            <span className="rv-verified">Verified purchase</span>
-                            {review.sizePurchased && (
-                                <span className="rv-size-tag">Size: {review.sizePurchased}</span>
-                            )}
-                        </div>
+                        <span className="rv-verified">Verified purchase</span>
                     </div>
                 </div>
                 <div className="rv-card-right">
@@ -79,10 +77,7 @@ function ReviewCard({ review }) {
                     <p className="rv-card-date">{formattedDate}</p>
                 </div>
             </div>
-
-            {review.title && <p className="rv-card-title">{review.title}</p>}
             <p className="rv-card-body">{review.body}</p>
-
             <button
                 className={`rv-helpful-btn${voted ? ' voted' : ''}`}
                 onClick={() => { if (!voted) { setHelpful(h => h + 1); setVoted(true); } }}
@@ -101,17 +96,11 @@ export default function ReviewSection({ productId }) {
     const [sortBy, setSortBy] = useState('recent');
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState('');
-
-    // Form state
     const [rating, setRating] = useState(0);
-    const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
-    const [size, setSize] = useState('');
 
-    // Check if user is logged in
     const isLoggedIn = authService.isAuthenticated();
 
-    // Fetch reviews when component mounts or productId changes
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
@@ -131,19 +120,13 @@ export default function ReviewSection({ productId }) {
         fetchData();
     }, [productId]);
 
-    // Handle review submission
     const handleSubmit = async () => {
-        if (!rating || !body.trim()) return;
+        if (!rating && !body.trim()) return;
         setError('');
         try {
             const newReview = await createReview({
-                productId,
-                rating,
-                title,
-                body,
-                sizePurchased: size
+                productId, rating, title: '', body, sizePurchased: ''
             });
-            // Add new review to the top of the list instantly
             setReviews(prev => [newReview, ...prev]);
             setAvgRating(prev => {
                 const total = reviews.length + 1;
@@ -161,14 +144,12 @@ export default function ReviewSection({ productId }) {
         }
     };
 
-    // Sort reviews
     const sorted = [...reviews].sort((a, b) => {
         if (sortBy === 'high') return b.rating - a.rating;
         if (sortBy === 'low') return a.rating - b.rating;
-        return new Date(b.createdAt) - new Date(a.createdAt); // recent
+        return new Date(b.createdAt) - new Date(a.createdAt);
     });
 
-    // Breakdown per star
     const breakdown = [5, 4, 3, 2, 1].map(n => ({
         label: String(n),
         count: reviews.filter(r => r.rating === n).length
@@ -201,21 +182,10 @@ export default function ReviewSection({ productId }) {
             ) : isLoggedIn ? (
                 <div className="rv-form">
                     <p className="rv-form-label">Write a review</p>
-
                     <div className="rv-field">
                         <label className="rv-field-label">Your rating</label>
                         <Stars rating={rating} interactive size={22} onChange={setRating} />
                     </div>
-
-                    <div className="rv-field">
-                        <input
-                            className="rv-input"
-                            placeholder="Review title (optional)"
-                            value={title}
-                            onChange={e => setTitle(e.target.value)}
-                        />
-                    </div>
-
                     <div className="rv-field">
                         <textarea
                             className="rv-textarea"
@@ -224,28 +194,11 @@ export default function ReviewSection({ productId }) {
                             onChange={e => setBody(e.target.value)}
                         />
                     </div>
-
-                    <div className="rv-field">
-                        <label className="rv-field-label">Size purchased</label>
-                        <div className="rv-size-row">
-                            {SIZES.map(s => (
-                                <button
-                                    key={s}
-                                    className={`rv-size-btn${size === s ? ' selected' : ''}`}
-                                    onClick={() => setSize(s)}
-                                >
-                                    {s}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
                     {error && <p className="rv-error">{error}</p>}
-
                     <button
                         className="rv-submit-btn"
                         onClick={handleSubmit}
-                        disabled={!rating || !body.trim()}
+                        disabled={!rating && !body.trim()}
                     >
                         Submit Review
                     </button>

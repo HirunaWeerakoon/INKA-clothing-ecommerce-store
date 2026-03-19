@@ -60,7 +60,7 @@ public class ReviewService {
         Review review = new Review();
         review.setProduct(product);
         review.setCustomer(customer);
-        review.setRating(request.getRating());
+        review.setRating(request.getRating() != null ? request.getRating() : 0);
         review.setTitle(request.getTitle());
         review.setBody(request.getBody());
         review.setSizePurchased(request.getSizePurchased());
