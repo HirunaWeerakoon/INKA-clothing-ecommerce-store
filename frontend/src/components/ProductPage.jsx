@@ -39,11 +39,25 @@ export default function ProductPage() {
     const [wishlisted, setWishlisted] = useState(false);
     const [addingToCart, setAddingToCart] = useState(false);
     const [cartMessage, setCartMessage] = useState('');
+    const [avgRating, setAvgRating] = useState(0);
+    const [reviewCount, setReviewCount] = useState(0);
 
     useEffect(() => {
         axios.get(`/api/products/${id}`)
             .then(response => setProduct(response.data))
             .catch(error => console.error('Error fetching product:', error));
+    }, [id]);
+ 
+    // fetch average rating and review count when product loads ────
+    useEffect(() => {
+        if (!id) return;
+        Promise.all([
+            axios.get(`/api/reviews/product/${id}/average`),
+            axios.get(`/api/reviews/product/${id}`)
+        ]).then(([avgRes, reviewsRes]) => {
+            setAvgRating(avgRes.data || 0);
+            setReviewCount(reviewsRes.data.length || 0);
+        }).catch(err => console.error('Error fetching review stats:', err));
     }, [id]);
 
     const handleAddToCart = async () => {
@@ -120,9 +134,9 @@ export default function ProductPage() {
                 <div className="pp-details">
                     <h1 className="pp-name">{product.name}</h1>
                     <div className="pp-rating-row">
-                        <StarRating rating={4} />
-                        <span className="pp-review-count">(12 reviews)</span>
-                    </div>
+                        <StarRating rating={avgRating} />
+                        <span>({reviewCount} reviews)</span>
+                        </div>
                     <p className="pp-price">LKR {product.price?.toLocaleString()}</p>
                     <p className="pp-vat">Inclusive of VAT</p>
 

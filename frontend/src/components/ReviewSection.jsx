@@ -136,6 +136,8 @@ export default function ReviewSection({ productId }) {
         } catch (err) {
             if (err.response?.status === 401) {
                 setError('Please log in to submit a review.');
+            } else if (err.response?.status === 409) {
+                setError('You have already submitted a review for this product.');
             } else if (err.response?.data) {
                 setError(err.response.data);
             } else {
