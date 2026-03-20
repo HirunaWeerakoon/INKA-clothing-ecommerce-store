@@ -61,4 +61,14 @@ public class ReviewController {
         reviewService.deleteReview(reviewId, customerId);
         return ResponseEntity.ok("Review deleted");
     }
+
+        @GetMapping("/my-reviews")
+    public ResponseEntity<List<ReviewResponseDTO>> getMyReviews(
+            @RequestHeader("Authorization") String authHeader) {
+ 
+        String token = authHeader.replace("Bearer ", "");
+        Long customerId = jwtTokenProvider.getUserIdFromJWT(token);
+ 
+        return ResponseEntity.ok(reviewService.getReviewsByCustomer(customerId));
+    }
 }

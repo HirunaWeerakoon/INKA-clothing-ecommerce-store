@@ -97,4 +97,14 @@ public class ReviewService {
         dto.setCreatedAt(review.getCreatedAt());
         return dto;
     }
+    // ADD this method to your existing ReviewService.java
+// inside the class, after the existing getAverageRating method
+
+    // Get all reviews written by a specific customer
+    public List<ReviewResponseDTO> getReviewsByCustomer(Long customerId) {
+        return reviewRepository.findByCustomer_CustomerId(customerId)
+                .stream()
+                .map(this::toResponseDTO)
+                .collect(Collectors.toList());
+    }
 }
