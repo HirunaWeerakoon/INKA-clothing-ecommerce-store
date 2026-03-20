@@ -2,6 +2,7 @@ package com.example.inka_backend.service;
 
 import com.example.inka_backend.dto.ReviewRequestDTO;
 import com.example.inka_backend.dto.ReviewResponseDTO;
+import com.example.inka_backend.exception.AlreadyReviewedException;
 import com.example.inka_backend.model.Customer;
 import com.example.inka_backend.model.Product;
 import com.example.inka_backend.model.Review;
@@ -28,7 +29,6 @@ public class ReviewService {
         this.customerRepository = customerRepository;
     }
 
-    // Get all reviews for a product
     public List<ReviewResponseDTO> getReviewsByProduct(Long productId) {
         return reviewRepository.findByProduct_ProductId(productId)
                 .stream()
@@ -36,13 +36,18 @@ public class ReviewService {
                 .collect(Collectors.toList());
     }
 
-    // Get average rating for a product
     public Double getAverageRating(Long productId) {
         Double avg = reviewRepository.findAverageRatingByProductId(productId);
         return avg != null ? Math.round(avg * 10.0) / 10.0 : 0.0;
     }
 
-    // Submit a new review
+    public List<ReviewResponseDTO> getReviewsByCustomer(Long customerId) {
+        return reviewRepository.findByCustomer_CustomerId(customerId)
+                .stream()
+                .map(this::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
     public ReviewResponseDTO createReview(ReviewRequestDTO request, Long customerId) {
 
         Product product = productRepository.findById(request.getProductId())
@@ -51,10 +56,10 @@ public class ReviewService {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
-        // One review per customer per product
+        // Check for duplicate — return 409 with a clear message instead of crashing
         if (reviewRepository.existsByProduct_ProductIdAndCustomer_CustomerId(
                 request.getProductId(), customerId)) {
-            throw new RuntimeException("You have already reviewed this product");
+            throw new AlreadyReviewedException("You have already submitted a review for this product");
         }
 
         Review review = new Review();
@@ -69,7 +74,6 @@ public class ReviewService {
         return toResponseDTO(saved);
     }
 
-    // Delete a review — only the author can delete their own
     public void deleteReview(Long reviewId, Long customerId) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new RuntimeException("Review not found"));
@@ -81,7 +85,6 @@ public class ReviewService {
         reviewRepository.delete(review);
     }
 
-    // Convert Review entity to ResponseDTO
     private ReviewResponseDTO toResponseDTO(Review review) {
         ReviewResponseDTO dto = new ReviewResponseDTO();
         dto.setReviewId(review.getReviewId());
@@ -96,15 +99,5 @@ public class ReviewService {
         dto.setSizePurchased(review.getSizePurchased());
         dto.setCreatedAt(review.getCreatedAt());
         return dto;
-    }
-    // ADD this method to your existing ReviewService.java
-// inside the class, after the existing getAverageRating method
-
-    // Get all reviews written by a specific customer
-    public List<ReviewResponseDTO> getReviewsByCustomer(Long customerId) {
-        return reviewRepository.findByCustomer_CustomerId(customerId)
-                .stream()
-                .map(this::toResponseDTO)
-                .collect(Collectors.toList());
     }
 }
