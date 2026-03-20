@@ -3,18 +3,57 @@ import { Upload, X, Loader, RotateCcw, ZoomIn, ZoomOut, Move } from 'lucide-reac
 import { uploadImage } from '../../services/cloudinary';
 import './CustomPage.css';
 
-const VIEWS = ['Front', 'Back', 'Side'];
 const API = 'http://localhost:8080';
 
-// T-shirt images per view – put these in your /public folder
-const TSHIRT_IMAGES = {
-    Front: '/tshirt-front.jpg',
-    Back: '/tshirt-back.jpg',
-    Side: '/tshirt-front.jpg', // swap for a real side image when available
+// ── Per-category config ────────────────────────────────────────────────────────
+const CATEGORY_CONFIG = {
+    'T-SHIRTS': {
+        views: ['Front', 'Back', 'Side'],
+        images: {
+            Front: '/tshirt-front.jpg',
+            Back: '/tshirt-back.jpg',
+            Side: '/tshirt-side.png',
+        },
+        printArea: { top: 0.22, left: 0.28, width: 0.44, height: 0.45 },
+    },
+    'DENIMS': {
+        views: ['Front', 'Back'],
+        images: {
+            Front: '/denim-front.png',
+            Back: '/denim-back.png',
+        },
+        printArea: { top: 0.25, left: 0.30, width: 0.40, height: 0.35 },
+    },
+    'TOTE BAGS': {
+        views: ['Front'],
+        images: {
+            Front: '/tote-front.png',
+        },
+        printArea: { top: 0.20, left: 0.25, width: 0.50, height: 0.55 },
+    },
 };
 
-// Printable area as % of the canvas element (adjust to match your t-shirt images)
-const PRINT_AREA = { top: 0.22, left: 0.28, width: 0.44, height: 0.45 };
+// Fallback config for any category not explicitly listed
+const DEFAULT_CONFIG = {
+    views: ['Front', 'Back'],
+    images: {
+        Front: '/tshirt-front.jpg',
+        Back: '/tshirt-back.jpg',
+    },
+    printArea: { top: 0.22, left: 0.28, width: 0.44, height: 0.45 },
+};
+
+function getCategoryConfig(categoryName) {
+    if (!categoryName) return DEFAULT_CONFIG;
+    const key = categoryName.toUpperCase();
+    return CATEGORY_CONFIG[key] || DEFAULT_CONFIG;
+}
+
+const defaultDesign = () => ({ url: null, x: 0, y: 0, scale: 1, rotation: 0 });
+
+function buildDesigns(views) {
+    return Object.fromEntries(views.map(v => [v, defaultDesign()]));
+}
 
 export default function CustomPage() {
     const [categories, setCategories] = useState([]);
@@ -28,18 +67,17 @@ export default function CustomPage() {
     const [color, setColor] = useState('Color');
     const [qty, setQty] = useState(1);
     const [checkoutLoading, setCheckoutLoading] = useState(false);
-
-    // Per-view design state
-    const defaultDesign = () => ({ url: null, x: 0, y: 0, scale: 1, rotation: 0 });
-    const [designs, setDesigns] = useState({
-        Front: defaultDesign(), Back: defaultDesign(), Side: defaultDesign(),
-    });
-
+    const [designs, setDesigns] = useState(buildDesigns(['Front', 'Back', 'Side']));
     const [uploading, setUploading] = useState(false);
     const [uploadError, setUploadError] = useState(null);
+
     const fileInputRef = useRef(null);
     const canvasRef = useRef(null);
     const drag = useRef(null);
+
+    // ── Derived config from selected category ──────────────────────────────────
+    const config = getCategoryConfig(selectedCategory?.categoryName);
+    const { views, images: tshirtImages, printArea: PRINT_AREA } = config;
 
     const GSM_PRICES = { '180 GSM': 800, '200 GSM': 1000, '220 GSM': 1200 };
     const MATERIAL_PRICES = { Cotton: 500, Polyester: 300, Blend: 400 };
@@ -48,18 +86,33 @@ export default function CustomPage() {
     const unitPrice = (GSM_PRICES[gsm] || 0) + (MATERIAL_PRICES[material] || 0) + (SIZE_PRICES[size] || 0);
     const total = unitPrice * qty;
 
-    const currentDesign = designs[activeView];
+    const currentDesign = designs[activeView] || defaultDesign();
+
     const setCurrentDesign = (patch) =>
         setDesigns(d => ({
             ...d,
-            [activeView]: { ...d[activeView], ...(typeof patch === 'function' ? patch(d[activeView]) : patch) },
+            [activeView]: {
+                ...d[activeView],
+                ...(typeof patch === 'function' ? patch(d[activeView]) : patch),
+            },
         }));
+
+    // ── Reset canvas when category changes ─────────────────────────────────────
+    useEffect(() => {
+        if (!selectedCategory) return;
+        const cfg = getCategoryConfig(selectedCategory.categoryName);
+        setDesigns(buildDesigns(cfg.views));
+        setActiveView(cfg.views[0]);
+    }, [selectedCategory]);
 
     // ── Backend ────────────────────────────────────────────────────────────────
     useEffect(() => {
         fetch(`${API}/api/categories`)
             .then(r => r.json())
-            .then(data => { setCategories(data); if (data.length) setSelectedCategory(data[0]); })
+            .then(data => {
+                setCategories(data);
+                if (data.length) setSelectedCategory(data[0]);
+            })
             .catch(console.error);
     }, []);
 
@@ -97,15 +150,28 @@ export default function CustomPage() {
     const onPointerDown = useCallback((e) => {
         if (!currentDesign.url) return;
         e.currentTarget.setPointerCapture(e.pointerId);
-        drag.current = { startX: e.clientX, startY: e.clientY, origX: currentDesign.x, origY: currentDesign.y };
-    }, [currentDesign]);
+        drag.current = {
+            startX: e.clientX,
+            startY: e.clientY,
+            origX: currentDesign.x,
+            origY: currentDesign.y,
+            view: activeView,
+        };
+    }, [currentDesign, activeView]);
 
     const onPointerMove = useCallback((e) => {
         if (!drag.current) return;
-        setCurrentDesign({
-            x: drag.current.origX + (e.clientX - drag.current.startX),
-            y: drag.current.origY + (e.clientY - drag.current.startY),
-        });
+        const view = drag.current.view;
+        const origX = drag.current.origX;
+        const origY = drag.current.origY;
+        const startX = drag.current.startX;
+        const startY = drag.current.startY;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        setDesigns(d => ({
+            ...d,
+            [view]: { ...d[view], x: origX + dx, y: origY + dy },
+        }));
     }, []);
 
     const onPointerUp = useCallback(() => { drag.current = null; }, []);
@@ -142,11 +208,13 @@ export default function CustomPage() {
                 size: size === 'Size' ? '' : size,
                 color: color === 'Color' ? '' : color,
                 quantity: qty,
-                designImageUrl: designs.Front.url || designs.Back.url || designs.Side.url,
+                designImageUrl: Object.values(designs).find(d => d.url)?.url || '',
                 totalPrice: total,
             };
             const res = await fetch(`${API}/api/custom-orders`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(order),
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(order),
             });
             res.ok ? alert('Order placed successfully!') : alert('Failed to place order. Please try again.');
         } catch (err) {
@@ -207,14 +275,14 @@ export default function CustomPage() {
                 {/* ── Design canvas ── */}
                 <section className="custom-canvas-section">
 
-                    {/* View tabs */}
+                    {/* View tabs — dynamic per category */}
                     <div className="view-tabs">
-                        {VIEWS.map(view => (
+                        {views.map(view => (
                             <button key={view}
                                 className={`view-tab ${activeView === view ? 'view-tab--active' : ''}`}
                                 onClick={() => setActiveView(view)}>
                                 {view}
-                                {designs[view].url && <span className="view-tab__dot" />}
+                                {designs[view]?.url && <span className="view-tab__dot" />}
                             </button>
                         ))}
                     </div>
@@ -229,10 +297,15 @@ export default function CustomPage() {
                         <input ref={fileInputRef} type="file" accept="image/*"
                             style={{ display: 'none' }} onChange={handleFileChange} />
 
-                        {/* T-shirt base */}
-                        <img src={TSHIRT_IMAGES[activeView]} alt={`${activeView} view`}
-                            className="canvas-tshirt-base" draggable={false}
-                            onError={e => { e.currentTarget.style.display = 'none'; }} />
+                        {/* Item base image — changes with category + view */}
+                        <img
+                            key={`${selectedCategory?.categoryId}-${activeView}`}
+                            src={tshirtImages[activeView]}
+                            alt={`${activeView} view`}
+                            className="canvas-tshirt-base"
+                            draggable={false}
+                            onError={e => { e.currentTarget.style.display = 'none'; }}
+                        />
 
                         {/* Print-area guide */}
                         <div className="canvas-print-area" style={{
