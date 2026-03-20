@@ -30,4 +30,5 @@ Thumbs.db
 *.suo
 *.sw?
 
-.env
+
+src/main/resources/application.properties

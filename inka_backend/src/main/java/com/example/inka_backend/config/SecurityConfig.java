@@ -2,6 +2,7 @@ package com.example.inka_backend.config;
 
 import com.example.inka_backend.security.JwtAuthenticationFilter;
 import com.example.inka_backend.service.CustomOAuth2CustomerService;
+import jakarta.servlet.DispatcherType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,28 +21,27 @@ public class SecurityConfig {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Autowired
-    private CustomSuccessHandler customSuccessHandler;   // your existing handler ✓
+    private CustomSuccessHandler customSuccessHandler;
 
     @Autowired
-    private CustomOAuth2CustomerService customOAuth2CustomerService; // new service ✓
+    private CustomOAuth2CustomerService customOAuth2CustomerService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            // CSRF off — we use JWT not cookies
             .csrf(csrf -> csrf.disable())
 
-            // Stateless — no server sessions
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
             .authorizeHttpRequests(auth -> auth
 
-                // Google OAuth2 flow — must be public
-                .requestMatchers("/oauth2/**", "/login/oauth2/**", "/login/**").permitAll()
-
-                // H2 console — dev only
+                // H2 console — allow all dispatcher types so it works without a session
+                .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
+
+                // Google OAuth2 flow
+                .requestMatchers("/oauth2/**", "/login/oauth2/**", "/login/**").permitAll()
 
                 // Public read access
                 .requestMatchers("/", "/api/products/**").permitAll()
@@ -55,18 +55,16 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
 
-            // Google OAuth2 login — wired to your CustomSuccessHandler
             .oauth2Login(oauth -> oauth
                 .userInfoEndpoint(userInfo ->
-                    userInfo.userService(customOAuth2CustomerService)) // saves Customer to DB ✓
-                .successHandler(customSuccessHandler)                  // mints JWT ✓
+                    userInfo.userService(customOAuth2CustomerService))
+                .successHandler(customSuccessHandler)
             )
 
-            // JWT filter — validates token on every request
             .addFilterBefore(jwtAuthenticationFilter,
                 UsernamePasswordAuthenticationFilter.class)
 
-            // Allow H2 console iframe in dev
+            // Required for H2 console to render in iframe
             .headers(headers -> headers.frameOptions(frame -> frame.disable()));
 
         return http.build();
