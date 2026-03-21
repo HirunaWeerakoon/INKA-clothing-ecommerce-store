@@ -102,10 +102,20 @@ export default function MyReviews() {
 
                     {/* Review body */}
                     {review.body && (
-                        <p style={{ margin: 0, fontSize: 14, fontWeight: 400, color: '#444', lineHeight: 1.7 }}>
-                            {review.body}
-                        </p>
-                    )}
+                     <p style={{ margin: 0, fontSize: 14, fontWeight: 400, color: '#444', lineHeight: 1.7 }}>
+                    {review.body}
+                     </p>
+            )}
+
+                    {/* Review image */}
+                    {review.imageUrl && (
+                      <img
+                      src={review.imageUrl}
+                        alt="Review"
+                        onClick={() => window.open(review.imageUrl, '_blank')}
+                        style={{ width: 100, height: 100, objectFit: 'cover', borderRadius: 4, marginTop: 10, cursor: 'pointer', border: '1px solid #e5e5e5' }}
+                     />
+                     )}
                 </div>
             ))}
         </div>
