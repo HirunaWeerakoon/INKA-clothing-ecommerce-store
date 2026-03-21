@@ -5,7 +5,6 @@ import './CustomPage.css';
 
 const API = 'http://localhost:8080';
 
-// ── Per-category config ────────────────────────────────────────────────────────
 const CATEGORY_CONFIG = {
     'T-SHIRTS': {
         views: ['Front', 'Back', 'Side'],
@@ -15,6 +14,8 @@ const CATEGORY_CONFIG = {
             Side: '/tshirt-side.png',
         },
         printArea: { top: 0.22, left: 0.28, width: 0.44, height: 0.45 },
+        thumbnail: '/category-tshirt.jpg',
+        customizable: true,
     },
     'DENIMS': {
         views: ['Front', 'Back'],
@@ -23,17 +24,27 @@ const CATEGORY_CONFIG = {
             Back: '/denim-back.png',
         },
         printArea: { top: 0.25, left: 0.30, width: 0.40, height: 0.35 },
+        thumbnail: '/category-denim.jpg',
+        customizable: true,
     },
     'TOTE BAGS': {
         views: ['Front'],
         images: {
             Front: '/tote-front.png',
         },
-        printArea: { top: 0.20, left: 0.25, width: 0.50, height: 0.55 },
+        printArea: { top: 0.38, left: 0.18, width: 0.64, height: 0.42 },
+        thumbnail: '/category-tote.jpg',
+        customizable: true,
+    },
+    'ACCESSORIES': {
+        views: [],
+        images: {},
+        printArea: { top: 0, left: 0, width: 0, height: 0 },
+        thumbnail: '/category-accessories.jpg',
+        customizable: false,
     },
 };
 
-// Fallback config for any category not explicitly listed
 const DEFAULT_CONFIG = {
     views: ['Front', 'Back'],
     images: {
@@ -41,6 +52,7 @@ const DEFAULT_CONFIG = {
         Back: '/tshirt-back.jpg',
     },
     printArea: { top: 0.22, left: 0.28, width: 0.44, height: 0.45 },
+    thumbnail: null,
 };
 
 function getCategoryConfig(categoryName) {
@@ -75,7 +87,6 @@ export default function CustomPage() {
     const canvasRef = useRef(null);
     const drag = useRef(null);
 
-    // ── Derived config from selected category ──────────────────────────────────
     const config = getCategoryConfig(selectedCategory?.categoryName);
     const { views, images: tshirtImages, printArea: PRINT_AREA } = config;
 
@@ -87,7 +98,6 @@ export default function CustomPage() {
     const total = unitPrice * qty;
 
     const currentDesign = designs[activeView] || defaultDesign();
-
     const setCurrentDesign = (patch) =>
         setDesigns(d => ({
             ...d,
@@ -97,15 +107,19 @@ export default function CustomPage() {
             },
         }));
 
-    // ── Reset canvas when category changes ─────────────────────────────────────
     useEffect(() => {
         if (!selectedCategory) return;
         const cfg = getCategoryConfig(selectedCategory.categoryName);
         setDesigns(buildDesigns(cfg.views));
         setActiveView(cfg.views[0]);
+        // Reset all options back to defaults
+        setGsm('GSM');
+        setMaterial('Material');
+        setSize('Size');
+        setColor('Color');
+        setQty(1);
     }, [selectedCategory]);
 
-    // ── Backend ────────────────────────────────────────────────────────────────
     useEffect(() => {
         fetch(`${API}/api/categories`)
             .then(r => r.json())
@@ -124,21 +138,29 @@ export default function CustomPage() {
             .catch(console.error);
     }, [selectedCategory]);
 
-    // ── File upload ────────────────────────────────────────────────────────────
     async function handleFileChange(e) {
         const file = e.target.files?.[0];
         if (!file) return;
-        setUploading(true);
         setUploadError(null);
+
+        // Show local preview instantly — no waiting
+        const localUrl = URL.createObjectURL(file);
+        setCurrentDesign({ url: localUrl, x: 0, y: 0, scale: 1, rotation: 0 });
+
+        // Upload to Cloudinary in the background
+        setUploading(true);
         try {
-            const url = await uploadImage(file);
-            setCurrentDesign({ url, x: 0, y: 0, scale: 1, rotation: 0 });
+            const cloudUrl = await uploadImage(file);
+            // Swap local preview with the Cloudinary URL silently
+            setCurrentDesign(d => ({ ...d, url: cloudUrl }));
         } catch (err) {
             setUploadError(err.message);
+            // Keep local preview even if upload fails
         } finally {
             setUploading(false);
             e.target.value = '';
         }
+
     }
 
     function handleClearUpload() {
@@ -146,7 +168,6 @@ export default function CustomPage() {
         setUploadError(null);
     }
 
-    // ── Drag-to-move ───────────────────────────────────────────────────────────
     const onPointerDown = useCallback((e) => {
         if (!currentDesign.url) return;
         e.currentTarget.setPointerCapture(e.pointerId);
@@ -176,12 +197,16 @@ export default function CustomPage() {
 
     const onPointerUp = useCallback(() => { drag.current = null; }, []);
 
-    // ── Keyboard nudge ─────────────────────────────────────────────────────────
     useEffect(() => {
         function onKey(e) {
             if (!currentDesign.url) return;
             const step = e.shiftKey ? 10 : 2;
-            const map = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] };
+            const map = {
+                ArrowLeft: [-step, 0],
+                ArrowRight: [step, 0],
+                ArrowUp: [0, -step],
+                ArrowDown: [0, step],
+            };
             if (map[e.key]) {
                 e.preventDefault();
                 const [dx, dy] = map[e.key];
@@ -192,7 +217,6 @@ export default function CustomPage() {
         return () => window.removeEventListener('keydown', onKey);
     }, [currentDesign.url]);
 
-    // ── Checkout ───────────────────────────────────────────────────────────────
     async function handleCheckout() {
         if (!selectedCategory) return alert('Please select a category');
         const anyDesign = Object.values(designs).find(d => d.url);
@@ -216,7 +240,9 @@ export default function CustomPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(order),
             });
-            res.ok ? alert('Order placed successfully!') : alert('Failed to place order. Please try again.');
+            res.ok
+                ? alert('Order placed successfully!')
+                : alert('Failed to place order. Please try again.');
         } catch (err) {
             console.error(err);
             alert('Something went wrong. Please try again.');
@@ -225,49 +251,74 @@ export default function CustomPage() {
         }
     }
 
-    // ── Render ─────────────────────────────────────────────────────────────────
     return (
         <div className="custom-page">
 
             {/* Hero */}
             <section className="custom-hero">
-                <img src="/hero-banner.jpg" alt="INKA hero" className="custom-hero__bg"
-                    onError={e => { e.currentTarget.style.display = 'none'; }} />
-                <div className="custom-hero__overlay" />
-                <h1 className="custom-hero__title">INKA</h1>
+                <img
+                    src="/hero_image.png"
+                    alt="INKA hero"
+                    className="custom-hero__bg"
+                />
             </section>
 
             <div className="custom-content">
 
-                {/* Category */}
+                {/* ── Category ── */}
                 <section className="custom-section">
-                    <p className="custom-section__label">SELECT THE ITEM YOU WANT TO CUSTOMIZE</p>
+                    <p className="custom-section__label">
+                        Select the item you want to customize
+                    </p>
                     <div className="category-grid">
-                        {categories.map(cat => (
-                            <button key={cat.categoryId}
-                                className={`category-card ${selectedCategory?.categoryId === cat.categoryId ? 'category-card--active' : ''}`}
-                                onClick={() => { setSelectedCategory(cat); setSelectedSub(null); }}>
-                                <div className="category-card__img-placeholder" />
-                                <span className="category-card__label">{cat.categoryName.toUpperCase()}</span>
-                            </button>
-                        ))}
+                        {categories
+                            .filter(cat => {
+                                const cfg = getCategoryConfig(cat.categoryName);
+                                return cfg.customizable !== false;
+                            })
+                            .map(cat => {
+                                const cfg = getCategoryConfig(cat.categoryName);
+                                return (
+                                    <button
+                                        key={cat.categoryId}
+                                        className={`category-card ${selectedCategory?.categoryId === cat.categoryId ? 'category-card--active' : ''}`}
+                                        onClick={() => { setSelectedCategory(cat); setSelectedSub(null); }}>
+                                        <div className="category-card__img-wrap">
+                                            {cfg.thumbnail && (
+                                                <img
+                                                    src={cfg.thumbnail}
+                                                    alt={cat.categoryName}
+                                                    className="category-card__img"
+                                                    draggable={false}
+                                                    onError={e => {
+                                                        e.currentTarget.style.display = 'none';
+                                                    }}
+                                                />
+                                            )}
+                                        </div>
+                                        <span className="category-card__label">
+                                            {cat.categoryName}
+                                        </span>
+                                    </button>
+                                );
+                            })}
                     </div>
                 </section>
 
-                {/* Sub-category */}
+                {/* ── Sub-category ── */}
                 <section className="custom-section">
-                    <p className="custom-section__label">SUB-CATEGORY</p>
-                    <div className="category-grid">
+                    <p className="custom-section__label--sub">Sub-category</p>
+                    <div className="subcategory-grid">
                         {subCategories.length > 0
                             ? subCategories.map(sub => (
-                                <button key={sub.id}
-                                    className={`subcategory-card ${selectedSub?.id === sub.id ? 'subcategory-card--active' : ''}`}
+                                <button
+                                    key={sub.id}
+                                    className={`subcategory-chip ${selectedSub?.id === sub.id ? 'subcategory-chip--active' : ''}`}
                                     onClick={() => setSelectedSub(sub)}>
-                                    <div className="subcategory-card__img-placeholder" />
-                                    <span className="subcategory-card__label">{sub.name.toUpperCase()}</span>
+                                    {sub.name}
                                 </button>
                             ))
-                            : <p style={{ color: '#999', fontSize: '0.75rem' }}>No sub-categories available</p>
+                            : <p className="empty-sub-label">No sub-categories available</p>
                         }
                     </div>
                 </section>
@@ -275,10 +326,10 @@ export default function CustomPage() {
                 {/* ── Design canvas ── */}
                 <section className="custom-canvas-section">
 
-                    {/* View tabs — dynamic per category */}
                     <div className="view-tabs">
                         {views.map(view => (
-                            <button key={view}
+                            <button
+                                key={view}
                                 className={`view-tab ${activeView === view ? 'view-tab--active' : ''}`}
                                 onClick={() => setActiveView(view)}>
                                 {view}
@@ -287,7 +338,6 @@ export default function CustomPage() {
                         ))}
                     </div>
 
-                    {/* Canvas */}
                     <div className="custom-canvas" ref={canvasRef}
                         tabIndex={0}
                         onPointerMove={onPointerMove}
@@ -297,7 +347,6 @@ export default function CustomPage() {
                         <input ref={fileInputRef} type="file" accept="image/*"
                             style={{ display: 'none' }} onChange={handleFileChange} />
 
-                        {/* Item base image — changes with category + view */}
                         <img
                             key={`${selectedCategory?.categoryId}-${activeView}`}
                             src={tshirtImages[activeView]}
@@ -307,7 +356,6 @@ export default function CustomPage() {
                             onError={e => { e.currentTarget.style.display = 'none'; }}
                         />
 
-                        {/* Print-area guide */}
                         <div className="canvas-print-area" style={{
                             top: `${PRINT_AREA.top * 100}%`,
                             left: `${PRINT_AREA.left * 100}%`,
@@ -315,7 +363,6 @@ export default function CustomPage() {
                             height: `${PRINT_AREA.height * 100}%`,
                         }} />
 
-                        {/* User design */}
                         {currentDesign.url && (
                             <div className="canvas-design-overlay"
                                 style={{
@@ -326,22 +373,30 @@ export default function CustomPage() {
                                     cursor: 'grab',
                                 }}
                                 onPointerDown={onPointerDown}>
-                                <img src={currentDesign.url} alt="Design"
+                                <img
+                                    src={currentDesign.url}
+                                    alt="Design"
                                     className="canvas-design-img"
                                     style={{
                                         transform: `translate(${currentDesign.x}px, ${currentDesign.y}px) scale(${currentDesign.scale}) rotate(${currentDesign.rotation}deg)`,
                                     }}
-                                    draggable={false} />
+                                    draggable={false}
+                                />
                                 <div className="design-drag-hint">
                                     <Move size={12} /> drag to move
                                 </div>
                             </div>
                         )}
 
-                        {/* Empty state */}
                         {!currentDesign.url && !uploading && (
-                            <button className="canvas-drop-hint" onClick={() => fileInputRef.current?.click()}>
-                                <Upload size={28} />
+                            <button
+                                className="canvas-drop-hint"
+                                style={{
+                                    top: `${(PRINT_AREA.top + PRINT_AREA.height / 2) * 100}%`,
+                                    left: `${(PRINT_AREA.left + PRINT_AREA.width / 2) * 100}%`,
+                                }}
+                                onClick={() => fileInputRef.current?.click()}>
+                                <Upload size={26} />
                                 <span>Click to upload your design</span>
                                 <span className="canvas-drop-sub">PNG with transparency works best</span>
                             </button>
@@ -354,14 +409,17 @@ export default function CustomPage() {
                             </div>
                         )}
 
-                        {uploadError && <p className="canvas-error">{uploadError}</p>}
+                        {uploadError && (
+                            <p className="canvas-error">{uploadError}</p>
+                        )}
                     </div>
 
-                    {/* Toolbar */}
                     <div className="design-toolbar">
                         <div className="design-toolbar__left">
-                            <button className="toolbar-btn toolbar-btn--primary"
-                                onClick={() => fileInputRef.current?.click()} disabled={uploading}>
+                            <button
+                                className="toolbar-btn toolbar-btn--primary"
+                                onClick={() => fileInputRef.current?.click()}
+                                disabled={uploading}>
                                 <Upload size={14} />
                                 {currentDesign.url ? 'Change' : 'Upload Design'}
                             </button>
@@ -373,7 +431,9 @@ export default function CustomPage() {
                                             onClick={() => setCurrentDesign(d => ({ scale: Math.max(0.2, +(d.scale - 0.1).toFixed(2)) }))}>
                                             <ZoomOut size={14} />
                                         </button>
-                                        <span className="toolbar-value">{Math.round(currentDesign.scale * 100)}%</span>
+                                        <span className="toolbar-value">
+                                            {Math.round(currentDesign.scale * 100)}%
+                                        </span>
                                         <button className="toolbar-icon-btn" title="Zoom in"
                                             onClick={() => setCurrentDesign(d => ({ scale: Math.min(3, +(d.scale + 0.1).toFixed(2)) }))}>
                                             <ZoomIn size={14} />
@@ -385,7 +445,9 @@ export default function CustomPage() {
                                             onClick={() => setCurrentDesign(d => ({ rotation: d.rotation - 15 }))}>
                                             <RotateCcw size={14} />
                                         </button>
-                                        <span className="toolbar-value">{currentDesign.rotation}°</span>
+                                        <span className="toolbar-value">
+                                            {currentDesign.rotation}°
+                                        </span>
                                         <button className="toolbar-icon-btn" title="Rotate +15°"
                                             onClick={() => setCurrentDesign(d => ({ rotation: d.rotation + 15 }))}>
                                             <RotateCcw size={14} style={{ transform: 'scaleX(-1)' }} />
@@ -401,7 +463,8 @@ export default function CustomPage() {
                         </div>
 
                         {currentDesign.url && (
-                            <button className="toolbar-btn toolbar-btn--danger" onClick={handleClearUpload}>
+                            <button className="toolbar-btn toolbar-btn--danger"
+                                onClick={handleClearUpload}>
                                 <X size={13} /> Remove
                             </button>
                         )}
@@ -412,14 +475,34 @@ export default function CustomPage() {
                     </p>
                 </section>
 
-                {/* Options */}
+                {/* ── Options ── */}
                 <section className="options-row">
-                    <p className="options-row__label">Type</p>
+                    <p className="options-row__label">Customise Your Order</p>
                     <div className="options-dropdowns">
-                        <Select value={gsm} onChange={setGsm} options={['180 GSM', '200 GSM', '220 GSM']} placeholder="GSM" />
-                        <Select value={material} onChange={setMaterial} options={['Cotton', 'Polyester', 'Blend']} placeholder="Material" />
-                        <Select value={size} onChange={setSize} options={['XS', 'S', 'M', 'L', 'XL', 'XXL']} placeholder="Size" />
-                        <Select value={color} onChange={setColor} options={['Black', 'White', 'Navy', 'Grey']} placeholder="Color" />
+                        <Select
+                            value={gsm}
+                            onChange={setGsm}
+                            options={['180 GSM', '200 GSM', '220 GSM']}
+                            placeholder="GSM"
+                        />
+                        <Select
+                            value={material}
+                            onChange={setMaterial}
+                            options={['Cotton', 'Polyester', 'Blend']}
+                            placeholder="Material"
+                        />
+                        <Select
+                            value={size}
+                            onChange={setSize}
+                            options={['XS', 'S', 'M', 'L', 'XL', 'XXL']}
+                            placeholder="Size"
+                        />
+                        <Select
+                            value={color}
+                            onChange={setColor}
+                            options={['Black', 'White', 'Navy', 'Grey']}
+                            placeholder="Color"
+                        />
                         <div className="qty-control">
                             <button onClick={() => setQty(q => Math.max(1, q - 1))}>−</button>
                             <span>{qty}</span>
@@ -429,11 +512,17 @@ export default function CustomPage() {
                     </div>
                 </section>
 
-                {/* Checkout */}
+                {/* ── Checkout ── */}
                 <div className="checkout-row">
-                    <span className="checkout-total">Total: LKR {total.toLocaleString()}</span>
-                    <button className="btn-checkout" onClick={handleCheckout} disabled={checkoutLoading}>
-                        {checkoutLoading ? 'Placing Order...' : 'Checkout'}
+                    <div className="checkout-price-block">
+                        <span className="checkout-price-label">Total</span>
+                        <span className="checkout-total">LKR {total.toLocaleString()}</span>
+                    </div>
+                    <button
+                        className="btn-checkout"
+                        onClick={handleCheckout}
+                        disabled={checkoutLoading}>
+                        {checkoutLoading ? 'Placing Order…' : 'Checkout'}
                     </button>
                 </div>
 
@@ -442,16 +531,20 @@ export default function CustomPage() {
     );
 }
 
+// ── Select component — placeholder is disabled so it can't be re-selected ──
 function Select({ value, onChange, options, placeholder }) {
+    const isPlaceholder = value === placeholder;
     return (
         <div className="custom-select-wrapper">
-            <select className="custom-select"
-                value={value === placeholder ? '' : value}
+            <select
+                className={`custom-select ${isPlaceholder ? 'custom-select--placeholder' : 'custom-select--selected'}`}
+                value={isPlaceholder ? '' : value}
                 onChange={e => onChange(e.target.value || placeholder)}>
-                <option value="">{placeholder}</option>
+                <option value="" disabled hidden>{placeholder}</option>
                 {options.map(o => <option key={o} value={o}>{o}</option>)}
             </select>
             <span className="custom-select-arrow">▾</span>
         </div>
     );
+
 }
