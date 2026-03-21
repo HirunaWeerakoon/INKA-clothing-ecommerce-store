@@ -43,6 +43,10 @@ public class Review {
     @Column(name = "size_purchased")
     private String sizePurchased;
 
+    // Cloudinary image URL — optional
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 }

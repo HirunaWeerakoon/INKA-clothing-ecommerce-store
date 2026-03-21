@@ -69,6 +69,7 @@ public class ReviewService {
         review.setTitle(request.getTitle());
         review.setBody(request.getBody());
         review.setSizePurchased(request.getSizePurchased());
+        review.setImageUrl(request.getImageUrl()); // Cloudinary image URL
 
         Review saved = reviewRepository.save(review);
         return toResponseDTO(saved);
@@ -97,6 +98,7 @@ public class ReviewService {
         dto.setTitle(review.getTitle());
         dto.setBody(review.getBody());
         dto.setSizePurchased(review.getSizePurchased());
+        dto.setImageUrl(review.getImageUrl()); // Cloudinary image URL
         dto.setCreatedAt(review.getCreatedAt());
         return dto;
     }

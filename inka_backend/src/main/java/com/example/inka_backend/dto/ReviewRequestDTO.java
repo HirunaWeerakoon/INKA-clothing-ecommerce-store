@@ -18,9 +18,8 @@ public class ReviewRequestDTO {
     private Integer rating;
 
     private String title;
-
     // Body is optional — user can leave just a rating
     private String body;
-
     private String sizePurchased;
+    private String imageUrl;
 }

@@ -47,12 +47,14 @@ public class SecurityConfig {
                 .requestMatchers("/", "/api/products/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
+                .requestMatchers("/api/images/**").permitAll() // Cloudinary image upload endpoint
 
                 // Admin only
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
                 // Everything else requires a valid JWT
                 .anyRequest().authenticated()
+            
             )
 
             .oauth2Login(oauth -> oauth
