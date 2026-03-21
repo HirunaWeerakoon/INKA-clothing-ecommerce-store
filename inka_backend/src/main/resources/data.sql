@@ -9,6 +9,7 @@ INSERT INTO category (id, name, image_url) VALUES
 (3, 'Tote Bags', 'https://images.unsplash.com/photo-1544816155-12df9643f363?w=400'),
 (4, 'Accessories', 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=400');
 
+
 -- Products: T-Shirts (category_id = 1)
 INSERT INTO products (product_id, category_id, name, description, price, stock, is_available, best_seller, image_url, image1, image2, image3, image4, image5) VALUES
 (1, 1, 'Classic Black Tee', 'Premium 100% cotton black t-shirt with a relaxed fit. Perfect for everyday wear.', 2500.00, 50, TRUE, TRUE,
@@ -72,13 +73,6 @@ INSERT INTO products (product_id, category_id, name, description, price, stock, 
 (10, 3, 'Printed Art Tote', 'Artist collaboration tote bag with unique printed design. Limited edition.', 2200.00, 20, TRUE, FALSE,
  'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=400',
  'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=600',
- NULL, NULL, NULL, NULL);
-
--- Products: Accessories (category_id = 4)
-INSERT INTO products (product_id, category_id, name, description, price, stock, is_available, best_seller, image_url, image1, image2, image3, image4, image5) VALUES
-(11, 4, 'INKA Cap', 'Embroidered INKA logo cap. Adjustable strap for a perfect fit.', 1500.00, 60, TRUE, FALSE,
- 'https://images.unsplash.com/photo-1588850561407-ed78c334e67a?w=400',
- 'https://images.unsplash.com/photo-1588850561407-ed78c334e67a?w=600',
  NULL, NULL, NULL, NULL),
 
 (12, 4, 'Leather Belt', 'Genuine leather belt with minimal metal buckle. Premium quality finish.', 3500.00, 25, TRUE, FALSE,
@@ -86,6 +80,23 @@ INSERT INTO products (product_id, category_id, name, description, price, stock, 
  'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600',
  NULL, NULL, NULL, NULL);
 
+
 -- Customer (test user)
 INSERT INTO customer (customerid, name, email, password, address, role) VALUES
 (1, 'Lewis Hamilton', 'lewis@mercedes.com', 'password123', '44 Stevenage Road, London, UK', 'USER');
+
+-- Sub Categories for T-Shirts (category_id = 1)
+INSERT INTO sub_category (name, image_url, category_id) VALUES ('Crew Neck', null, 1);
+INSERT INTO sub_category (name, image_url, category_id) VALUES ('V-Neck', null, 1);
+INSERT INTO sub_category (name, image_url, category_id) VALUES ('Polo', null, 1);
+
+-- Sub Categories for Denims (category_id = 2)
+INSERT INTO sub_category (name, image_url, category_id) VALUES ('Slim Fit', null, 2);
+INSERT INTO sub_category (name, image_url, category_id) VALUES ('Regular', null, 2);
+INSERT INTO sub_category (name, image_url, category_id) VALUES ('Wide Leg', null, 2);
+
+-- Sub Categories for Tote Bags (category_id = 3)
+INSERT INTO sub_category (name, image_url, category_id) VALUES ('Small', null, 3);
+INSERT INTO sub_category (name, image_url, category_id) VALUES ('Medium', null, 3);
+INSERT INTO sub_category (name, image_url, category_id) VALUES ('Large', null, 3);
+
