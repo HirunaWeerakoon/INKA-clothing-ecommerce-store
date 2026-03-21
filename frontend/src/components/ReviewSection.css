@@ -1,7 +1,7 @@
 /* ── Wrapper ── */
 .rv-root {
     padding: 40px 60px;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Inter', sans-serif;
     color: #111;
     max-width: 860px;
     margin: 0 auto;
@@ -82,7 +82,8 @@
 
 .rv-star {
     font-size: 16px;
-    color: #111;
+    color: #111; 
+    
 }
 
 .rv-star.empty {
@@ -352,4 +353,37 @@
     font-size: 13px;
     color: #aaa;
     padding: 20px 0;
+
 }
+
+/* ── Upload button ── */
+.rv-upload-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #d4d4d4;
+    padding: 9px 18px;
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    color: #444;
+    cursor: pointer;
+    background: #fff;
+    border-radius: 2px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: all 0.15s;
+}
+
+.rv-upload-btn:hover {
+    border-color: #111;
+    color: #111;
+    background: #fff;
+}
+
+.rv-upload-btn.has-photo {
+    border-color: #111;
+    color: #111;
+}
+
+

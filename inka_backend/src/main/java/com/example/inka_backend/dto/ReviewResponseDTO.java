@@ -26,5 +26,7 @@ public class ReviewResponseDTO {
     private String body;
     private String sizePurchased;
 
+    private String imageUrl; // Cloudinary image URL
+
     private LocalDateTime createdAt;
 }
