@@ -165,9 +165,11 @@ export default function ReviewSection({ productId }) {
             setError('Please log in to submit a review.');
         } else if (err.response?.status === 409) {
             setError('You have already submitted a review for this product.');
-        } else if (err.response?.data) {
-            setError(err.response.data);
-        } else {
+       } else if (err.response?.data) {
+    setError(typeof err.response.data === 'string'
+        ? err.response.data
+        : 'Something went wrong. Please try again.');
+} else {
             setError('Something went wrong. Please try again.');
         }
     } finally {
