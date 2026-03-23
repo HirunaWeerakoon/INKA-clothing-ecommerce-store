@@ -7,4 +7,7 @@ import java.util.Optional;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
     Optional<Customer> findByEmail(String email); // Vital for the Login API
+
+     // Used by CustomOAuth2UserService to find or create the user
+    Optional<Customer> findByGoogleId(String googleId);
 }

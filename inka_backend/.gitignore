@@ -48,3 +48,5 @@ Thumbs.db
 
 ### Spring Boot ###
 spring-shell.log
+
+src/main/resources/application.properties

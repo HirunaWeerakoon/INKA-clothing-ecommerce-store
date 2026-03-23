@@ -1,48 +1,74 @@
 package com.example.inka_backend.config;
 
+import com.example.inka_backend.security.JwtAuthenticationFilter;
+import com.example.inka_backend.service.CustomOAuth2CustomerService;
+import jakarta.servlet.DispatcherType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-        @Autowired
-        private CustomSuccessHandler customSuccessHandler;
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-        @Autowired
-        private com.example.inka_backend.security.JwtAuthenticationFilter jwtAuthenticationFilter;
+    @Autowired
+    private CustomSuccessHandler customSuccessHandler;
 
-        @Bean
-        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-                http
-                                // 1. Disable CSRF because we are building a REST API for React
-                                .csrf(csrf -> csrf.disable())
+    @Autowired
+    private CustomOAuth2CustomerService customOAuth2CustomerService;
 
-                                // 2. Define who can access what
-                                .authorizeHttpRequests(auth -> auth
-                                                // Allow anyone to see products and the homepage
-                                                .requestMatchers("/", "/api/products/**", "/login/**").permitAll()
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
 
-                                                // ONLY Admins can access anything starting with /api/admin/
-                                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                                                // Anything else requires a login
-                                                .anyRequest().authenticated())
+            .authorizeHttpRequests(auth -> auth
 
-                                // 3. Enable Google Login
-                                .oauth2Login(oauth -> oauth
-                                                .successHandler(customSuccessHandler) // Connect the handler here
-                                )
+                // H2 console — allow all dispatcher types so it works without a session
+                .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
+                .requestMatchers("/h2-console/**").permitAll()
 
-                                // 4. Add JWT Token filter
-                                .addFilterBefore(jwtAuthenticationFilter,
-                                                org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
+                // Google OAuth2 flow
+                .requestMatchers("/oauth2/**", "/login/oauth2/**", "/login/**").permitAll()
 
-                return http.build();
-        }
+                // Public read access
+                .requestMatchers("/", "/api/products/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
+                .requestMatchers("/api/images/**").permitAll() // Cloudinary image upload endpoint
+
+                // Admin only
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                // Everything else requires a valid JWT
+                .anyRequest().authenticated()
+            
+            )
+
+            .oauth2Login(oauth -> oauth
+                .userInfoEndpoint(userInfo ->
+                    userInfo.userService(customOAuth2CustomerService))
+                .successHandler(customSuccessHandler)
+            )
+
+            .addFilterBefore(jwtAuthenticationFilter,
+                UsernamePasswordAuthenticationFilter.class)
+
+            // Required for H2 console to render in iframe
+            .headers(headers -> headers.frameOptions(frame -> frame.disable()));
+
+        return http.build();
+    }
 }
