@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './ProductPage.css';
+import ReviewSection from './ReviewSection';   // ← NEW
 
 const HeartIcon = () => (
     <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -38,11 +39,25 @@ export default function ProductPage() {
     const [wishlisted, setWishlisted] = useState(false);
     const [addingToCart, setAddingToCart] = useState(false);
     const [cartMessage, setCartMessage] = useState('');
+    const [avgRating, setAvgRating] = useState(0);
+    const [reviewCount, setReviewCount] = useState(0);
 
     useEffect(() => {
         axios.get(`/api/products/${id}`)
             .then(response => setProduct(response.data))
             .catch(error => console.error('Error fetching product:', error));
+    }, [id]);
+ 
+    // fetch average rating and review count when product loads ────
+    useEffect(() => {
+        if (!id) return;
+        Promise.all([
+            axios.get(`/api/reviews/product/${id}/average`),
+            axios.get(`/api/reviews/product/${id}`)
+        ]).then(([avgRes, reviewsRes]) => {
+            setAvgRating(avgRes.data || 0);
+            setReviewCount(reviewsRes.data.length || 0);
+        }).catch(err => console.error('Error fetching review stats:', err));
     }, [id]);
 
     const handleAddToCart = async () => {
@@ -62,7 +77,6 @@ export default function ProductPage() {
                 imageUrl: product.imageUrl || product.image1
             });
             setCartMessage('Added to cart!');
-            // Dispatch custom event so CartSidebar can refresh
             window.dispatchEvent(new Event('cart-updated'));
         } catch (error) {
             console.error('Error adding to cart:', error);
@@ -75,16 +89,8 @@ export default function ProductPage() {
 
     if (!product) return <div className="loading">Loading...</div>;
 
-    const thumbnails = [
-        product.image2,
-        product.image3,
-        product.image4,
-        product.image5,
-    ];
-
-    const mainImage = activeThumb === -1
-        ? product.image1
-        : thumbnails[activeThumb] || product.image1;
+    const thumbnails = [product.image2, product.image3, product.image4, product.image5];
+    const mainImage = activeThumb === -1 ? product.image1 : thumbnails[activeThumb] || product.image1;
 
     const TABS = [
         { id: 'description', label: 'Description' },
@@ -106,7 +112,6 @@ export default function ProductPage() {
                             : <span className="pp-no-image">No Image</span>
                         }
                     </div>
-
                     <div className="pp-thumbs">
                         {thumbnails.map((img, i) => (
                             <button
@@ -129,9 +134,9 @@ export default function ProductPage() {
                 <div className="pp-details">
                     <h1 className="pp-name">{product.name}</h1>
                     <div className="pp-rating-row">
-                        <StarRating rating={4} />
-                        <span className="pp-review-count">(12 reviews)</span>
-                    </div>
+                        <StarRating rating={avgRating} />
+                        <span>({reviewCount} reviews)</span>
+                        </div>
                     <p className="pp-price">LKR {product.price?.toLocaleString()}</p>
                     <p className="pp-vat">Inclusive of VAT</p>
 
@@ -189,11 +194,8 @@ export default function ProductPage() {
                         </button>
                     </div>
 
-                    {cartMessage && (
-                        <p className="pp-cart-message">{cartMessage}</p>
-                    )}
+                    {cartMessage && <p className="pp-cart-message">{cartMessage}</p>}
 
-                    {/* Stock info */}
                     <p className="pp-stock">
                         {product.isAvailable ? `In Stock: ${product.stock} items` : 'Out of Stock'}
                     </p>
@@ -221,7 +223,11 @@ export default function ProductPage() {
                     </div>
                 )}
                 {activeTab === 'sizeguide' && <div className="pp-tab-placeholder" />}
-                {activeTab === 'reviews' && <div className="pp-tab-placeholder" />}
+
+                {/* ── REVIEWS TAB — now connected to the backend ── */}
+                {activeTab === 'reviews' && (
+                    <ReviewSection productId={product.productId} />
+                )}
             </div>
 
             {/* RELATED PRODUCTS */}
