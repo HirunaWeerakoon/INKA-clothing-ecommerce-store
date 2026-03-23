@@ -29,3 +29,6 @@ Thumbs.db
 .vscode/
 *.suo
 *.sw?
+
+
+src/main/resources/application.properties

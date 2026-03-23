@@ -13,22 +13,27 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CustomerID")        
+    @Column(name = "CustomerID")
     private Long customerId;
 
-    @Column(name = "Name")              
+    @Column(name = "Name")
     private String name;
 
     @Column(name = "Email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "Password")          
-    private String password;
-
-    @Column(name = "Address")          
+    @Column(name = "Address")
     private String address;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "Role")              
+    @Column(name = "Role")
     private UserRole role = UserRole.USER;
+
+        // The unique ID Google assigns every user — used to find them on login
+    @Column(name = "google_id", unique = true)
+    private String googleId;
+ 
+    // Google profile photo — shown next to their review later
+    @Column(name = "picture_url")
+    private String pictureUrl;
 }
