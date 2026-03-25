@@ -25,7 +25,7 @@ public class CartService {
     private ProductRepository productRepository;
 
     public List<CartItem> getCartByCustomerId(Long customerId) {
-        return cartItemRepository.findByCustomerId(customerId);
+        return cartItemRepository.findByCustomer_CustomerId(customerId);
     }
 
     public CartItem addOrUpdateItem(Long customerId, Long productId, int quantity) {
@@ -34,7 +34,7 @@ public class CartService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found with id " + productId));
 
-        return cartItemRepository.findByCustomerIdAndProductId(customerId, productId)
+        return cartItemRepository.findByCustomer_CustomerIdAndProduct_ProductId(customerId, productId)
                 .map(existing -> {
                     existing.setQuantity(existing.getQuantity() + quantity);
                     return cartItemRepository.save(existing);
@@ -61,6 +61,6 @@ public class CartService {
 
     @Transactional
     public void clearCart(Long customerId) {
-        cartItemRepository.deleteByCustomerId(customerId);
+        cartItemRepository.deleteByCustomer_CustomerId(customerId);
     }
 }

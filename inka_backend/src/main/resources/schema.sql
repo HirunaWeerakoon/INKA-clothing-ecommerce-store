@@ -1,2 +1,0 @@
--- Schema is managed by Hibernate (spring.jpa.hibernate.ddl-auto=create-drop).
--- This file is intentionally empty. Do not add DDL here.
