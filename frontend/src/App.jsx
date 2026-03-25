@@ -11,7 +11,9 @@ import ProductGrid from './components/ProductGrid';
 import ProductPage from './components/ProductPage';
 import HomePage from './pages/Home/HomePage';
 import OAuth2RedirectHandler from './pages/OAuth2RedirectHandler';
+import CustomPage from './pages/Custom/CustomPage';
 import './App.css';
+import Cart from './pages/Cart/Cart';
 
 import { authService } from './services/authService';
 
@@ -40,9 +42,11 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="shop" element={<ProductGrid />} />
           <Route path="product/:id" element={<ProductPage />} />
-          <Route path="custom" element={<div className="placeholder-page">Custom Placeholder</div>} />
+          <Route path="custom" element={<CustomPage />} />
           <Route path="about" element={<div className="placeholder-page">About Placeholder</div>} />
           <Route path="oauth2/redirect" element={<OAuth2RedirectHandler />} />
+
+          <Route path="cart" element={<Cart />} />
 
           <Route path="account" element={<AccountLayout />}>
             <Route index element={<Navigate to="details" replace />} />

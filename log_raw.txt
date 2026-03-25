@@ -1,0 +1,7 @@
+﻿commit 5fc3154d76a242e85034d7ddfbec7ef2fcd80e94
+tree 5b52127e70047004b81296a0c8c66a518fc09dd4
+parent 2fdc088204b1c9a3ae3917dfe08f09930c8baa2e
+author HirunaWeerakoon <it24610788@my.sliit.lk> 1774424684 +0530
+committer HirunaWeerakoon <it24610788@my.sliit.lk> 1774424684 +0530
+
+    Fix syntax and build errors

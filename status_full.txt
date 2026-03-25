@@ -1,0 +1,1152 @@
+﻿On branch dev
+Your branch is up to date with 'origin/dev'.
+
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Changes to be committed:
+	deleted:    frontend/node_modules/@eslint/eslintrc/README.md
+	deleted:    frontend/node_modules/@eslint/eslintrc/conf/environments.js
+	deleted:    frontend/node_modules/@eslint/eslintrc/dist/eslintrc-universal.cjs
+	deleted:    frontend/node_modules/@eslint/eslintrc/dist/eslintrc-universal.cjs.map
+	deleted:    frontend/node_modules/@eslint/eslintrc/dist/eslintrc.cjs
+	deleted:    frontend/node_modules/@eslint/eslintrc/dist/eslintrc.cjs.map
+	deleted:    frontend/node_modules/@eslint/eslintrc/lib/cascading-config-array-factory.js
+	deleted:    frontend/node_modules/@eslint/eslintrc/lib/config-array-factory.js
+	deleted:    frontend/node_modules/@eslint/eslintrc/lib/config-array/config-array.js
+	deleted:    frontend/node_modules/@eslint/eslintrc/lib/config-array/config-dependency.js
+	deleted:    frontend/node_modules/@eslint/eslintrc/lib/config-array/extracted-config.js
+	deleted:    frontend/node_modules/@eslint/eslintrc/lib/config-array/ignore-pattern.js
+	deleted:    frontend/node_modules/@eslint/eslintrc/lib/config-array/override-tester.js
+	deleted:    frontend/node_modules/@eslint/eslintrc/lib/flat-compat.js
+	deleted:    frontend/node_modules/@eslint/eslintrc/lib/index.js
+	deleted:    frontend/node_modules/@eslint/eslintrc/lib/shared/ajv.js
+	deleted:    frontend/node_modules/@eslint/eslintrc/lib/shared/config-ops.js
+	deleted:    frontend/node_modules/@eslint/eslintrc/lib/shared/config-validator.js
+	deleted:    frontend/node_modules/@eslint/eslintrc/lib/shared/deprecation-warnings.js
+	deleted:    frontend/node_modules/@eslint/eslintrc/lib/shared/relative-module-resolver.js
+	deleted:    frontend/node_modules/@eslint/eslintrc/package.json
+	deleted:    frontend/node_modules/@eslint/eslintrc/universal.js
+	deleted:    frontend/node_modules/@eslint/js/README.md
+	deleted:    frontend/node_modules/@eslint/js/package.json
+	deleted:    frontend/node_modules/@eslint/js/src/configs/eslint-all.js
+	deleted:    frontend/node_modules/@eslint/js/src/configs/eslint-recommended.js
+	deleted:    frontend/node_modules/@eslint/js/src/index.js
+	deleted:    frontend/node_modules/ansi-styles/index.d.ts
+	deleted:    frontend/node_modules/ansi-styles/index.js
+	deleted:    frontend/node_modules/ansi-styles/package.json
+	deleted:    frontend/node_modules/ansi-styles/readme.md
+	deleted:    frontend/node_modules/argparse/CHANGELOG.md
+	deleted:    frontend/node_modules/argparse/LICENSE
+	deleted:    frontend/node_modules/argparse/README.md
+	deleted:    frontend/node_modules/argparse/package.json
+	deleted:    frontend/node_modules/eslint-plugin-react-hooks/LICENSE
+	deleted:    frontend/node_modules/eslint-plugin-react-hooks/README.md
+	deleted:    frontend/node_modules/eslint-plugin-react-hooks/cjs/eslint-plugin-react-hooks.development.js
+	deleted:    frontend/node_modules/eslint-plugin-react-hooks/index.js
+	deleted:    frontend/node_modules/eslint-plugin-react-hooks/package.json
+	deleted:    frontend/node_modules/eslint-scope/README.md
+	deleted:    frontend/node_modules/eslint-scope/dist/eslint-scope.cjs
+	deleted:    frontend/node_modules/eslint-scope/lib/index.js
+	deleted:    frontend/node_modules/eslint-scope/lib/pattern-visitor.js
+	deleted:    frontend/node_modules/eslint-scope/lib/referencer.js
+	deleted:    frontend/node_modules/eslint-scope/lib/scope-manager.js
+	deleted:    frontend/node_modules/eslint-scope/lib/scope.js
+	deleted:    frontend/node_modules/eslint-scope/lib/version.js
+	deleted:    frontend/node_modules/eslint-scope/package.json
+	deleted:    frontend/node_modules/eslint-visitor-keys/README.md
+	deleted:    frontend/node_modules/eslint-visitor-keys/dist/eslint-visitor-keys.cjs
+	deleted:    frontend/node_modules/eslint-visitor-keys/dist/eslint-visitor-keys.d.cts
+	deleted:    frontend/node_modules/eslint-visitor-keys/dist/index.d.ts
+	deleted:    frontend/node_modules/eslint-visitor-keys/dist/visitor-keys.d.ts
+	deleted:    frontend/node_modules/eslint-visitor-keys/lib/index.js
+	deleted:    frontend/node_modules/eslint-visitor-keys/lib/visitor-keys.js
+	deleted:    frontend/node_modules/eslint-visitor-keys/package.json
+	deleted:    frontend/node_modules/eslint/README.md
+	deleted:    frontend/node_modules/eslint/bin/eslint.js
+	deleted:    frontend/node_modules/eslint/conf/default-cli-options.js
+	deleted:    frontend/node_modules/eslint/conf/globals.js
+	deleted:    frontend/node_modules/eslint/conf/replacements.json
+	deleted:    frontend/node_modules/eslint/conf/rule-type-list.json
+	deleted:    frontend/node_modules/eslint/lib/api.js
+	deleted:    frontend/node_modules/eslint/lib/cli-engine/cli-engine.js
+	deleted:    frontend/node_modules/eslint/lib/cli-engine/file-enumerator.js
+	deleted:    frontend/node_modules/eslint/lib/cli-engine/formatters/formatters-meta.json
+	deleted:    frontend/node_modules/eslint/lib/cli-engine/formatters/html.js
+	deleted:    frontend/node_modules/eslint/lib/cli-engine/formatters/json-with-metadata.js
+	deleted:    frontend/node_modules/eslint/lib/cli-engine/formatters/json.js
+	deleted:    frontend/node_modules/eslint/lib/cli-engine/formatters/stylish.js
+	deleted:    frontend/node_modules/eslint/lib/cli-engine/hash.js
+	deleted:    frontend/node_modules/eslint/lib/cli-engine/index.js
+	deleted:    frontend/node_modules/eslint/lib/cli-engine/lint-result-cache.js
+	deleted:    frontend/node_modules/eslint/lib/cli-engine/load-rules.js
+	deleted:    frontend/node_modules/eslint/lib/cli.js
+	deleted:    frontend/node_modules/eslint/lib/config/default-config.js
+	deleted:    frontend/node_modules/eslint/lib/config/flat-config-array.js
+	deleted:    frontend/node_modules/eslint/lib/config/flat-config-schema.js
+	deleted:    frontend/node_modules/eslint/lib/eslint/eslint-helpers.js
+	deleted:    frontend/node_modules/eslint/lib/eslint/eslint.js
+	deleted:    frontend/node_modules/eslint/lib/eslint/index.js
+	deleted:    frontend/node_modules/eslint/lib/linter/apply-disable-directives.js
+	deleted:    frontend/node_modules/eslint/lib/linter/code-path-analysis/code-path-analyzer.js
+	deleted:    frontend/node_modules/eslint/lib/linter/code-path-analysis/code-path-segment.js
+	deleted:    frontend/node_modules/eslint/lib/linter/code-path-analysis/code-path-state.js
+	deleted:    frontend/node_modules/eslint/lib/linter/code-path-analysis/code-path.js
+	deleted:    frontend/node_modules/eslint/lib/linter/code-path-analysis/debug-helpers.js
+	deleted:    frontend/node_modules/eslint/lib/linter/code-path-analysis/fork-context.js
+	deleted:    frontend/node_modules/eslint/lib/linter/code-path-analysis/id-generator.js
+	deleted:    frontend/node_modules/eslint/lib/linter/index.js
+	deleted:    frontend/node_modules/eslint/lib/linter/interpolate.js
+	deleted:    frontend/node_modules/eslint/lib/linter/linter.js
+	deleted:    frontend/node_modules/eslint/lib/linter/rule-fixer.js
+	deleted:    frontend/node_modules/eslint/lib/linter/rules.js
+	deleted:    frontend/node_modules/eslint/lib/linter/source-code-fixer.js
+	deleted:    frontend/node_modules/eslint/lib/linter/timing.js
+	deleted:    frontend/node_modules/eslint/lib/options.js
+	deleted:    frontend/node_modules/eslint/lib/rule-tester/index.js
+	deleted:    frontend/node_modules/eslint/lib/rule-tester/rule-tester.js
+	deleted:    frontend/node_modules/eslint/lib/rules/accessor-pairs.js
+	deleted:    frontend/node_modules/eslint/lib/rules/array-bracket-newline.js
+	deleted:    frontend/node_modules/eslint/lib/rules/array-bracket-spacing.js
+	deleted:    frontend/node_modules/eslint/lib/rules/array-callback-return.js
+	deleted:    frontend/node_modules/eslint/lib/rules/array-element-newline.js
+	deleted:    frontend/node_modules/eslint/lib/rules/arrow-body-style.js
+	deleted:    frontend/node_modules/eslint/lib/rules/arrow-parens.js
+	deleted:    frontend/node_modules/eslint/lib/rules/arrow-spacing.js
+	deleted:    frontend/node_modules/eslint/lib/rules/block-scoped-var.js
+	deleted:    frontend/node_modules/eslint/lib/rules/block-spacing.js
+	deleted:    frontend/node_modules/eslint/lib/rules/brace-style.js
+	deleted:    frontend/node_modules/eslint/lib/rules/callback-return.js
+	deleted:    frontend/node_modules/eslint/lib/rules/camelcase.js
+	deleted:    frontend/node_modules/eslint/lib/rules/capitalized-comments.js
+	deleted:    frontend/node_modules/eslint/lib/rules/class-methods-use-this.js
+	deleted:    frontend/node_modules/eslint/lib/rules/comma-dangle.js
+	deleted:    frontend/node_modules/eslint/lib/rules/comma-spacing.js
+	deleted:    frontend/node_modules/eslint/lib/rules/comma-style.js
+	deleted:    frontend/node_modules/eslint/lib/rules/complexity.js
+	deleted:    frontend/node_modules/eslint/lib/rules/computed-property-spacing.js
+	deleted:    frontend/node_modules/eslint/lib/rules/consistent-return.js
+	deleted:    frontend/node_modules/eslint/lib/rules/consistent-this.js
+	deleted:    frontend/node_modules/eslint/lib/rules/constructor-super.js
+	deleted:    frontend/node_modules/eslint/lib/rules/curly.js
+	deleted:    frontend/node_modules/eslint/lib/rules/default-case-last.js
+	deleted:    frontend/node_modules/eslint/lib/rules/default-case.js
+	deleted:    frontend/node_modules/eslint/lib/rules/default-param-last.js
+	deleted:    frontend/node_modules/eslint/lib/rules/dot-location.js
+	deleted:    frontend/node_modules/eslint/lib/rules/dot-notation.js
+	deleted:    frontend/node_modules/eslint/lib/rules/eol-last.js
+	deleted:    frontend/node_modules/eslint/lib/rules/eqeqeq.js
+	deleted:    frontend/node_modules/eslint/lib/rules/for-direction.js
+	deleted:    frontend/node_modules/eslint/lib/rules/func-call-spacing.js
+	deleted:    frontend/node_modules/eslint/lib/rules/func-name-matching.js
+	deleted:    frontend/node_modules/eslint/lib/rules/func-names.js
+	deleted:    frontend/node_modules/eslint/lib/rules/func-style.js
+	deleted:    frontend/node_modules/eslint/lib/rules/function-call-argument-newline.js
+	deleted:    frontend/node_modules/eslint/lib/rules/function-paren-newline.js
+	deleted:    frontend/node_modules/eslint/lib/rules/generator-star-spacing.js
+	deleted:    frontend/node_modules/eslint/lib/rules/getter-return.js
+	deleted:    frontend/node_modules/eslint/lib/rules/global-require.js
+	deleted:    frontend/node_modules/eslint/lib/rules/grouped-accessor-pairs.js
+	deleted:    frontend/node_modules/eslint/lib/rules/guard-for-in.js
+	deleted:    frontend/node_modules/eslint/lib/rules/handle-callback-err.js
+	deleted:    frontend/node_modules/eslint/lib/rules/id-blacklist.js
+	deleted:    frontend/node_modules/eslint/lib/rules/id-denylist.js
+	deleted:    frontend/node_modules/eslint/lib/rules/id-length.js
+	deleted:    frontend/node_modules/eslint/lib/rules/id-match.js
+	deleted:    frontend/node_modules/eslint/lib/rules/implicit-arrow-linebreak.js
+	deleted:    frontend/node_modules/eslint/lib/rules/indent-legacy.js
+	deleted:    frontend/node_modules/eslint/lib/rules/indent.js
+	deleted:    frontend/node_modules/eslint/lib/rules/index.js
+	deleted:    frontend/node_modules/eslint/lib/rules/init-declarations.js
+	deleted:    frontend/node_modules/eslint/lib/rules/jsx-quotes.js
+	deleted:    frontend/node_modules/eslint/lib/rules/key-spacing.js
+	deleted:    frontend/node_modules/eslint/lib/rules/keyword-spacing.js
+	deleted:    frontend/node_modules/eslint/lib/rules/line-comment-position.js
+	deleted:    frontend/node_modules/eslint/lib/rules/linebreak-style.js
+	deleted:    frontend/node_modules/eslint/lib/rules/lines-around-comment.js
+	deleted:    frontend/node_modules/eslint/lib/rules/lines-around-directive.js
+	deleted:    frontend/node_modules/eslint/lib/rules/lines-between-class-members.js
+	deleted:    frontend/node_modules/eslint/lib/rules/logical-assignment-operators.js
+	deleted:    frontend/node_modules/eslint/lib/rules/max-classes-per-file.js
+	deleted:    frontend/node_modules/eslint/lib/rules/max-depth.js
+	deleted:    frontend/node_modules/eslint/lib/rules/max-len.js
+	deleted:    frontend/node_modules/eslint/lib/rules/max-lines-per-function.js
+	deleted:    frontend/node_modules/eslint/lib/rules/max-lines.js
+	deleted:    frontend/node_modules/eslint/lib/rules/max-nested-callbacks.js
+	deleted:    frontend/node_modules/eslint/lib/rules/max-params.js
+	deleted:    frontend/node_modules/eslint/lib/rules/max-statements-per-line.js
+	deleted:    frontend/node_modules/eslint/lib/rules/max-statements.js
+	deleted:    frontend/node_modules/eslint/lib/rules/multiline-comment-style.js
+	deleted:    frontend/node_modules/eslint/lib/rules/multiline-ternary.js
+	deleted:    frontend/node_modules/eslint/lib/rules/new-cap.js
+	deleted:    frontend/node_modules/eslint/lib/rules/new-parens.js
+	deleted:    frontend/node_modules/eslint/lib/rules/newline-after-var.js
+	deleted:    frontend/node_modules/eslint/lib/rules/newline-before-return.js
+	deleted:    frontend/node_modules/eslint/lib/rules/newline-per-chained-call.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-alert.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-array-constructor.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-async-promise-executor.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-await-in-loop.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-bitwise.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-buffer-constructor.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-caller.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-case-declarations.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-catch-shadow.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-class-assign.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-compare-neg-zero.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-cond-assign.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-confusing-arrow.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-console.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-const-assign.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-constant-binary-expression.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-constant-condition.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-constructor-return.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-continue.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-control-regex.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-debugger.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-delete-var.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-div-regex.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-dupe-args.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-dupe-class-members.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-dupe-else-if.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-dupe-keys.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-duplicate-case.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-duplicate-imports.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-else-return.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-empty-character-class.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-empty-function.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-empty-pattern.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-empty-static-block.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-empty.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-eq-null.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-eval.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-ex-assign.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-extend-native.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-extra-bind.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-extra-boolean-cast.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-extra-label.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-extra-parens.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-extra-semi.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-fallthrough.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-floating-decimal.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-func-assign.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-global-assign.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-implicit-coercion.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-implicit-globals.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-implied-eval.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-import-assign.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-inline-comments.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-inner-declarations.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-invalid-regexp.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-invalid-this.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-irregular-whitespace.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-iterator.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-label-var.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-labels.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-lone-blocks.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-lonely-if.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-loop-func.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-loss-of-precision.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-magic-numbers.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-misleading-character-class.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-mixed-operators.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-mixed-requires.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-mixed-spaces-and-tabs.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-multi-assign.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-multi-spaces.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-multi-str.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-multiple-empty-lines.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-native-reassign.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-negated-condition.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-negated-in-lhs.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-nested-ternary.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-new-func.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-new-native-nonconstructor.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-new-object.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-new-require.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-new-symbol.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-new-wrappers.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-new.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-nonoctal-decimal-escape.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-obj-calls.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-object-constructor.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-octal-escape.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-octal.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-param-reassign.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-path-concat.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-plusplus.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-process-env.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-process-exit.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-promise-executor-return.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-proto.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-prototype-builtins.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-redeclare.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-regex-spaces.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-restricted-exports.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-restricted-globals.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-restricted-imports.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-restricted-modules.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-restricted-properties.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-restricted-syntax.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-return-assign.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-return-await.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-script-url.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-self-assign.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-self-compare.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-sequences.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-setter-return.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-shadow-restricted-names.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-shadow.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-spaced-func.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-sparse-arrays.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-sync.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-tabs.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-template-curly-in-string.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-ternary.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-this-before-super.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-throw-literal.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-trailing-spaces.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-undef-init.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-undef.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-undefined.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-underscore-dangle.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-unexpected-multiline.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-unmodified-loop-condition.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-unneeded-ternary.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-unreachable-loop.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-unreachable.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-unsafe-finally.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-unsafe-negation.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-unsafe-optional-chaining.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-unused-expressions.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-unused-labels.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-unused-private-class-members.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-unused-vars.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-use-before-define.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-useless-backreference.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-useless-call.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-useless-catch.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-useless-computed-key.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-useless-concat.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-useless-constructor.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-useless-escape.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-useless-rename.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-useless-return.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-var.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-void.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-warning-comments.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-whitespace-before-property.js
+	deleted:    frontend/node_modules/eslint/lib/rules/no-with.js
+	deleted:    frontend/node_modules/eslint/lib/rules/nonblock-statement-body-position.js
+	deleted:    frontend/node_modules/eslint/lib/rules/object-curly-newline.js
+	deleted:    frontend/node_modules/eslint/lib/rules/object-curly-spacing.js
+	deleted:    frontend/node_modules/eslint/lib/rules/object-property-newline.js
+	deleted:    frontend/node_modules/eslint/lib/rules/object-shorthand.js
+	deleted:    frontend/node_modules/eslint/lib/rules/one-var-declaration-per-line.js
+	deleted:    frontend/node_modules/eslint/lib/rules/one-var.js
+	deleted:    frontend/node_modules/eslint/lib/rules/operator-assignment.js
+	deleted:    frontend/node_modules/eslint/lib/rules/operator-linebreak.js
+	deleted:    frontend/node_modules/eslint/lib/rules/padded-blocks.js
+	deleted:    frontend/node_modules/eslint/lib/rules/padding-line-between-statements.js
+	deleted:    frontend/node_modules/eslint/lib/rules/prefer-arrow-callback.js
+	deleted:    frontend/node_modules/eslint/lib/rules/prefer-const.js
+	deleted:    frontend/node_modules/eslint/lib/rules/prefer-destructuring.js
+	deleted:    frontend/node_modules/eslint/lib/rules/prefer-exponentiation-operator.js
+	deleted:    frontend/node_modules/eslint/lib/rules/prefer-named-capture-group.js
+	deleted:    frontend/node_modules/eslint/lib/rules/prefer-numeric-literals.js
+	deleted:    frontend/node_modules/eslint/lib/rules/prefer-object-has-own.js
+	deleted:    frontend/node_modules/eslint/lib/rules/prefer-object-spread.js
+	deleted:    frontend/node_modules/eslint/lib/rules/prefer-promise-reject-errors.js
+	deleted:    frontend/node_modules/eslint/lib/rules/prefer-reflect.js
+	deleted:    frontend/node_modules/eslint/lib/rules/prefer-regex-literals.js
+	deleted:    frontend/node_modules/eslint/lib/rules/prefer-rest-params.js
+	deleted:    frontend/node_modules/eslint/lib/rules/prefer-spread.js
+	deleted:    frontend/node_modules/eslint/lib/rules/prefer-template.js
+	deleted:    frontend/node_modules/eslint/lib/rules/quote-props.js
+	deleted:    frontend/node_modules/eslint/lib/rules/quotes.js
+	deleted:    frontend/node_modules/eslint/lib/rules/radix.js
+	deleted:    frontend/node_modules/eslint/lib/rules/require-atomic-updates.js
+	deleted:    frontend/node_modules/eslint/lib/rules/require-await.js
+	deleted:    frontend/node_modules/eslint/lib/rules/require-unicode-regexp.js
+	deleted:    frontend/node_modules/eslint/lib/rules/require-yield.js
+	deleted:    frontend/node_modules/eslint/lib/rules/rest-spread-spacing.js
+	deleted:    frontend/node_modules/eslint/lib/rules/semi-spacing.js
+	deleted:    frontend/node_modules/eslint/lib/rules/semi-style.js
+	deleted:    frontend/node_modules/eslint/lib/rules/semi.js
+	deleted:    frontend/node_modules/eslint/lib/rules/sort-imports.js
+	deleted:    frontend/node_modules/eslint/lib/rules/sort-keys.js
+	deleted:    frontend/node_modules/eslint/lib/rules/sort-vars.js
+	deleted:    frontend/node_modules/eslint/lib/rules/space-before-blocks.js
+	deleted:    frontend/node_modules/eslint/lib/rules/space-before-function-paren.js
+	deleted:    frontend/node_modules/eslint/lib/rules/space-in-parens.js
+	deleted:    frontend/node_modules/eslint/lib/rules/space-infix-ops.js
+	deleted:    frontend/node_modules/eslint/lib/rules/space-unary-ops.js
+	deleted:    frontend/node_modules/eslint/lib/rules/spaced-comment.js
+	deleted:    frontend/node_modules/eslint/lib/rules/strict.js
+	deleted:    frontend/node_modules/eslint/lib/rules/switch-colon-spacing.js
+	deleted:    frontend/node_modules/eslint/lib/rules/symbol-description.js
+	deleted:    frontend/node_modules/eslint/lib/rules/template-curly-spacing.js
+	deleted:    frontend/node_modules/eslint/lib/rules/template-tag-spacing.js
+	deleted:    frontend/node_modules/eslint/lib/rules/unicode-bom.js
+	deleted:    frontend/node_modules/eslint/lib/rules/use-isnan.js
+	deleted:    frontend/node_modules/eslint/lib/rules/utils/ast-utils.js
+	deleted:    frontend/node_modules/eslint/lib/rules/utils/fix-tracker.js
+	deleted:    frontend/node_modules/eslint/lib/rules/utils/keywords.js
+	deleted:    frontend/node_modules/eslint/lib/rules/utils/lazy-loading-rule-map.js
+	deleted:    frontend/node_modules/eslint/lib/rules/utils/regular-expressions.js
+	deleted:    frontend/node_modules/eslint/lib/rules/utils/unicode/index.js
+	deleted:    frontend/node_modules/eslint/lib/rules/utils/unicode/is-combining-character.js
+	deleted:    frontend/node_modules/eslint/lib/rules/utils/unicode/is-emoji-modifier.js
+	deleted:    frontend/node_modules/eslint/lib/rules/utils/unicode/is-regional-indicator-symbol.js
+	deleted:    frontend/node_modules/eslint/lib/rules/utils/unicode/is-surrogate-pair.js
+	deleted:    frontend/node_modules/eslint/lib/rules/valid-typeof.js
+	deleted:    frontend/node_modules/eslint/lib/rules/vars-on-top.js
+	deleted:    frontend/node_modules/eslint/lib/rules/wrap-iife.js
+	deleted:    frontend/node_modules/eslint/lib/rules/wrap-regex.js
+	deleted:    frontend/node_modules/eslint/lib/rules/yield-star-spacing.js
+	deleted:    frontend/node_modules/eslint/lib/rules/yoda.js
+	deleted:    frontend/node_modules/eslint/lib/shared/ajv.js
+	deleted:    frontend/node_modules/eslint/lib/shared/ast-utils.js
+	deleted:    frontend/node_modules/eslint/lib/shared/directives.js
+	deleted:    frontend/node_modules/eslint/lib/shared/logging.js
+	deleted:    frontend/node_modules/eslint/lib/shared/relative-module-resolver.js
+	deleted:    frontend/node_modules/eslint/lib/shared/runtime-info.js
+	deleted:    frontend/node_modules/eslint/lib/shared/severity.js
+	deleted:    frontend/node_modules/eslint/lib/shared/string-utils.js
+	deleted:    frontend/node_modules/eslint/lib/shared/traverser.js
+	deleted:    frontend/node_modules/eslint/lib/unsupported-api.js
+	deleted:    frontend/node_modules/eslint/messages/all-files-ignored.js
+	deleted:    frontend/node_modules/eslint/messages/eslintrc-incompat.js
+	deleted:    frontend/node_modules/eslint/messages/eslintrc-plugins.js
+	deleted:    frontend/node_modules/eslint/messages/extend-config-missing.js
+	deleted:    frontend/node_modules/eslint/messages/failed-to-read-json.js
+	deleted:    frontend/node_modules/eslint/messages/file-not-found.js
+	deleted:    frontend/node_modules/eslint/messages/invalid-rule-options.js
+	deleted:    frontend/node_modules/eslint/messages/invalid-rule-severity.js
+	deleted:    frontend/node_modules/eslint/messages/no-config-found.js
+	deleted:    frontend/node_modules/eslint/messages/plugin-conflict.js
+	deleted:    frontend/node_modules/eslint/messages/plugin-invalid.js
+	deleted:    frontend/node_modules/eslint/messages/plugin-missing.js
+	deleted:    frontend/node_modules/eslint/messages/print-config-with-directory-path.js
+	deleted:    frontend/node_modules/eslint/messages/shared.js
+	deleted:    frontend/node_modules/eslint/messages/whitespace-found.js
+	deleted:    frontend/node_modules/eslint/package.json
+	deleted:    frontend/node_modules/espree/README.md
+	deleted:    frontend/node_modules/espree/dist/espree.cjs
+	deleted:    frontend/node_modules/espree/espree.js
+	deleted:    frontend/node_modules/espree/lib/options.js
+	deleted:    frontend/node_modules/espree/lib/token-translator.js
+	deleted:    frontend/node_modules/espree/lib/version.js
+	deleted:    frontend/node_modules/espree/package.json
+	deleted:    frontend/node_modules/file-entry-cache/LICENSE
+	deleted:    frontend/node_modules/file-entry-cache/README.md
+	deleted:    frontend/node_modules/file-entry-cache/package.json
+	deleted:    frontend/node_modules/find-up/index.d.ts
+	deleted:    frontend/node_modules/find-up/license
+	deleted:    frontend/node_modules/find-up/package.json
+	deleted:    frontend/node_modules/find-up/readme.md
+	deleted:    frontend/node_modules/flat-cache/README.md
+	deleted:    frontend/node_modules/flat-cache/changelog.md
+	deleted:    frontend/node_modules/flat-cache/package.json
+	deleted:    frontend/node_modules/flat-cache/src/cache.js
+	deleted:    frontend/node_modules/flat-cache/src/del.js
+	deleted:    frontend/node_modules/flat-cache/src/utils.js
+	deleted:    frontend/node_modules/globals/globals.json
+	deleted:    frontend/node_modules/globals/index.d.ts
+	deleted:    frontend/node_modules/globals/package.json
+	deleted:    frontend/node_modules/globals/readme.md
+	deleted:    frontend/node_modules/js-yaml/README.md
+	deleted:    frontend/node_modules/js-yaml/bin/js-yaml.js
+	deleted:    frontend/node_modules/js-yaml/dist/js-yaml.js
+	deleted:    frontend/node_modules/js-yaml/dist/js-yaml.min.js
+	deleted:    frontend/node_modules/js-yaml/index.js
+	deleted:    frontend/node_modules/js-yaml/package.json
+	deleted:    frontend/node_modules/locate-path/index.d.ts
+	deleted:    frontend/node_modules/locate-path/index.js
+	deleted:    frontend/node_modules/locate-path/license
+	deleted:    frontend/node_modules/locate-path/package.json
+	deleted:    frontend/node_modules/locate-path/readme.md
+	deleted:    frontend/node_modules/minimatch/README.md
+	deleted:    frontend/node_modules/minimatch/minimatch.js
+	deleted:    frontend/node_modules/minimatch/package.json
+	deleted:    frontend/node_modules/p-limit/index.d.ts
+	deleted:    frontend/node_modules/p-limit/index.js
+	deleted:    frontend/node_modules/p-limit/license
+	deleted:    frontend/node_modules/p-limit/package.json
+	deleted:    frontend/node_modules/p-limit/readme.md
+	deleted:    frontend/node_modules/p-locate/index.d.ts
+	deleted:    frontend/node_modules/p-locate/index.js
+	deleted:    frontend/node_modules/p-locate/license
+	deleted:    frontend/node_modules/p-locate/package.json
+	deleted:    frontend/node_modules/p-locate/readme.md
+	deleted:    frontend/node_modules/picomatch/README.md
+	deleted:    frontend/node_modules/picomatch/index.js
+	deleted:    frontend/node_modules/picomatch/lib/constants.js
+	deleted:    frontend/node_modules/picomatch/lib/parse.js
+	deleted:    frontend/node_modules/picomatch/lib/picomatch.js
+	deleted:    frontend/node_modules/picomatch/lib/utils.js
+	deleted:    frontend/node_modules/picomatch/package.json
+	deleted:    frontend/node_modules/react-refresh/LICENSE
+	deleted:    frontend/node_modules/react-refresh/babel.js
+	deleted:    frontend/node_modules/react-refresh/cjs/react-refresh-babel.development.js
+	deleted:    frontend/node_modules/react-refresh/cjs/react-refresh-runtime.development.js
+	deleted:    frontend/node_modules/react-refresh/package.json
+	deleted:    frontend/node_modules/react-refresh/runtime.js
+	deleted:    frontend/node_modules/resolve-from/index.js
+	deleted:    frontend/node_modules/resolve-from/package.json
+	deleted:    frontend/node_modules/resolve-from/readme.md
+	deleted:    frontend/node_modules/rollup/LICENSE.md
+	deleted:    frontend/node_modules/rollup/README.md
+	deleted:    frontend/node_modules/rollup/dist/bin/rollup
+	deleted:    frontend/node_modules/rollup/dist/es/rollup.js
+	deleted:    frontend/node_modules/rollup/dist/es/shared/watch.js
+	deleted:    frontend/node_modules/rollup/dist/loadConfigFile.js
+	deleted:    frontend/node_modules/rollup/dist/rollup.d.ts
+	deleted:    frontend/node_modules/rollup/dist/rollup.js
+	deleted:    frontend/node_modules/rollup/dist/shared/index.js
+	deleted:    frontend/node_modules/rollup/dist/shared/loadConfigFile.js
+	deleted:    frontend/node_modules/rollup/dist/shared/rollup.js
+	deleted:    frontend/node_modules/rollup/dist/shared/watch-cli.js
+	deleted:    frontend/node_modules/rollup/dist/shared/watch.js
+	deleted:    frontend/node_modules/rollup/package.json
+	deleted:    frontend/node_modules/semver/README.md
+	deleted:    frontend/node_modules/semver/bin/semver.js
+	deleted:    frontend/node_modules/semver/package.json
+	modified:   frontend/package.json
+	new file:   frontend/public/category-denim.jpg
+	new file:   frontend/public/category-tote.jpg
+	new file:   frontend/public/category-tshirt.jpg
+	new file:   frontend/public/denim-back.png
+	new file:   frontend/public/denim-front.png
+	new file:   frontend/public/hero_image.png
+	new file:   frontend/public/polo-back.png
+	new file:   frontend/public/polo-front.png
+	new file:   frontend/public/polo-side.png
+	new file:   frontend/public/tote-front.png
+	new file:   frontend/public/tshirt-back.jpg
+	new file:   frontend/public/tshirt-front.jpg
+	new file:   frontend/public/tshirt-side.png
+	new file:   frontend/public/vneck-tshirt-back.png
+	new file:   frontend/public/vneck-tshirt-front.png
+	new file:   frontend/src/pages/Custom/CustomPage.css
+	new file:   frontend/src/pages/Custom/CustomPage.jsx
+	new file:   frontend/src/services/cloudinary.js
+	new file:   inka_backend/src/main/java/com/example/inka_backend/controller/CustomOrderController.java
+	new file:   inka_backend/src/main/java/com/example/inka_backend/controller/SubCategoryController.java
+	new file:   inka_backend/src/main/java/com/example/inka_backend/dto/CustomOrderDTO.java
+	new file:   inka_backend/src/main/java/com/example/inka_backend/dto/SubCategoryDTO.java
+	modified:   inka_backend/src/main/java/com/example/inka_backend/model/Category.java
+	new file:   inka_backend/src/main/java/com/example/inka_backend/model/CustomOrder.java
+	new file:   inka_backend/src/main/java/com/example/inka_backend/model/SubCategory.java
+	new file:   inka_backend/src/main/java/com/example/inka_backend/repository/CustomOrderRepository.java
+	new file:   inka_backend/src/main/java/com/example/inka_backend/repository/SubCategoryRepository.java
+	new file:   inka_backend/src/main/java/com/example/inka_backend/service/CustomOrderService.java
+	new file:   inka_backend/src/main/java/com/example/inka_backend/service/SubCategoryService.java
+
+Unmerged paths:
+  (use "git add/rm <file>..." as appropriate to mark resolution)
+	deleted by them: frontend/node_modules/.package-lock.json
+	deleted by them: frontend/node_modules/caniuse-lite/data/agents.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/browserVersions.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/aac.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/abortcontroller.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/ac3-ec3.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/accelerometer.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/addeventlistener.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/alternate-stylesheet.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/ambient-light.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/apng.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/array-find-index.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/array-find.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/array-flat.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/array-includes.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/arrow-functions.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/asmjs.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/async-clipboard.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/async-functions.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/atob-btoa.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/audio-api.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/audio.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/audiotracks.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/autofocus.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/auxclick.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/av1.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/avif.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/background-attachment.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/background-clip-text.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/background-img-opts.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/background-position-x-y.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/background-repeat-round-space.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/background-sync.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/battery-status.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/beacon.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/beforeafterprint.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/bigint.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/blobbuilder.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/bloburls.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/border-image.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/border-radius.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/broadcastchannel.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/brotli.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/calc.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/canvas-blending.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/canvas-text.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/canvas.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/ch-unit.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/chacha20-poly1305.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/channel-messaging.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/childnode-remove.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/classlist.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/client-hints-dpr-width-viewport.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/clipboard.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/colr-v1.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/colr.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/comparedocumentposition.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/console-basic.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/console-time.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/const.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/constraint-validation.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/contenteditable.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/contentsecuritypolicy.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/contentsecuritypolicy2.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/cookie-store-api.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/cors.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/createimagebitmap.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/credential-management.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/cross-document-view-transitions.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/cryptography.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-all.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-anchor-positioning.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-animation.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-any-link.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-appearance.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-at-counter-style.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-autofill.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-backdrop-filter.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-background-offsets.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-backgroundblendmode.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-boxdecorationbreak.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-boxshadow.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-canvas.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-caret-color.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-cascade-layers.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-cascade-scope.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-case-insensitive.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-clip-path.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-color-adjust.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-color-function.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-conic-gradients.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-container-queries-style.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-container-queries.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-container-query-units.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-containment.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-content-visibility.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-counters.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-crisp-edges.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-cross-fade.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-default-pseudo.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-descendant-gtgt.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-deviceadaptation.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-dir-pseudo.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-display-contents.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-element-function.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-env-function.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-exclusions.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-featurequeries.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-file-selector-button.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-filter-function.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-filters.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-first-letter.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-first-line.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-fixed.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-focus-visible.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-focus-within.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-font-palette.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-font-rendering-controls.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-font-stretch.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-gencontent.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-gradients.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-grid-animation.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-grid-lanes.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-grid.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-hanging-punctuation.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-has.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-hyphens.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-if.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-image-orientation.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-image-set.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-in-out-of-range.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-indeterminate-pseudo.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-initial-letter.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-initial-value.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-lch-lab.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-letter-spacing.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-line-clamp.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-logical-props.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-marker-pseudo.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-masks.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-matches-pseudo.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-math-functions.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-media-interaction.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-media-range-syntax.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-media-resolution.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-media-scripting.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-mediaqueries.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-mixblendmode.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-module-scripts.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-motion-paths.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-namespaces.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-nesting.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-not-sel-list.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-nth-child-of.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-opacity.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-optional-pseudo.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-overflow-anchor.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-overflow-overlay.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-overflow.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-overscroll-behavior.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-page-break.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-paged-media.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-paint-api.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-placeholder-shown.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-placeholder.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-print-color-adjust.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-read-only-write.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-rebeccapurple.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-reflections.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-regions.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-relative-colors.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-repeating-gradients.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-resize.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-revert-value.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-rrggbbaa.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-scroll-behavior.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-scrollbar.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-sel2.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-sel3.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-selection.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-shapes.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-snappoints.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-sticky.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-subgrid.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-supports-api.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-table.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-text-align-last.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-text-box-trim.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-text-indent.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-text-justify.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-text-orientation.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-text-spacing.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-text-wrap-balance.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-textshadow.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-touch-action.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-transitions.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-unicode-bidi.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-unset-value.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-variables.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-when-else.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-widows-orphans.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-width-stretch.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-writing-mode.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css-zoom.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css3-attr.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css3-boxsizing.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css3-colors.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css3-cursors-grab.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css3-cursors-newer.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css3-cursors.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/css3-tabsize.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/currentcolor.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/custom-elements.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/custom-elementsv1.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/customevent.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/datalist.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/dataset.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/datauri.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/date-tolocaledatestring.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/declarative-shadow-dom.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/decorators.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/details.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/deviceorientation.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/devicepixelratio.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/dialog.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/dispatchevent.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/dnssec.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/do-not-track.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/document-currentscript.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/document-evaluate-xpath.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/document-execcommand.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/document-policy.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/document-scrollingelement.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/documenthead.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/dom-manip-convenience.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/dom-range.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/domcontentloaded.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/dommatrix.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/download.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/dragndrop.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/element-closest.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/element-from-point.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/element-scroll-methods.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/eme.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/eot.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/es5.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/es6-class.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/es6-generators.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/es6-module-dynamic-import.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/es6-module.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/es6-number.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/es6-string-includes.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/es6.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/eventsource.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/extended-system-fonts.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/feature-policy.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/fetch.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/fieldset-disabled.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/fileapi.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/filereader.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/filereadersync.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/filesystem.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/flac.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/flexbox-gap.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/flexbox.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/flow-root.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/focusin-focusout-events.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/font-family-system-ui.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/font-feature.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/font-kerning.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/font-loading.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/font-size-adjust.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/font-smooth.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/font-unicode-range.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/font-variant-alternates.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/font-variant-numeric.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/fontface.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/form-attribute.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/form-submit-attributes.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/form-validation.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/forms.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/fullscreen.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/gamepad.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/geolocation.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/getboundingclientrect.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/getcomputedstyle.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/getelementsbyclassname.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/getrandomvalues.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/gyroscope.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/hardwareconcurrency.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/hashchange.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/heif.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/hevc.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/hidden.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/high-resolution-time.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/history.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/html-media-capture.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/html5semantic.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/http-live-streaming.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/http2.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/http3.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/iframe-sandbox.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/iframe-seamless.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/iframe-srcdoc.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/imagecapture.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/ime.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/img-naturalwidth-naturalheight.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/import-maps.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/imports.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/indeterminate-checkbox.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/indexeddb.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/indexeddb2.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/inline-block.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/innertext.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/input-autocomplete-onoff.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/input-color.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/input-datetime.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/input-email-tel-url.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/input-event.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/input-file-accept.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/input-file-directory.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/input-file-multiple.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/input-inputmode.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/input-minlength.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/input-number.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/input-pattern.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/input-placeholder.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/input-range.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/input-search.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/input-selection.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/insert-adjacent.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/insertadjacenthtml.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/internationalization.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/intersectionobserver-v2.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/intersectionobserver.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/intl-pluralrules.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/intrinsic-width.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/jpeg2000.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/jpegxl.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/jpegxr.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/js-regexp-lookbehind.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/json.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/justify-content-space-evenly.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/kerning-pairs-ligatures.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/keyboardevent-charcode.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/keyboardevent-code.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/keyboardevent-getmodifierstate.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/keyboardevent-key.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/keyboardevent-location.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/keyboardevent-which.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/lazyload.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/let.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/link-icon-png.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/link-icon-svg.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/link-rel-dns-prefetch.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/link-rel-modulepreload.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/link-rel-preconnect.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/link-rel-prefetch.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/link-rel-preload.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/link-rel-prerender.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/loading-lazy-attr.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/localecompare.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/magnetometer.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/matchesselector.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/matchmedia.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/mathml.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/maxlength.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/mdn-css-backdrop-pseudo-element.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/mdn-css-unicode-bidi-isolate-override.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/mdn-css-unicode-bidi-isolate.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/mdn-css-unicode-bidi-plaintext.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/mdn-text-decoration-color.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/mdn-text-decoration-line.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/mdn-text-decoration-shorthand.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/mdn-text-decoration-style.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/media-fragments.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/mediacapture-fromelement.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/mediarecorder.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/mediasource.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/menu.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/meta-theme-color.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/meter.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/midi.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/minmaxwh.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/mp3.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/mpeg-dash.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/mpeg4.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/multibackgrounds.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/multicolumn.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/mutation-events.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/mutationobserver.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/namevalue-storage.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/native-filesystem-api.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/nav-timing.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/netinfo.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/notifications.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/object-entries.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/object-fit.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/object-observe.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/object-values.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/objectrtc.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/offline-apps.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/offscreencanvas.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/ogg-vorbis.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/ogv.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/ol-reversed.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/once-event-listener.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/online-status.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/opus.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/orientation-sensor.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/outline.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/pad-start-end.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/page-transition-events.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/pagevisibility.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/passive-event-listener.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/passkeys.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/passwordrules.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/path2d.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/payment-request.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/pdf-viewer.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/permissions-api.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/permissions-policy.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/picture-in-picture.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/picture.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/ping.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/png-alpha.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/pointer-events.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/pointer.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/pointerlock.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/portals.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/prefers-color-scheme.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/prefers-reduced-motion.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/progress.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/promise-finally.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/promises.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/proximity.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/proxy.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/publickeypinning.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/push-api.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/queryselector.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/readonly-attr.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/referrer-policy.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/registerprotocolhandler.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/rel-noopener.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/rel-noreferrer.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/rellist.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/rem.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/requestanimationframe.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/requestidlecallback.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/resizeobserver.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/resource-timing.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/rest-parameters.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/rtcpeerconnection.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/ruby.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/run-in.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/same-site-cookie-attribute.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/screen-orientation.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/script-async.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/script-defer.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/scrollintoview.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/scrollintoviewifneeded.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/sdch.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/selection-api.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/server-timing.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/serviceworkers.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/setimmediate.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/shadowdom.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/shadowdomv1.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/sharedarraybuffer.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/sharedworkers.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/sni.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/spdy.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/speech-recognition.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/speech-synthesis.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/spellcheck-attribute.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/sql-storage.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/srcset.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/stream.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/streams.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/stricttransportsecurity.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/style-scoped.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/subresource-bundling.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/subresource-integrity.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/svg-css.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/svg-filters.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/svg-fonts.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/svg-fragment.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/svg-html.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/svg-html5.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/svg-img.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/svg-smil.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/svg.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/sxg.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/tabindex-attr.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/template-literals.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/template.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/temporal.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/testfeat.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/text-decoration.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/text-emphasis.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/text-overflow.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/text-size-adjust.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/text-stroke.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/textcontent.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/textencoder.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/tls1-1.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/tls1-2.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/tls1-3.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/touch.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/transforms2d.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/transforms3d.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/trusted-types.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/ttf.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/typedarrays.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/u2f.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/unhandledrejection.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/upgradeinsecurerequests.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/url-scroll-to-text-fragment.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/url.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/urlsearchparams.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/use-strict.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/user-select-none.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/user-timing.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/variable-fonts.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/vector-effect.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/vibration.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/video.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/videotracks.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/view-transitions.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/viewport-unit-variants.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/viewport-units.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wai-aria.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wake-lock.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wasm-bigint.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wasm-bulk-memory.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wasm-extended-const.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wasm-gc.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wasm-multi-memory.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wasm-multi-value.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wasm-mutable-globals.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wasm-nontrapping-fptoint.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wasm-reference-types.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wasm-relaxed-simd.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wasm-signext.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wasm-simd.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wasm-tail-calls.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wasm-threads.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wasm.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wav.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wbr-element.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/web-animation.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/web-app-manifest.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/web-bluetooth.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/web-serial.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/web-share.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/webauthn.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/webcodecs.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/webgl.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/webgl2.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/webgpu.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/webhid.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/webkit-user-drag.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/webm.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/webnfc.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/webp.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/websockets.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/webtransport.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/webusb.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/webvr.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/webvtt.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/webworkers.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/webxr.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/will-change.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/woff.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/woff2.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/word-break.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/wordwrap.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/x-doc-messaging.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/x-frame-options.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/xhr2.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/xhtml.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/xhtmlsmil.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/xml-serializer.js
+	deleted by them: frontend/node_modules/caniuse-lite/data/features/zstd.js
+	deleted by them: frontend/node_modules/caniuse-lite/package.json
+	deleted by them: frontend/node_modules/flatted/README.md
+	deleted by them: frontend/node_modules/flatted/package.json
+	both modified:   frontend/package-lock.json
+	both modified:   frontend/src/App.jsx
+	deleted by them: inka_backend/data/inkadb.lock.db
+	both modified:   inka_backend/data/inkadb.mv.db
+	both added:      inka_backend/data/inkadb.trace.db
+	both modified:   inka_backend/src/main/resources/data.sql
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   conflicts.txt
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	status_full.txt
+

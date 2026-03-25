@@ -145,6 +145,10 @@
   color: #2e7d32;
 }
 
+.pp-cart-message.error {
+  color: #d32f2f;
+}
+
 /* Option rows */
 .pp-option-row {
   display: flex;
