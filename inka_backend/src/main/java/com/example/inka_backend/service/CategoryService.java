@@ -21,6 +21,35 @@ public class CategoryService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
+    // Create a new category
+public CategoryDTO createCategory(CategoryDTO dto) {
+    Category category = new Category();
+    category.setCategoryName(dto.getCategoryName());
+    category.setImageUrl(dto.getImageUrl());
+    return convertToDTO(categoryRepository.save(category));
+}
+
+// Update an existing category by ID
+public CategoryDTO updateCategory(Long categoryId, CategoryDTO dto) {
+    // Find the existing category or throw error
+    Category existing = categoryRepository.findById(categoryId)
+            .orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
+
+    // Update fields from DTO
+    existing.setCategoryName(dto.getCategoryName());
+    existing.setImageUrl(dto.getImageUrl());
+
+    return convertToDTO(categoryRepository.save(existing));
+}
+
+// Delete a category by ID
+public void deleteCategory(Long categoryId) {
+    // Check if it exists before deleting
+    if (!categoryRepository.existsById(categoryId)) {
+        throw new RuntimeException("Category not found with id: " + categoryId);
+    }
+    categoryRepository.deleteById(categoryId);
+}
 
     // 🔄 Helper: converts Category entity → CategoryDTO
     private CategoryDTO convertToDTO(Category category) {
@@ -30,4 +59,13 @@ public class CategoryService {
         dto.setImageUrl(category.getImageUrl());
         return dto;
     }
+// Helper: converts CategoryDTO → Category entity
+private Category convertToEntity(CategoryDTO dto) {
+    Category category = new Category();
+    category.setCategoryName(dto.getCategoryName());
+    category.setImageUrl(dto.getImageUrl());
+    return category;
+}
+
+
 }

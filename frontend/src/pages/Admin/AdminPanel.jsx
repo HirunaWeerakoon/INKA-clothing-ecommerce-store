@@ -7,9 +7,16 @@ import {
   adminUpdateProduct,
   adminDeleteProduct,
 } from '../../services/adminProductService';
+// Category service — added for Commit 2
+import {
+  adminGetAllCategories,
+  adminCreateCategory,
+  adminUpdateCategory,
+  adminDeleteCategory,
+} from '../../services/adminCategoryService';
 import './AdminPanel.css';
 
-// Empty form state used for Add and reset after Edit
+// Empty form state for product add/edit
 const EMPTY_FORM = {
   name: '',
   description: '',
@@ -19,6 +26,12 @@ const EMPTY_FORM = {
   imageUrl: '',
   isAvailable: true,
   bestSeller: false,
+};
+
+// Empty form state for category add/edit
+const EMPTY_CAT_FORM = {
+  categoryName: '',
+  imageUrl: '',
 };
 
 export default function AdminPanel() {
@@ -36,25 +49,47 @@ export default function AdminPanel() {
   // Which sidebar tab is active: 'products' | 'category' | 'stock' | 'users'
   const [activeTab, setActiveTab] = useState('products');
 
-  // Which panel action is active: 'add' | 'edit' | 'delete'
+  // Which panel action is active for products: 'add' | 'edit' | 'delete'
   const [activeAction, setActiveAction] = useState('add');
+
+  // Which panel action is active for categories: 'add' | 'edit' | 'delete'
+  const [activeCatAction, setActiveCatAction] = useState('add');
 
   // All products loaded from backend
   const [products, setProducts] = useState([]);
 
-  // Form data for add/edit
+  // All categories loaded from backend
+  const [categories, setCategories] = useState([]);
+
+  // Form data for product add/edit
   const [form, setForm] = useState(EMPTY_FORM);
 
-  // The product currently selected for edit or delete
+  // Form data for category add/edit
+  const [catForm, setCatForm] = useState(EMPTY_CAT_FORM);
+
+  // Product currently selected for edit or delete
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  // Feedback message shown after actions
+  // Category currently selected for edit
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  // Feedback message shown after product actions
   const [message, setMessage] = useState('');
 
-  // Load all products when component mounts
+  // Feedback message shown after category actions
+  const [catMessage, setCatMessage] = useState('');
+
+  // Load products on mount
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  // Load categories when category tab is opened
+  useEffect(() => {
+    if (activeTab === 'category') {
+      fetchCategories();
+    }
+  }, [activeTab]);
 
   // Fetch all products from backend
   const fetchProducts = async () => {
@@ -66,7 +101,17 @@ export default function AdminPanel() {
     }
   };
 
-  // Handle form field changes
+  // Fetch all categories from backend
+  const fetchCategories = async () => {
+    try {
+      const data = await adminGetAllCategories();
+      setCategories(data);
+    } catch (err) {
+      setCatMessage('Failed to load categories.');
+    }
+  };
+
+  // Handle product form field changes
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm((prev) => ({
@@ -75,7 +120,13 @@ export default function AdminPanel() {
     }));
   };
 
-  // Handle Add Product form submission
+  // Handle category form field changes
+  const handleCatChange = (e) => {
+    const { name, value } = e.target;
+    setCatForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Handle Add Product
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
@@ -108,7 +159,7 @@ export default function AdminPanel() {
     });
   };
 
-  // Handle Edit Product form submission
+  // Handle Edit Product
   const handleEdit = async (e) => {
     e.preventDefault();
     if (!selectedProduct) return;
@@ -140,6 +191,55 @@ export default function AdminPanel() {
     }
   };
 
+  // Handle Add Category
+  const handleCatAdd = async (e) => {
+    e.preventDefault();
+    try {
+      await adminCreateCategory(catForm);
+      setCatMessage('Category added successfully!');
+      setCatForm(EMPTY_CAT_FORM);
+      fetchCategories();
+    } catch (err) {
+      setCatMessage('Failed to add category.');
+    }
+  };
+
+  // When user clicks Edit on a category — pre-fill the form
+  const handleSelectCatForEdit = (category) => {
+    setSelectedCategory(category);
+    setCatForm({
+      categoryName: category.categoryName || '',
+      imageUrl: category.imageUrl || '',
+    });
+  };
+
+  // Handle Edit Category
+  const handleCatEdit = async (e) => {
+    e.preventDefault();
+    if (!selectedCategory) return;
+    try {
+      await adminUpdateCategory(selectedCategory.categoryId, catForm);
+      setCatMessage('Category updated successfully!');
+      setSelectedCategory(null);
+      setCatForm(EMPTY_CAT_FORM);
+      fetchCategories();
+    } catch (err) {
+      setCatMessage('Failed to update category.');
+    }
+  };
+
+  // Handle Delete Category
+  const handleCatDelete = async (categoryId) => {
+    if (!window.confirm('Are you sure you want to delete this category?')) return;
+    try {
+      await adminDeleteCategory(categoryId);
+      setCatMessage('Category deleted successfully!');
+      fetchCategories();
+    } catch (err) {
+      setCatMessage('Failed to delete category.');
+    }
+  };
+
   return (
     <div className="admin-wrapper">
       {/* Sidebar navigation */}
@@ -150,7 +250,6 @@ export default function AdminPanel() {
         >
           Products
         </button>
-        {/* Category tab — coming in Commit 2 */}
         <button
           className={activeTab === 'category' ? 'active' : ''}
           onClick={() => setActiveTab('category')}
@@ -179,8 +278,6 @@ export default function AdminPanel() {
         {/* ── PRODUCTS TAB ── */}
         {activeTab === 'products' && (
           <div className="admin-content">
-
-            {/* Add / Edit / Delete sub-tabs */}
             <div className="admin-actions">
               <button
                 className={activeAction === 'add' ? 'active' : ''}
@@ -202,7 +299,6 @@ export default function AdminPanel() {
               </button>
             </div>
 
-            {/* Feedback message */}
             {message && <p className="admin-message">{message}</p>}
 
             {/* ── ADD FORM ── */}
@@ -246,7 +342,6 @@ export default function AdminPanel() {
             {/* ── EDIT PANEL ── */}
             {activeAction === 'edit' && (
               <div className="admin-edit-panel">
-                {/* Product list to pick from */}
                 {!selectedProduct && (
                   <div className="admin-product-list">
                     <p>Select a product to edit:</p>
@@ -259,7 +354,6 @@ export default function AdminPanel() {
                   </div>
                 )}
 
-                {/* Edit form pre-filled with selected product */}
                 {selectedProduct && (
                   <form className="admin-form" onSubmit={handleEdit}>
                     <p className="editing-label">Editing: <strong>{selectedProduct.name}</strong></p>
@@ -313,19 +407,105 @@ export default function AdminPanel() {
                 ))}
               </div>
             )}
-
           </div>
         )}
 
-        {/* Category tab — placeholder until Commit 2 */}
-        {activeTab === 'category' && <p className="coming-soon">Category management .</p>}
+        {/* ── CATEGORY TAB ── */}
+        {activeTab === 'category' && (
+          <div className="admin-content">
+            <div className="admin-actions">
+              <button
+                className={activeCatAction === 'add' ? 'active' : ''}
+                onClick={() => { setActiveCatAction('add'); setCatForm(EMPTY_CAT_FORM); setSelectedCategory(null); }}
+              >
+                Add
+              </button>
+              <button
+                className={activeCatAction === 'edit' ? 'active' : ''}
+                onClick={() => setActiveCatAction('edit')}
+              >
+                Edit
+              </button>
+              <button
+                className={activeCatAction === 'delete' ? 'active' : ''}
+                onClick={() => setActiveCatAction('delete')}
+              >
+                Delete
+              </button>
+            </div>
+
+            {catMessage && <p className="admin-message">{catMessage}</p>}
+
+            {/* ── CATEGORY ADD FORM ── */}
+            {activeCatAction === 'add' && (
+              <form className="admin-form" onSubmit={handleCatAdd}>
+                <label>Category Name</label>
+                <input name="categoryName" value={catForm.categoryName} onChange={handleCatChange} required />
+
+                <label>Image URL</label>
+                <input name="imageUrl" value={catForm.imageUrl} onChange={handleCatChange} />
+
+                <div className="admin-form-buttons">
+                  <button type="submit" className="btn-save">Save</button>
+                  <button type="button" className="btn-cancel" onClick={() => setCatForm(EMPTY_CAT_FORM)}>Cancel</button>
+                </div>
+              </form>
+            )}
+
+            {/* ── CATEGORY EDIT PANEL ── */}
+            {activeCatAction === 'edit' && (
+              <div className="admin-edit-panel">
+                {!selectedCategory && (
+                  <div className="admin-product-list">
+                    <p>Select a category to edit:</p>
+                    {categories.map((c) => (
+                      <div key={c.categoryId} className="admin-product-row">
+                        <span>{c.categoryName}</span>
+                        <button onClick={() => handleSelectCatForEdit(c)}>Edit</button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {selectedCategory && (
+                  <form className="admin-form" onSubmit={handleCatEdit}>
+                    <p className="editing-label">Editing: <strong>{selectedCategory.categoryName}</strong></p>
+
+                    <label>Category Name</label>
+                    <input name="categoryName" value={catForm.categoryName} onChange={handleCatChange} required />
+
+                    <label>Image URL</label>
+                    <input name="imageUrl" value={catForm.imageUrl} onChange={handleCatChange} />
+
+                    <div className="admin-form-buttons">
+                      <button type="submit" className="btn-save">Save</button>
+                      <button type="button" className="btn-cancel" onClick={() => { setSelectedCategory(null); setCatForm(EMPTY_CAT_FORM); }}>Cancel</button>
+                    </div>
+                  </form>
+                )}
+              </div>
+            )}
+
+            {/* ── CATEGORY DELETE PANEL ── */}
+            {activeCatAction === 'delete' && (
+              <div className="admin-product-list">
+                <p>Select a category to delete:</p>
+                {categories.map((c) => (
+                  <div key={c.categoryId} className="admin-product-row">
+                    <span>{c.categoryName}</span>
+                    <button className="btn-delete" onClick={() => handleCatDelete(c.categoryId)}>Delete</button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Stock tab — placeholder until Commit 3 */}
-        {activeTab === 'stock' && <p className="coming-soon">Stock management.</p>}
+        {activeTab === 'stock' && <p className="coming-soon">Stock management — coming in Commit 3.</p>}
 
         {/* Users tab — placeholder until Commit 4 */}
-        {/* Will include: view all users, filter by role, delete users */}
-        {activeTab === 'users' && <p className="coming-soon">User management.</p>}
+        {activeTab === 'users' && <p className="coming-soon">User management — coming in Commit 4.</p>}
 
       </main>
     </div>
