@@ -1,0 +1,253 @@
+/* ── Admin panel wrapper — sidebar + main content side by side ── */
+.admin-wrapper {
+  display: flex;
+  min-height: 100vh;
+  font-family: inherit;
+  background: #f5f5f3;
+}
+
+/* ── Left sidebar ── */
+.admin-sidebar {
+  width: 160px;
+  background: #fff;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  padding-top: 2.5rem;
+  gap: 0.25rem;
+}
+
+/* Sidebar tab buttons */
+.admin-sidebar button {
+  background: none;
+  border: none;
+  padding: 0.85rem 1.5rem;
+  text-align: left;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #888;
+  border-left: 3px solid transparent;
+  transition: color 0.15s;
+}
+
+/* Active sidebar tab */
+.admin-sidebar button.active {
+  font-weight: 600;
+  color: #111;
+  border-left: 3px solid #111;
+  background: #f5f5f3;
+}
+
+/* ── Main content area ── */
+.admin-main {
+  flex: 1;
+  padding: 2.5rem 3rem;
+  max-width: 720px;
+}
+
+/* ── Add / Edit / Delete sub-tabs row ── */
+.admin-actions {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 1.5px solid #e0e0e0;
+  padding-bottom: 0;
+}
+
+.admin-actions button {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #aaa;
+  padding: 0 0 0.6rem 0;
+  letter-spacing: 0.01em;
+}
+
+/* Active action tab underline */
+.admin-actions button.active {
+  color: #111;
+  font-weight: 600;
+  border-bottom: 2.5px solid #111;
+}
+
+/* ── Form layout ── */
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  width: 100%;
+  max-width: 560px;
+}
+
+.admin-form label {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: #444;
+  margin-top: 1rem;
+  letter-spacing: 0.02em;
+}
+
+/* All text inputs — uniform size matching the Price box */
+.admin-form input[type="text"],
+.admin-form input[type="number"],
+.admin-form input[type="url"],
+.admin-form input:not([type="checkbox"]) {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1.5px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #fff;
+  color: #111;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.admin-form input:not([type="checkbox"]):focus {
+  outline: none;
+  border-color: #111;
+}
+
+/* ── Checkbox row styling ── */
+.admin-form .checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #333;
+  cursor: pointer;
+}
+
+.admin-form .checkbox-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #111;
+  cursor: pointer;
+}
+
+/* ── Save and Cancel buttons ── */
+.admin-form-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+
+.btn-save {
+  background: #111;
+  color: #fff;
+  border: none;
+  padding: 0.7rem 2rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  letter-spacing: 0.02em;
+  transition: background 0.15s;
+}
+
+.btn-save:hover {
+  background: #333;
+}
+
+.btn-cancel {
+  background: #fff;
+  color: #111;
+  border: 1.5px solid #ccc;
+  padding: 0.7rem 2rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  transition: border-color 0.15s;
+}
+
+.btn-cancel:hover {
+  border-color: #888;
+}
+
+/* ── Product rows in Edit / Delete lists ── */
+.admin-product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 560px;
+  margin-top: 0.5rem;
+}
+
+.admin-product-list > p {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 0.5rem;
+}
+
+.admin-product-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 1.25rem;
+  background: #fff;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 8px;
+  transition: border-color 0.15s;
+}
+
+.admin-product-row:hover {
+  border-color: #bbb;
+}
+
+.admin-product-row span {
+  font-size: 0.95rem;
+  color: #222;
+}
+
+.admin-product-row button {
+  border: 1.5px solid #ccc;
+  background: #fff;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 0.88rem;
+  color: #333;
+  transition: border-color 0.15s;
+}
+
+.admin-product-row button:hover {
+  border-color: #555;
+}
+
+/* Delete button — red accent */
+.btn-delete {
+  background: #fff !important;
+  color: #c0392b !important;
+  border-color: #e8b4b0 !important;
+}
+
+.btn-delete:hover {
+  border-color: #c0392b !important;
+}
+
+/* ── Feedback message ── */
+.admin-message {
+  background: #eef6ee;
+  color: #2d6a2d;
+  border: 1px solid #b8ddb8;
+  padding: 0.65rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+}
+
+/* ── Label shown when editing a specific product ── */
+.editing-label {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 0.25rem;
+}
+
+/* ── Placeholder for tabs not yet implemented ── */
+.coming-soon {
+  color: #aaa;
+  font-style: italic;
+  margin-top: 2rem;
+  font-size: 0.95rem;
+}
