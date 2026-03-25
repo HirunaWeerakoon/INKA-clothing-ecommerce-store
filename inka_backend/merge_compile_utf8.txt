@@ -1,0 +1,61 @@
+﻿[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.example:inka_backend:jar:0.0.1-SNAPSHOT
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: io.jsonwebtoken:jjwt-api:jar -> duplicate declaration of version 0.11.5 @ line 87, column 15
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: io.jsonwebtoken:jjwt-impl:jar -> duplicate declaration of version 0.11.5 @ line 92, column 15
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: io.jsonwebtoken:jjwt-jackson:jar -> duplicate declaration of version 0.11.5 @ line 98, column 15
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: me.paulschwarz:spring-dotenv:jar -> duplicate declaration of version 4.0.0 @ line 130, column 15
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] 
+[INFO] ----------------------< com.example:inka_backend >----------------------
+[INFO] Building inka_backend 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ inka_backend ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ inka_backend ---
+[INFO] Recompiling the module because of added or removed source files.
+[INFO] Compiling 36 source files with javac [debug parameters release 21] to target\classes
+.\mvnw : WARNING: A 
+terminally deprecated method 
+in sun.misc.Unsafe has been 
+called
+At line:1 char:1
++ .\mvnw compile > 
+merge_compile.txt 2>&1; 
+Get-Content merge_compile.tx 
+...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~
+    + CategoryInfo           
+   : NotSpecified: (WARNING  
+  : A term...has been call   
+ ed:String) [], RemoteExc    
+eption
+    + FullyQualifiedErrorId  
+   : NativeCommandError
+ 
+WARNING: sun.misc.Unsafe::obj
+ectFieldOffset has been 
+called by 
+lombok.permit.Permit
+WARNING: Please consider 
+reporting this to the 
+maintainers of class 
+lombok.permit.Permit
+WARNING: sun.misc.Unsafe::obj
+ectFieldOffset will be 
+removed in a future release
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  5.234 s
+[INFO] Finished at: 2026-03-25T12:38:02+05:30
+[INFO] ------------------------------------------------------------------------

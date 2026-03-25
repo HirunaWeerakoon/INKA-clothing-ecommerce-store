@@ -11,8 +11,8 @@ import ProductGrid from './components/ProductGrid';
 import ProductPage from './components/ProductPage';
 import HomePage from './pages/Home/HomePage';
 import OAuth2RedirectHandler from './pages/OAuth2RedirectHandler';
-import Cart from './pages/Cart/Cart';
 import './App.css';
+import Cart from './pages/Cart/Cart';
 
 import { authService } from './services/authService';
 
