@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Upload, X, Loader, RotateCcw, ZoomIn, ZoomOut, Move, Trash2, ShoppingCart, Plus } from 'lucide-react';
 import { uploadImage } from '../../services/cloudinary';
+import { authService } from '../../services/authService';
+import axios from 'axios';
 import './CustomPage.css';
-
-const API = 'http://localhost:8080';
 
 const CATEGORY_CONFIG = {
     'T-SHIRTS': {
@@ -194,17 +194,15 @@ export default function CustomPage() {
     }, [selectedCategory]);
 
     useEffect(() => {
-        fetch(`${API}/api/categories`)
-            .then(r => r.json())
-            .then(data => { setCategories(data); if (data.length) setSelectedCategory(data[0]); })
+        axios.get('/api/categories')
+            .then(res => { const data = res.data; setCategories(data); if (data.length) setSelectedCategory(data[0]); })
             .catch(console.error);
     }, []);
 
     useEffect(() => {
         if (!selectedCategory) return;
-        fetch(`${API}/api/subcategories/${selectedCategory.categoryId}`)
-            .then(r => r.json())
-            .then(data => { setSubCategories(data); setSelectedSub(data[0] || null); })
+        axios.get(`/api/subcategories/${selectedCategory.categoryId}`)
+            .then(res => { const data = res.data; setSubCategories(data); setSelectedSub(data[0] || null); })
             .catch(console.error);
     }, [selectedCategory]);
 
@@ -322,36 +320,23 @@ export default function CustomPage() {
     async function handleSingleCheckout() {
         if (!selectedCategory) return alert('Please select a category');
         if (!validateOptions()) return;
+
+        const user = authService.getUserDetails();
+        if (!user) return alert('Please log in to place an order');
+
         setCheckoutLoading(true);
         try {
             const shots = await captureScreenshots();
             const mainDesignUrl = shots['Front'] || Object.values(shots)[0] || '';
-            await fetch(`${API}/api/custom-orders`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    customerId: 1,
-                    categoryName: selectedCategory.categoryName,
-                    subCategoryName: selectedSub?.name || '',
-                    gsm, material, size, color, quantity: qty,
-                    designImageUrl: mainDesignUrl,
-                    totalPrice: singleTotal,
-                }),
+            await axios.post('/api/custom-orders', {
+                customerId: user.id,
+                categoryName: selectedCategory.categoryName,
+                subCategoryName: selectedSub?.name || '',
+                gsm, material, size, color, quantity: qty,
+                designImageUrl: mainDesignUrl,
+                totalPrice: singleTotal,
             });
-            const cartRes = await fetch(`${API}/api/cart`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    customerId: 1, productId: 0, productName: 'Custom Order',
-                    price: unitPrice, quantity: qty, imageUrl: mainDesignUrl,
-                }),
-            });
-            if (cartRes.ok) {
-                window.dispatchEvent(new Event('cart-updated'));
-                alert('Order placed and added to cart!');
-            } else {
-                alert('Order saved but could not add to cart.');
-            }
+            alert('Custom order placed successfully!');
         } catch (err) {
             console.error(err);
             alert('Something went wrong. Please try again.');
@@ -363,38 +348,37 @@ export default function CustomPage() {
     async function handleWholesaleCheckout() {
         if (!selectedCategory) return alert('Please select a category');
         if (variations.length === 0) return alert('Please add at least one variation');
+
+        const user = authService.getUserDetails();
+        if (!user) {
+            alert('Please log in to place orders');
+            return;
+        }
+
         setShowModal(false);
         setCheckoutLoading(true);
         try {
             const shots = await captureScreenshots();
             const mainDesignUrl = shots['Front'] || Object.values(shots)[0] || '';
+            let allOk = true;
             for (const v of variations) {
-                await fetch(`${API}/api/custom-orders`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        customerId: 1,
+                try {
+                    await axios.post('/api/custom-orders', {
+                        customerId: user.id,
                         categoryName: selectedCategory.categoryName,
                         subCategoryName: selectedSub?.name || '',
                         gsm: v.gsm, material: v.material, size: v.size, color: v.color,
                         quantity: v.qty, designImageUrl: mainDesignUrl, totalPrice: v.total,
-                    }),
-                });
+                    });
+                } catch {
+                    allOk = false;
+                }
             }
-            const cartRes = await fetch(`${API}/api/cart`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    customerId: 1, productId: 0, productName: 'Custom Orders',
-                    price: grandTotal / grandQty, quantity: grandQty, imageUrl: mainDesignUrl,
-                }),
-            });
-            if (cartRes.ok) {
-                window.dispatchEvent(new Event('cart-updated'));
+            if (allOk) {
                 setVariations([]);
-                alert(`${variations.length} variation(s) added to cart!`);
+                alert(`${variations.length} variation(s) ordered successfully!`);
             } else {
-                alert('Orders saved but could not add to cart.');
+                alert('Some variations failed to save.');
             }
         } catch (err) {
             console.error(err);

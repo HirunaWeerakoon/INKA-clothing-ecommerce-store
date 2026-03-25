@@ -2,17 +2,21 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { X, Plus, Minus, Trash2 } from 'lucide-react';
 import './CartSidebar.css';
-
-const CUSTOMER_ID = 1; // Hardcoded until auth is implemented
+import { authService } from '../services/authService';
 
 export default function CartSidebar({ isOpen, onClose }) {
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const fetchCart = useCallback(async () => {
+        const user = authService.getUserDetails();
+        if (!user) {
+            setCartItems([]);
+            return;
+        }
         setLoading(true);
         try {
-            const response = await axios.get(`/api/cart/${CUSTOMER_ID}`);
+            const response = await axios.get(`/api/cart/${user.id}`);
             setCartItems(response.data);
         } catch (error) {
             console.error('Error fetching cart:', error);
