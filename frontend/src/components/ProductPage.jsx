@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './ProductPage.css';
 import ReviewSection from './ReviewSection';   // ← NEW
+import { authService } from '../services/authService';
 
 const HeartIcon = () => (
     <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -39,6 +40,7 @@ export default function ProductPage() {
     const [wishlisted, setWishlisted] = useState(false);
     const [addingToCart, setAddingToCart] = useState(false);
     const [cartMessage, setCartMessage] = useState('');
+    const [isCartError, setIsCartError] = useState(false);
     const [avgRating, setAvgRating] = useState(0);
     const [reviewCount, setReviewCount] = useState(0);
 
@@ -63,27 +65,35 @@ export default function ProductPage() {
     const handleAddToCart = async () => {
         if (!selectedSize) {
             setCartMessage('Please select a size');
-            setTimeout(() => setCartMessage(''), 2000);
+            setIsCartError(true);
+            setTimeout(() => {setCartMessage(''); setIsCartError(false);}, 2000);
             return;
         }
+
+        const user = authService.getUserDetails();
+        if (!user) {
+            setCartMessage('Please log in to add to cart');
+            setIsCartError(true);
+            setTimeout(() => {setCartMessage(''); setIsCartError(false);}, 2000);
+            return;
+        }
+
         setAddingToCart(true);
         try {
-            await axios.post('/api/cart', {
-                customerId: 1,
+            await axios.post(`/api/cart/${user.id}/add`, {
                 productId: product.productId,
-                productName: product.name,
-                price: product.price,
-                quantity: 1,
-                imageUrl: product.imageUrl || product.image1
+                quantity: 1
             });
             setCartMessage('Added to cart!');
+            setIsCartError(false);
             window.dispatchEvent(new Event('cart-updated'));
         } catch (error) {
             console.error('Error adding to cart:', error);
             setCartMessage('Failed to add to cart');
+            setIsCartError(true);
         } finally {
             setAddingToCart(false);
-            setTimeout(() => setCartMessage(''), 2000);
+            setTimeout(() => {setCartMessage(''); setIsCartError(false);}, 2000);
         }
     };
 
@@ -194,7 +204,7 @@ export default function ProductPage() {
                         </button>
                     </div>
 
-                    {cartMessage && <p className="pp-cart-message">{cartMessage}</p>}
+                    {cartMessage && <p className={`pp-cart-message ${isCartError ? 'error' : ''}`}>{cartMessage}</p>}
 
                     <p className="pp-stock">
                         {product.isAvailable ? `In Stock: ${product.stock} items` : 'Out of Stock'}

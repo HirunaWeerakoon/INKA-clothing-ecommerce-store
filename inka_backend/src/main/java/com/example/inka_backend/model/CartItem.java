@@ -2,34 +2,26 @@ package com.example.inka_backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "cart_items")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "customer_id", nullable = false)
-    private Long customerId;
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    @JsonIgnoreProperties({"password", "email", "role", "address"})
+    private Customer customer;
 
-    @Column(name = "product_id", nullable = false)
-    private Long productId;
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
-    @Column(name = "product_name")
-    private String productName;
-
-    @Column(name = "price")
-    private Double price;
-
-    @Column(name = "quantity", nullable = false)
-    private Integer quantity = 1;
-
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Column(nullable = false)
+    private Integer quantity;
 }

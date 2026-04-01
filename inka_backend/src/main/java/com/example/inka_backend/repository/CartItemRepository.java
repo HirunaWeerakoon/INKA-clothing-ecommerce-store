@@ -2,6 +2,7 @@ package com.example.inka_backend.repository;
 
 import com.example.inka_backend.model.CartItem;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -9,9 +10,10 @@ import java.util.Optional;
 
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
-    List<CartItem> findByCustomerId(Long customerId);
 
-    Optional<CartItem> findByCustomerIdAndProductId(Long customerId, Long productId);
+    List<CartItem> findByCustomer_CustomerId(Long customerId);
 
-    void deleteByCustomerId(Long customerId);
+    Optional<CartItem> findByCustomer_CustomerIdAndProduct_ProductId(Long customerId, Long productId);
+
+    void deleteByCustomer_CustomerId(Long customerId);
 }
