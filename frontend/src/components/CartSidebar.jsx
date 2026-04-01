@@ -43,7 +43,7 @@ export default function CartSidebar({ isOpen, onClose }) {
     const updateQuantity = async (id, newQty) => {
         if (newQty < 1) return;
         try {
-            await axios.put(`/api/cart/${id}`, { quantity: newQty });
+            await axios.put(`/api/cart/item/${id}`, { quantity: newQty });
             setCartItems(items =>
                 items.map(item =>
                     item.id === id ? { ...item, quantity: newQty } : item
@@ -56,7 +56,7 @@ export default function CartSidebar({ isOpen, onClose }) {
 
     const removeItem = async (id) => {
         try {
-            await axios.delete(`/api/cart/${id}`);
+            await axios.delete(`/api/cart/item/${id}`);
             setCartItems(items => items.filter(item => item.id !== id));
         } catch (error) {
             console.error('Error removing item:', error);
@@ -64,19 +64,18 @@ export default function CartSidebar({ isOpen, onClose }) {
     };
 
     const total = cartItems.reduce(
-        (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
+        (sum, item) => sum + ((item.product?.price || item.price || 0) * (item.quantity || 0)),
         0
     );
 
     const handleCheckout = async () => {
         if (cartItems.length === 0) return;
         try {
-            // Check if there are auth details
-            const rawUser = localStorage.getItem('user');
-            const userDetails = rawUser ? JSON.parse(rawUser) : null;
-            const customerId = userDetails?.id || CUSTOMER_ID;
-            const customerName = userDetails?.name || 'Guest User';
-            const customerEmail = userDetails?.email || 'guest@example.com';
+            // Get auth details from JWT token
+            const user = authService.getUserDetails();
+            const customerId = user?.id || 0;
+            const customerName = user?.email || 'Guest User';
+            const customerEmail = user?.email || 'guest@example.com';
 
             // Find if any custom images were placed in cartitem.imageUrl (a hack if the user did it this way)
             // Or if they added properties like 'originalImageUrl' in the cart
@@ -128,16 +127,16 @@ export default function CartSidebar({ isOpen, onClose }) {
                             {cartItems.map(item => (
                                 <li key={item.id} className="cart-item">
                                     <div className="cart-item__image">
-                                        {item.imageUrl ? (
-                                            <img src={item.imageUrl} alt={item.productName} />
+                                        {item.product?.imageUrl || item.imageUrl ? (
+                                            <img src={item.product?.imageUrl || item.imageUrl} alt={item.product?.name || item.productName} />
                                         ) : (
                                             <div className="cart-item__image-placeholder">INKA</div>
                                         )}
                                     </div>
                                     <div className="cart-item__details">
-                                        <p className="cart-item__name">{item.productName}</p>
+                                        <p className="cart-item__name">{item.product?.name || item.productName}</p>
                                         <p className="cart-item__price">
-                                            LKR {item.price?.toLocaleString()}
+                                            LKR {(item.product?.price || item.price)?.toLocaleString()}
                                         </p>
                                         <div className="cart-item__quantity">
                                             <button
