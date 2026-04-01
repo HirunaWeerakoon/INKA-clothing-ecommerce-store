@@ -706,3 +706,176 @@
   text-transform: uppercase;
   color: #888;
 }
+
+/* ════════════════════════════════════════
+   TEMP ORDERS TAB
+════════════════════════════════════════ */
+
+.admin-orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.admin-order-card {
+  background: #fff;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+}
+
+.order-card-header {
+  padding: 1rem 1.5rem;
+  background: #f9f9f9;
+  border-bottom: 1.5px solid #ebebeb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-card-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #111;
+}
+
+.order-date {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.order-card-body {
+  padding: 1.5rem;
+}
+
+.order-card-body p {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.modern-order-table-container {
+  margin-top: 1.5rem;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.modern-order-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.modern-order-table th {
+  background: #fdfdfd;
+  padding: 1rem 1.25rem;
+  text-align: left;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #666;
+  border-bottom: 1px solid #eaeaea;
+  text-transform: capitalize;
+}
+
+.modern-order-table td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #f2f2f2;
+  font-size: 0.9rem;
+  color: #333;
+  vertical-align: middle;
+}
+
+.modern-order-table tr:last-child td {
+  border-bottom: none;
+}
+
+.modern-item-cell {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.modern-item-img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+  background: #f0f0f0;
+}
+
+.modern-item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.modern-item-name {
+  font-weight: 700;
+  color: #111;
+  font-size: 0.95rem;
+}
+
+.modern-item-sub {
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 0.15rem;
+}
+
+.modern-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.status-processing {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: 1px solid #818cf8;
+}
+
+.status-delivering {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #fcd34d;
+}
+
+.status-delivered {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #86efac;
+}
+
+.order-customer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fafafa;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+.order-customer-row p {
+  margin: 0 !important;
+}
+
+.order-downloads {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px dashed #ddd;
+}
+
+.order-card-footer {
+  padding: 1rem 1.5rem;
+  background: #fdfdfd;
+  border-top: 1.5px solid #ebebeb;
+  display: flex;
+  align-items: center;
+}

@@ -64,6 +64,39 @@ export default function CartSidebar({ isOpen, onClose }) {
         0
     );
 
+    const handleCheckout = async () => {
+        if (cartItems.length === 0) return;
+        try {
+            // Check if there are auth details
+            const rawUser = localStorage.getItem('user');
+            const userDetails = rawUser ? JSON.parse(rawUser) : null;
+            const customerId = userDetails?.id || CUSTOMER_ID;
+            const customerName = userDetails?.name || 'Guest User';
+            const customerEmail = userDetails?.email || 'guest@example.com';
+
+            // Find if any custom images were placed in cartitem.imageUrl (a hack if the user did it this way)
+            // Or if they added properties like 'originalImageUrl' in the cart
+            const customItem = cartItems.find(item => item.originalImageUrl || (item.imageUrl && item.imageUrl.includes('merged')));
+
+            await axios.post('/api/temp-orders/checkout', {
+                customerId: customerId,
+                customerName: customerName,
+                customerEmail: customerEmail,
+                totalAmount: total,
+                originalImageUrl: customItem?.originalImageUrl || null,
+                mergedImageUrl: customItem?.mergedImageUrl || customItem?.imageUrl || null,
+                cartItems: cartItems
+            });
+
+            setCartItems([]);
+            alert('Checkout successful! Sent to Admin Temp Orders.');
+            onClose();
+        } catch (error) {
+            console.error('Checkout failed:', error);
+            alert('Checkout failed.');
+        }
+    };
+
     return (
         <>
             {/* Overlay */}
@@ -142,7 +175,9 @@ export default function CartSidebar({ isOpen, onClose }) {
                                 LKR {total.toLocaleString()}
                             </span>
                         </div>
-                        <button className="cart-sidebar__checkout">CHECKOUT</button>
+                        <button className="cart-sidebar__checkout" onClick={handleCheckout} disabled={cartItems.length === 0}>
+                            CHECKOUT
+                        </button>
                     </div>
                 )}
             </aside>

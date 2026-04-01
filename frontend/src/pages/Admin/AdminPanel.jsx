@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { authService } from '../../services/authService';
 import {
   adminGetAllProducts,
@@ -72,6 +73,7 @@ export default function AdminPanel() {
   const [stockEdits, setStockEdits] = useState({});
   const [users, setUsers] = useState([]);
   const [stats, setStats] = useState(null);
+  const [tempOrders, setTempOrders] = useState([]);
 
   // Form states
   const [form, setForm] = useState(EMPTY_FORM);
@@ -84,6 +86,7 @@ export default function AdminPanel() {
   const [catMessage, setCatMessage] = useState('');
   const [stockMessage, setStockMessage] = useState('');
   const [userMessage, setUserMessage] = useState('');
+  const [orderMessage, setOrderMessage] = useState('');
 
   // Load products and stats on mount
   useEffect(() => {
@@ -96,7 +99,27 @@ export default function AdminPanel() {
     if (activeTab === 'category') fetchCategories();
     if (activeTab === 'stock') fetchStock();
     if (activeTab === 'users') fetchUsers();
+    if (activeTab === 'tempOrders') fetchTempOrders();
   }, [activeTab]);
+
+  // Fetch temporary orders
+  const fetchTempOrders = async () => {
+    try {
+      const { data } = await axios.get('/api/temp-orders');
+      setTempOrders(data);
+    } catch (err) {
+      setOrderMessage('Failed to load temp orders.');
+    }
+  };
+
+  const updateTempOrderStatus = async (id, status) => {
+    try {
+      await axios.put(`/api/temp-orders/${id}/status`, { status });
+      fetchTempOrders();
+    } catch (err) {
+      alert('Failed to update order status');
+    }
+  };
 
   // Fetch dashboard stats
   const fetchStats = async () => {
@@ -368,6 +391,14 @@ export default function AdminPanel() {
             {/* Users icon */}
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
             Users
+          </button>
+
+          <button
+            className={activeTab === 'tempOrders' ? 'admin-nav-item active' : 'admin-nav-item'}
+            onClick={() => setActiveTab('tempOrders')}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-3V4c0-1.1-.9-2-2-2H9c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM9 4h6v3H9V4z"/></svg>
+            Orders (Temp)
           </button>
         </nav>
 
@@ -712,6 +743,99 @@ export default function AdminPanel() {
                   )}
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* ── TEMP ORDERS TAB ── */}
+        {activeTab === 'tempOrders' && (
+          <div className="admin-content">
+            <h2 className="admin-section-title">Temporary Orders</h2>
+            {orderMessage && <p className="admin-message">{orderMessage}</p>}
+
+            <div className="admin-orders-list">
+              {tempOrders.map((o) => (
+                <div key={o.id} className="admin-order-card">
+                  <div className="order-card-header">
+                    <h3>Order #{o.id}</h3>
+                    <span className="order-date">{new Date(o.createdAt).toLocaleString()}</span>
+                  </div>
+                  <div className="order-card-body">
+                    <div className="order-customer-row">
+                      <p><strong>Customer:</strong> {o.customerName} ({o.customerEmail})</p>
+                      <p><strong>Total:</strong> LKR {o.totalAmount?.toLocaleString()}</p>
+                    </div>
+                    
+                    <div className="modern-order-table-container">
+                       <table className="modern-order-table">
+                          <thead>
+                             <tr>
+                                <th>Item</th>
+                                <th>Status</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Amount</th>
+                             </tr>
+                          </thead>
+                          <tbody>
+                             {(() => {
+                                 let parsedItems = [];
+                                 try {
+                                    parsedItems = JSON.parse(o.cartItemsJson);
+                                 } catch(e) {
+                                    return <tr><td colSpan="5" style={{textAlign:'center', color:'#888', padding:'1rem'}}>Old order format. Cannot display tabular data.</td></tr>;
+                                 }
+                                 
+                                 return parsedItems.map((item, idx) => (
+                                    <tr key={idx}>
+                                       <td>
+                                         <div className="modern-item-cell">
+                                            <img src={item.imageUrl || 'https://via.placeholder.com/50'} alt={item.productName} className="modern-item-img" />
+                                            <div className="modern-item-info">
+                                               <span className="modern-item-name">{item.productName}</span>
+                                               <span className="modern-item-sub">Product ID: {item.productId}</span>
+                                            </div>
+                                         </div>
+                                       </td>
+                                       <td>
+                                          <span className={`modern-status-badge status-${o.status.toLowerCase()}`}>{o.status}</span>
+                                       </td>
+                                       <td style={{textAlign: 'center'}}>{item.quantity}</td>
+                                       <td>LKR {item.price?.toLocaleString() || 0}</td>
+                                       <td>LKR {((item.price || 0) * (item.quantity || 1)).toLocaleString()}</td>
+                                    </tr>
+                                 ));
+                             })()}
+                          </tbody>
+                       </table>
+                    </div>
+
+                    {(o.originalImageUrl || o.mergedImageUrl) && (
+                      <div className="order-downloads">
+                        <strong>Custom Design Links:</strong>
+                        <div style={{ display: 'flex', gap: '10px', marginTop: '5px' }}>
+                          {o.originalImageUrl && <a href={o.originalImageUrl} target="_blank" rel="noreferrer" className="quick-action-btn">Download Original</a>}
+                          {o.mergedImageUrl && <a href={o.mergedImageUrl} target="_blank" rel="noreferrer" className="quick-action-btn">Download Merged</a>}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="order-card-footer">
+                    <label><strong>Status: </strong></label>
+                    <select 
+                      value={o.status} 
+                      onChange={(e) => updateTempOrderStatus(o.id, e.target.value)}
+                      className="stock-input"
+                      style={{ width: 'auto', display: 'inline-block', marginLeft: '10px' }}
+                    >
+                      <option value="Processing">Processing</option>
+                      <option value="Delivering">Delivering</option>
+                      <option value="Delivered">Delivered</option>
+                    </select>
+                  </div>
+                </div>
+              ))}
+              {tempOrders.length === 0 && <p>No temporary orders found.</p>}
             </div>
           </div>
         )}
