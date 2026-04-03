@@ -823,31 +823,41 @@
   margin-top: 0.15rem;
 }
 
-.modern-status-badge {
+.modern-status-select {
   display: inline-flex;
   align-items: center;
-  padding: 0.25rem 0.75rem;
+  padding: 0.3rem 0.6rem;
   border-radius: 20px;
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.4rem center;
+  background-size: 12px;
+  padding-right: 1.6rem;
 }
 
-.status-processing {
-  background: #eef2ff;
+.modern-status-select.status-processing {
+  background-color: #eef2ff;
   color: #4f46e5;
   border: 1px solid #818cf8;
 }
 
-.status-delivering {
-  background: #fffbeb;
+.modern-status-select.status-delivering {
+  background-color: #fffbeb;
   color: #d97706;
   border: 1px solid #fcd34d;
 }
 
-.status-delivered {
-  background: #f0fdf4;
+.modern-status-select.status-delivered {
+  background-color: #f0fdf4;
   color: #16a34a;
   border: 1px solid #86efac;
 }
@@ -872,10 +882,28 @@
   border-top: 1px dashed #ddd;
 }
 
-.order-card-footer {
-  padding: 1rem 1.5rem;
-  background: #fdfdfd;
-  border-top: 1.5px solid #ebebeb;
-  display: flex;
-  align-items: center;
+/* Form select dropdowns */
+.admin-form select {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1.5px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: #fff;
+  color: #333;
+  outline: none;
+  transition: border-color 0.2s;
+  margin-bottom: 0.5rem;
+}
+
+.admin-form select:focus {
+  border-color: #111;
+}
+
+/* File input styling */
+.admin-form input[type="file"] {
+  padding: 0.5rem 0;
+  border: none;
+  font-size: 0.85rem;
+  color: #555;
 }

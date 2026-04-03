@@ -77,9 +77,19 @@ export default function CartSidebar({ isOpen, onClose }) {
             const customerName = user?.email || 'Guest User';
             const customerEmail = user?.email || 'guest@example.com';
 
-            // Find if any custom images were placed in cartitem.imageUrl (a hack if the user did it this way)
-            // Or if they added properties like 'originalImageUrl' in the cart
-            const customItem = cartItems.find(item => item.originalImageUrl || (item.imageUrl && item.imageUrl.includes('merged')));
+            // Flatten nested product data for clean storage in temp orders
+            const flatItems = cartItems.map(item => ({
+                productId: item.product?.productId || item.productId || item.id,
+                productName: item.product?.name || item.productName || 'Unknown',
+                imageUrl: item.product?.imageUrl || item.imageUrl || '',
+                price: item.product?.price || item.price || 0,
+                quantity: item.quantity || 1,
+                originalImageUrl: item.originalImageUrl || null,
+                mergedImageUrl: item.mergedImageUrl || null,
+            }));
+
+            // Find if any custom design images exist
+            const customItem = flatItems.find(item => item.originalImageUrl || (item.imageUrl && item.imageUrl.includes('merged')));
 
             await axios.post('/api/temp-orders/checkout', {
                 customerId: customerId,
@@ -88,7 +98,7 @@ export default function CartSidebar({ isOpen, onClose }) {
                 totalAmount: total,
                 originalImageUrl: customItem?.originalImageUrl || null,
                 mergedImageUrl: customItem?.mergedImageUrl || customItem?.imageUrl || null,
-                cartItems: cartItems
+                cartItems: flatItems
             });
 
             setCartItems([]);

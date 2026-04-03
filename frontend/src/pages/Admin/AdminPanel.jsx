@@ -18,10 +18,9 @@ import {
   adminGetAllStock,
   adminUpdateStock,
 } from '../../services/adminStockService';
-// Dashboard stats service — added for redesign
 import { adminGetStats } from '../../services/adminDashboardService';
-// User management service — added for Commit 4
 import { adminGetAllUsers, adminDeleteUser } from '../../services/adminUserService';
+import { uploadImage } from '../../services/cloudinary';
 import './AdminPanel.css';
 
 // Empty form state for product add/edit
@@ -88,15 +87,21 @@ export default function AdminPanel() {
   const [userMessage, setUserMessage] = useState('');
   const [orderMessage, setOrderMessage] = useState('');
 
-  // Load products and stats on mount
+  // Image file state for product upload
+  const [imageFile, setImageFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
+
+  // Load products, categories, and stats on mount
   useEffect(() => {
     fetchProducts();
+    fetchCategories();
     fetchStats();
   }, []);
 
   // Load data when tab changes
   useEffect(() => {
     if (activeTab === 'category') fetchCategories();
+    if (activeTab === 'products') fetchCategories();
     if (activeTab === 'stock') fetchStock();
     if (activeTab === 'users') fetchUsers();
     if (activeTab === 'tempOrders') fetchTempOrders();
@@ -207,21 +212,39 @@ export default function AdminPanel() {
     setCatForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Handle image file selection
+  const handleImageFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+    }
+  };
+
   // Handle Add Product
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
+      let imageUrl = form.imageUrl;
+      // Upload image to Cloudinary if a file was selected
+      if (imageFile) {
+        setUploading(true);
+        setMessage('Uploading image...');
+        imageUrl = await uploadImage(imageFile);
+        setUploading(false);
+      }
       await adminCreateProduct({
         ...form,
+        imageUrl,
         price: parseFloat(form.price),
         stock: parseInt(form.stock),
         categoryId: form.categoryId ? parseInt(form.categoryId) : null,
       });
       setMessage('Product added successfully!');
       setForm(EMPTY_FORM);
+      setImageFile(null);
       fetchProducts();
       fetchStats();
     } catch (err) {
+      setUploading(false);
       setMessage('Failed to add product.');
     }
   };
@@ -246,8 +269,16 @@ export default function AdminPanel() {
     e.preventDefault();
     if (!selectedProduct) return;
     try {
+      let imageUrl = form.imageUrl;
+      if (imageFile) {
+        setUploading(true);
+        setMessage('Uploading image...');
+        imageUrl = await uploadImage(imageFile);
+        setUploading(false);
+      }
       await adminUpdateProduct(selectedProduct.productId, {
         ...form,
+        imageUrl,
         price: parseFloat(form.price),
         stock: parseInt(form.stock),
         categoryId: form.categoryId ? parseInt(form.categoryId) : null,
@@ -255,8 +286,10 @@ export default function AdminPanel() {
       setMessage('Product updated successfully!');
       setSelectedProduct(null);
       setForm(EMPTY_FORM);
+      setImageFile(null);
       fetchProducts();
     } catch (err) {
+      setUploading(false);
       setMessage('Failed to update product.');
     }
   };
@@ -511,10 +544,16 @@ export default function AdminPanel() {
                 <input name="price" type="number" value={form.price} onChange={handleChange} required />
                 <label>Stock</label>
                 <input name="stock" type="number" value={form.stock} onChange={handleChange} required />
-                <label>Category ID</label>
-                <input name="categoryId" type="number" value={form.categoryId} onChange={handleChange} />
-                <label>Image URL</label>
-                <input name="imageUrl" value={form.imageUrl} onChange={handleChange} />
+                <label>Category</label>
+                <select name="categoryId" value={form.categoryId} onChange={handleChange}>
+                  <option value="">Select a category</option>
+                  {categories.map((c) => (
+                    <option key={c.categoryId} value={c.categoryId}>{c.categoryName}</option>
+                  ))}
+                </select>
+                <label>Product Image</label>
+                <input type="file" accept="image/*" onChange={handleImageFileChange} />
+                {imageFile && <p style={{fontSize:'0.8rem',color:'#666',margin:'0.25rem 0'}}>Selected: {imageFile.name}</p>}
                 <label className="checkbox-row">
                   <input name="isAvailable" type="checkbox" checked={form.isAvailable} onChange={handleChange} />
                   Available
@@ -524,8 +563,8 @@ export default function AdminPanel() {
                   Best Seller
                 </label>
                 <div className="admin-form-buttons">
-                  <button type="submit" className="btn-save">Save</button>
-                  <button type="button" className="btn-cancel" onClick={() => setForm(EMPTY_FORM)}>Cancel</button>
+                  <button type="submit" className="btn-save" disabled={uploading}>{uploading ? 'Uploading...' : 'Save'}</button>
+                  <button type="button" className="btn-cancel" onClick={() => { setForm(EMPTY_FORM); setImageFile(null); }}>Cancel</button>
                 </div>
               </form>
             )}
@@ -559,10 +598,17 @@ export default function AdminPanel() {
                     <input name="price" type="number" value={form.price} onChange={handleChange} required />
                     <label>Stock</label>
                     <input name="stock" type="number" value={form.stock} onChange={handleChange} required />
-                    <label>Category ID</label>
-                    <input name="categoryId" type="number" value={form.categoryId} onChange={handleChange} />
-                    <label>Image URL</label>
-                    <input name="imageUrl" value={form.imageUrl} onChange={handleChange} />
+                    <label>Category</label>
+                    <select name="categoryId" value={form.categoryId} onChange={handleChange}>
+                      <option value="">Select a category</option>
+                      {categories.map((c) => (
+                        <option key={c.categoryId} value={c.categoryId}>{c.categoryName}</option>
+                      ))}
+                    </select>
+                    <label>Product Image</label>
+                    {form.imageUrl && <img src={form.imageUrl} alt="Current" style={{width:60,height:60,objectFit:'cover',borderRadius:6,marginBottom:8}} />}
+                    <input type="file" accept="image/*" onChange={handleImageFileChange} />
+                    {imageFile && <p style={{fontSize:'0.8rem',color:'#666',margin:'0.25rem 0'}}>New file: {imageFile.name}</p>}
                     <label className="checkbox-row">
                       <input name="isAvailable" type="checkbox" checked={form.isAvailable} onChange={handleChange} />
                       Available
@@ -572,8 +618,8 @@ export default function AdminPanel() {
                       Best Seller
                     </label>
                     <div className="admin-form-buttons">
-                      <button type="submit" className="btn-save">Save</button>
-                      <button type="button" className="btn-cancel" onClick={() => { setSelectedProduct(null); setForm(EMPTY_FORM); }}>Cancel</button>
+                      <button type="submit" className="btn-save" disabled={uploading}>{uploading ? 'Uploading...' : 'Save'}</button>
+                      <button type="button" className="btn-cancel" onClick={() => { setSelectedProduct(null); setForm(EMPTY_FORM); setImageFile(null); }}>Cancel</button>
                     </div>
                   </form>
                 )}
@@ -786,25 +832,41 @@ export default function AdminPanel() {
                                     return <tr><td colSpan="5" style={{textAlign:'center', color:'#888', padding:'1rem'}}>Old order format. Cannot display tabular data.</td></tr>;
                                  }
                                  
-                                 return parsedItems.map((item, idx) => (
+                                 return parsedItems.map((item, idx) => {
+                                    // Handle both flat and nested product object structures
+                                    const productName = item.product?.name || item.productName || item.name || 'Unknown';
+                                    const productImage = item.product?.imageUrl || item.imageUrl || 'https://via.placeholder.com/50';
+                                    const productId = item.product?.productId || item.productId || item.id || '—';
+                                    const price = item.product?.price || item.price || 0;
+                                    const qty = item.quantity || 1;
+                                    return (
                                     <tr key={idx}>
                                        <td>
                                          <div className="modern-item-cell">
-                                            <img src={item.imageUrl || 'https://via.placeholder.com/50'} alt={item.productName} className="modern-item-img" />
+                                            <img src={productImage} alt={productName} className="modern-item-img" />
                                             <div className="modern-item-info">
-                                               <span className="modern-item-name">{item.productName}</span>
-                                               <span className="modern-item-sub">Product ID: {item.productId}</span>
+                                               <span className="modern-item-name">{productName}</span>
+                                               <span className="modern-item-sub">Product ID: {productId}</span>
                                             </div>
                                          </div>
                                        </td>
                                        <td>
-                                          <span className={`modern-status-badge status-${o.status.toLowerCase()}`}>{o.status}</span>
+                                          <select
+                                            className={`modern-status-select status-${o.status.toLowerCase()}`}
+                                            value={o.status}
+                                            onChange={(e) => updateTempOrderStatus(o.id, e.target.value)}
+                                          >
+                                            <option value="Processing">Processing</option>
+                                            <option value="Delivering">Delivering</option>
+                                            <option value="Delivered">Delivered</option>
+                                          </select>
                                        </td>
-                                       <td style={{textAlign: 'center'}}>{item.quantity}</td>
-                                       <td>LKR {item.price?.toLocaleString() || 0}</td>
-                                       <td>LKR {((item.price || 0) * (item.quantity || 1)).toLocaleString()}</td>
+                                       <td style={{textAlign: 'center'}}>{qty}</td>
+                                       <td>LKR {price.toLocaleString()}</td>
+                                       <td>LKR {(price * qty).toLocaleString()}</td>
                                     </tr>
-                                 ));
+                                    );
+                                 });
                              })()}
                           </tbody>
                        </table>
@@ -819,19 +881,6 @@ export default function AdminPanel() {
                         </div>
                       </div>
                     )}
-                  </div>
-                  <div className="order-card-footer">
-                    <label><strong>Status: </strong></label>
-                    <select 
-                      value={o.status} 
-                      onChange={(e) => updateTempOrderStatus(o.id, e.target.value)}
-                      className="stock-input"
-                      style={{ width: 'auto', display: 'inline-block', marginLeft: '10px' }}
-                    >
-                      <option value="Processing">Processing</option>
-                      <option value="Delivering">Delivering</option>
-                      <option value="Delivered">Delivered</option>
-                    </select>
                   </div>
                 </div>
               ))}
