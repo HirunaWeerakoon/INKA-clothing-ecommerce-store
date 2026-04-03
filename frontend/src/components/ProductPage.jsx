@@ -99,8 +99,12 @@ export default function ProductPage() {
 
     if (!product) return <div className="loading">Loading...</div>;
 
-    const thumbnails = [product.image2, product.image3, product.image4, product.image5];
-    const mainImage = activeThumb === -1 ? product.image1 : thumbnails[activeThumb] || product.image1;
+    // Build gallery: use image1-5 if available, fallback to imageUrl
+    const primaryImage = product.image1 || product.imageUrl;
+    const thumbnails = [product.image2, product.image3, product.image4, product.image5].filter(Boolean);
+    const mainImage = thumbnails.length > 0 && activeThumb >= 0
+        ? (thumbnails[activeThumb] || primaryImage)
+        : primaryImage;
 
     const TABS = [
         { id: 'description', label: 'Description' },
@@ -122,6 +126,7 @@ export default function ProductPage() {
                             : <span className="pp-no-image">No Image</span>
                         }
                     </div>
+                    {thumbnails.length > 0 && (
                     <div className="pp-thumbs">
                         {thumbnails.map((img, i) => (
                             <button
@@ -129,15 +134,15 @@ export default function ProductPage() {
                                 className={`pp-thumb${activeThumb === i ? ' active' : ''}`}
                                 onClick={() => setActiveThumb(i)}
                                 style={{
-                                    backgroundImage: img ? `url(${img})` : 'none',
+                                    backgroundImage: `url(${img})`,
                                     backgroundSize: 'cover',
                                     backgroundPosition: 'center',
-                                    backgroundColor: img ? 'transparent' : '#d9d9d9'
                                 }}
                                 aria-label={`Thumbnail ${i + 1}`}
                             />
                         ))}
                     </div>
+                    )}
                 </div>
 
                 {/* RIGHT — details */}

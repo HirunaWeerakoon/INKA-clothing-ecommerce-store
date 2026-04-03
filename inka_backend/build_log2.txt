@@ -1,0 +1,469 @@
+﻿[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.example:inka_backend:jar:0.0.1-SNAPSHOT
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: io.jsonwebtoken:jjwt-api:jar -> duplicate declaration of version 0.11.5 @ line 87, column 15
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: io.jsonwebtoken:jjwt-impl:jar -> duplicate declaration of version 0.11.5 @ line 92, column 15
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: io.jsonwebtoken:jjwt-jackson:jar -> duplicate declaration of version 0.11.5 @ line 98, column 15
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: me.paulschwarz:spring-dotenv:jar -> duplicate declaration of version 4.0.0 @ line 130, column 15
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] 
+[INFO] ----------------------< com.example:inka_backend >----------------------
+[INFO] Building inka_backend 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ inka_backend ---
+[INFO] Deleting C:\A\Studies\Y2S2\project\inka_clothing_ecommerce_store\inka_backend\target
+[INFO] 
+[INFO] >>> spring-boot:4.0.3:run (default-cli) > test-compile @ inka_backend >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ inka_backend ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ inka_backend ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 56 source files with javac [debug parameters release 21] to target\classes
+.\mvnw.cmd : WARNING: A 
+terminally deprecated method in 
+sun.misc.Unsafe has been called
+At line:1 char:1
++ .\mvnw.cmd clean 
+spring-boot:run 2>&1 | Out-File 
+-FilePath .\build_lo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~
+    + CategoryInfo          : No 
+   tSpecified: (WARNING: A term  
+  ...has been called:String) [   
+ ], RemoteException
+    + FullyQualifiedErrorId : Na 
+   tiveCommandError
+ 
+WARNING: sun.misc.Unsafe::objectF
+ieldOffset has been called by 
+lombok.permit.Permit
+WARNING: Please consider 
+reporting this to the 
+maintainers of class 
+lombok.permit.Permit
+WARNING: sun.misc.Unsafe::objectF
+ieldOffset will be removed in a 
+future release
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ inka_backend ---
+[INFO] skip non existing resourceDirectory C:\A\Studies\Y2S2\project\inka_clothing_ecommerce_store\inka_backend\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ inka_backend ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 21] to target\test-classes
+[INFO] 
+[INFO] <<< spring-boot:4.0.3:run (default-cli) < test-compile @ inka_backend <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:4.0.3:run (default-cli) @ inka_backend ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.3)
+
+2026-04-03T21:34:19.774+05:30  INFO 13284 --- [inka_backend] [           main] c.e.inka_backend.InkaBackendApplication  : Starting InkaBackendApplication using Java 24.0.1 with PID 13284 (C:\A\Studies\Y2S2\project\inka_clothing_ecommerce_store\inka_backend\target\classes started by USER in C:\A\Studies\Y2S2\project\inka_clothing_ecommerce_store\inka_backend)
+2026-04-03T21:34:19.778+05:30  INFO 13284 --- [inka_backend] [           main] c.e.inka_backend.InkaBackendApplication  : No active profile set, falling back to 1 default profile: "default"
+2026-04-03T21:34:20.652+05:30  INFO 13284 --- [inka_backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-03T21:34:20.774+05:30  INFO 13284 --- [inka_backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 104 ms. Found 8 JPA repository interfaces.
+2026-04-03T21:34:21.348+05:30  INFO 13284 --- [inka_backend] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-04-03T21:34:21.361+05:30  INFO 13284 --- [inka_backend] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-03T21:34:21.361+05:30  INFO 13284 --- [inka_backend] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-04-03T21:34:21.417+05:30  INFO 13284 --- [inka_backend] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1581 ms
+2026-04-03T21:34:21.597+05:30  INFO 13284 --- [inka_backend] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-03T21:34:21.648+05:30  INFO 13284 --- [inka_backend] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-04-03T21:34:22.155+05:30  INFO 13284 --- [inka_backend] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-03T21:34:22.195+05:30  INFO 13284 --- [inka_backend] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-03T21:34:24.786+05:30  INFO 13284 --- [inka_backend] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@81dfdee
+2026-04-03T21:34:24.788+05:30  INFO 13284 --- [inka_backend] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-03T21:34:25.148+05:30  WARN 13284 --- [inka_backend] [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-04-03T21:34:25.314+05:30  INFO 13284 --- [inka_backend] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://mysql-3c37a506-inkaapparel.j.aivencloud.com:16018/defaultdb?sslMode=REQUIRED&useSSL=true&requireSSL=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: defaultdb/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-03T21:34:26.471+05:30  INFO 13284 --- [inka_backend] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: 
+    alter table cart_items 
+       drop 
+       foreign key FKb1y4qlret3tm18niruml3x4eo
+2026-04-03T21:34:27.410+05:30  WARN 13284 --- [inka_backend] [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table cart_items 
+       drop 
+       foreign key FKb1y4qlret3tm18niruml3x4eo" via JDBC [Can't DROP 'FKb1y4qlret3tm18niruml3x4eo'; check that column/key exists]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table cart_items 
+       drop 
+       foreign key FKb1y4qlret3tm18niruml3x4eo" via JDBC [Can't DROP 'FKb1y4qlret3tm18niruml3x4eo'; check that column/key exists]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:81) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:218) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.Helper.applySqlStrings(Helper.java:204) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applyConstraintDropping(SchemaDropperImpl.java:473) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.dropConstraintsTablesSequences(SchemaDropperImpl.java:237) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.dropFromMetadata(SchemaDropperImpl.java:210) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.performDrop(SchemaDropperImpl.java:182) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:152) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:112) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:227) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$1(SchemaManagementToolCoordinator.java:101) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1430) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:100) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:35) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:323) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionFactoryRegistry.instantiateSessionFactory(SessionFactoryRegistry.java:64) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:437) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1456) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1864) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1813) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977) ~[spring-context-7.0.5.jar:7.0.5]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.5.jar:7.0.5]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.3.jar:4.0.3]
+	at com.example.inka_backend.InkaBackendApplication.main(InkaBackendApplication.java:10) ~[classes/:na]
+Caused by: java.sql.SQLSyntaxErrorException: Can't DROP 'FKb1y4qlret3tm18niruml3x4eo'; check that column/key exists
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:112) ~[mysql-connector-j-9.6.0.jar:9.6.0]
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:114) ~[mysql-connector-j-9.6.0.jar:9.6.0]
+	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:839) ~[mysql-connector-j-9.6.0.jar:9.6.0]
+	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:687) ~[mysql-connector-j-9.6.0.jar:9.6.0]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:76) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	... 40 common frames omitted
+
+Hibernate: 
+    alter table cart_items 
+       drop 
+       foreign key FK1re40cjegsfvw58xrkdp6bac6
+Hibernate: 
+    alter table products 
+       drop 
+       foreign key FK1cf90etcu98x1e6n9aks3tel3
+Hibernate: 
+    alter table reviews 
+       drop 
+       foreign key FK2p7fjk3udy4rltb6dpwvet5tx
+2026-04-03T21:34:28.330+05:30  WARN 13284 --- [inka_backend] [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table reviews 
+       drop 
+       foreign key FK2p7fjk3udy4rltb6dpwvet5tx" via JDBC [Can't DROP 'FK2p7fjk3udy4rltb6dpwvet5tx'; check that column/key exists]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table reviews 
+       drop 
+       foreign key FK2p7fjk3udy4rltb6dpwvet5tx" via JDBC [Can't DROP 'FK2p7fjk3udy4rltb6dpwvet5tx'; check that column/key exists]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:81) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.Helper.applySqlString(Helper.java:218) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.Helper.applySqlStrings(Helper.java:204) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.applyConstraintDropping(SchemaDropperImpl.java:473) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.dropConstraintsTablesSequences(SchemaDropperImpl.java:237) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.dropFromMetadata(SchemaDropperImpl.java:210) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.performDrop(SchemaDropperImpl.java:182) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:152) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.internal.SchemaDropperImpl.doDrop(SchemaDropperImpl.java:112) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:227) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$1(SchemaManagementToolCoordinator.java:101) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1430) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:100) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:35) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:323) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionFactoryRegistry.instantiateSessionFactory(SessionFactoryRegistry.java:64) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:437) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1456) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419) ~[spring-orm-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1864) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1813) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.5.jar:7.0.5]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977) ~[spring-context-7.0.5.jar:7.0.5]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621) ~[spring-context-7.0.5.jar:7.0.5]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.3.jar:4.0.3]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.3.jar:4.0.3]
+	at com.example.inka_backend.InkaBackendApplication.main(InkaBackendApplication.java:10) ~[classes/:na]
+Caused by: java.sql.SQLSyntaxErrorException: Can't DROP 'FK2p7fjk3udy4rltb6dpwvet5tx'; check that column/key exists
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:112) ~[mysql-connector-j-9.6.0.jar:9.6.0]
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:114) ~[mysql-connector-j-9.6.0.jar:9.6.0]
+	at com.mysql.cj.jdbc.StatementImpl.executeInternal(StatementImpl.java:839) ~[mysql-connector-j-9.6.0.jar:9.6.0]
+	at com.mysql.cj.jdbc.StatementImpl.execute(StatementImpl.java:687) ~[mysql-connector-j-9.6.0.jar:9.6.0]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:76) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	... 40 common frames omitted
+
+Hibernate: 
+    alter table reviews 
+       drop 
+       foreign key FKpl51cejpw4gy5swfar8br9ngi
+Hibernate: 
+    alter table sub_category 
+       drop 
+       foreign key FKl65dyy5me2ypoyj8ou1hnt64e
+Hibernate: 
+    drop table if exists cart_items
+Hibernate: 
+    drop table if exists category
+Hibernate: 
+    drop table if exists custom_order
+Hibernate: 
+    drop table if exists customer
+Hibernate: 
+    drop table if exists products
+Hibernate: 
+    drop table if exists reviews
+Hibernate: 
+    drop table if exists sub_category
+Hibernate: 
+    drop table if exists temp_orders
+Hibernate: 
+    create table cart_items (
+        quantity integer not null,
+        customer_id bigint not null,
+        id bigint not null auto_increment,
+        product_id bigint not null,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    create table category (
+        id bigint not null auto_increment,
+        image_url varchar(255),
+        name varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    create table custom_order (
+        quantity integer,
+        total_price float(53),
+        created_at datetime(6),
+        customer_id bigint,
+        id bigint not null auto_increment,
+        category_name varchar(255),
+        color varchar(255),
+        design_image_url varchar(255),
+        gsm varchar(255),
+        material varchar(255),
+        size varchar(255),
+        status varchar(255),
+        sub_category_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    create table customer (
+        customer_id bigint not null auto_increment,
+        address varchar(255),
+        email varchar(255) not null,
+        google_id varchar(255),
+        name varchar(255),
+        picture_url varchar(255),
+        role enum ('ADMIN','USER'),
+        primary key (customer_id)
+    ) engine=InnoDB
+Hibernate: 
+    create table products (
+        best_seller bit,
+        is_available bit,
+        price float(53),
+        stock integer,
+        category_id bigint,
+        product_id bigint not null auto_increment,
+        description varchar(255),
+        image1 varchar(255),
+        image2 varchar(255),
+        image3 varchar(255),
+        image4 varchar(255),
+        image5 varchar(255),
+        image_url varchar(255),
+        name varchar(255),
+        primary key (product_id)
+    ) engine=InnoDB
+Hibernate: 
+    create table reviews (
+        rating integer not null,
+        created_at datetime(6) not null,
+        customer_id bigint not null,
+        product_id bigint not null,
+        review_id bigint not null auto_increment,
+        body TEXT,
+        image_url varchar(255),
+        size_purchased varchar(255),
+        title varchar(255),
+        primary key (review_id)
+    ) engine=InnoDB
+Hibernate: 
+    create table sub_category (
+        category_id bigint,
+        id bigint not null auto_increment,
+        image_url varchar(255),
+        name varchar(255) not null,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    create table temp_orders (
+        total_amount float(53),
+        created_at datetime(6),
+        customer_id bigint not null,
+        id bigint not null auto_increment,
+        cart_items_json TEXT,
+        customer_email varchar(255),
+        customer_name varchar(255),
+        merged_image_url varchar(255),
+        original_image_url varchar(255),
+        status varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    alter table customer 
+       add constraint UKdwk6cx0afu8bs9o4t536v1j5v unique (email)
+Hibernate: 
+    alter table customer 
+       add constraint UKgsm2703acq8pk4lgt5vafisuu unique (google_id)
+Hibernate: 
+    alter table cart_items 
+       add constraint FKb1y4qlret3tm18niruml3x4eo 
+       foreign key (customer_id) 
+       references customer (customer_id)
+Hibernate: 
+    alter table cart_items 
+       add constraint FK1re40cjegsfvw58xrkdp6bac6 
+       foreign key (product_id) 
+       references products (product_id)
+Hibernate: 
+    alter table products 
+       add constraint FK1cf90etcu98x1e6n9aks3tel3 
+       foreign key (category_id) 
+       references category (id)
+Hibernate: 
+    alter table reviews 
+       add constraint FK2p7fjk3udy4rltb6dpwvet5tx 
+       foreign key (customer_id) 
+       references customer (customer_id)
+Hibernate: 
+    alter table reviews 
+       add constraint FKpl51cejpw4gy5swfar8br9ngi 
+       foreign key (product_id) 
+       references products (product_id)
+Hibernate: 
+    alter table sub_category 
+       add constraint FKl65dyy5me2ypoyj8ou1hnt64e 
+       foreign key (category_id) 
+       references category (id)
+2026-04-03T21:34:41.839+05:30  INFO 13284 --- [inka_backend] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-03T21:34:41.909+05:30  INFO 13284 --- [inka_backend] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-03T21:34:42.891+05:30  WARN 13284 --- [inka_backend] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-03T21:34:48.049+05:30  INFO 13284 --- [inka_backend] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-04-03T21:34:48.055+05:30  INFO 13284 --- [inka_backend] [           main] c.e.inka_backend.InkaBackendApplication  : Started InkaBackendApplication in 28.766 seconds (process running for 29.243)
+Hibernate: 
+    select
+        count(*) 
+    from
+        category c1_0
+>> Database already populated, skipping seed.
+2026-04-03T21:45:20.987+05:30  INFO 13284 --- [inka_backend] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-03T21:45:20.988+05:30  INFO 13284 --- [inka_backend] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-04-03T21:45:20.991+05:30  INFO 13284 --- [inka_backend] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+Hibernate: 
+    select
+        p1_0.product_id,
+        p1_0.best_seller,
+        p1_0.category_id,
+        p1_0.description,
+        p1_0.image1,
+        p1_0.image2,
+        p1_0.image3,
+        p1_0.image4,
+        p1_0.image5,
+        p1_0.image_url,
+        p1_0.is_available,
+        p1_0.name,
+        p1_0.price,
+        p1_0.stock 
+    from
+        products p1_0 
+    where
+        p1_0.is_available=true
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.name,
+        c1_0.image_url 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.name,
+        c1_0.image_url 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.name,
+        c1_0.image_url 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+Hibernate: 
+    select
+        c1_0.id,
+        c1_0.name,
+        c1_0.image_url 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
