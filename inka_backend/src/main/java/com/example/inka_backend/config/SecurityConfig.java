@@ -48,6 +48,7 @@ public class SecurityConfig {
                 // Public read access
                 .requestMatchers("/", "/api/products/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/subcategories/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
                 .requestMatchers("/api/images/**").permitAll() // Cloudinary image upload endpoint
 

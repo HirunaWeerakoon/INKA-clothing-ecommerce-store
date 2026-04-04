@@ -25,7 +25,7 @@ public class CustomOrderService {
         order.setQuantity(dto.getQuantity());
         order.setDesignImageUrl(dto.getDesignImageUrl());
         order.setTotalPrice(dto.getTotalPrice());
-        order.setStatus("PENDING");
+        order.setStatus("IN_CART");
         return customOrderRepository.save(order);
     }
 
@@ -35,5 +35,25 @@ public class CustomOrderService {
 
     public List<CustomOrder> getAllOrders() {
         return customOrderRepository.findAll();
+    }
+
+    public CustomOrder updateQuantity(Long id, int quantity) {
+        CustomOrder order = customOrderRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
+        order.setQuantity(quantity);
+        return customOrderRepository.save(order);
+    }
+
+    public void deleteOrder(Long id) {
+        customOrderRepository.deleteById(id);
+    }
+
+    public void checkoutCustomerOrders(Long customerId) {
+        List<CustomOrder> activeOrders = customOrderRepository.findByCustomerId(customerId);
+        for (CustomOrder order : activeOrders) {
+            if ("IN_CART".equals(order.getStatus())) {
+                order.setStatus("PENDING");
+                customOrderRepository.save(order);
+            }
+        }
     }
 }

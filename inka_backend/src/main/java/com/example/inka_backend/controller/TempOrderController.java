@@ -19,6 +19,7 @@ public class TempOrderController {
 
     private final TempOrderRepository tempOrderRepository;
     private final CartService cartService;
+    private final com.example.inka_backend.service.CustomOrderService customOrderService;
 
     // POST /api/temp-orders/checkout
     @PostMapping("/checkout")
@@ -38,8 +39,9 @@ public class TempOrderController {
         
         // Clear cart after checkout
         try {
-            if (request.getCustomerId() != null) {
+            if (request.getCustomerId() != null && request.getCustomerId() > 0) {
                 cartService.clearCart(request.getCustomerId());
+                customOrderService.checkoutCustomerOrders(request.getCustomerId());
             }
         } catch (Exception e) {
             // ignore if clearing cart fails for any reason

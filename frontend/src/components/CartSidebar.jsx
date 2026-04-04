@@ -16,8 +16,26 @@ export default function CartSidebar({ isOpen, onClose }) {
         }
         setLoading(true);
         try {
-            const response = await axios.get(`/api/cart/${user.id}`);
-            setCartItems(response.data);
+            const [cartRes, customRes] = await Promise.all([
+                axios.get(`/api/cart/${user.id}`),
+                axios.get(`/api/custom-orders/${user.id}`).catch(() => ({ data: [] }))
+            ]);
+
+            const customItems = customRes.data
+                .filter(co => co.status === 'IN_CART')
+                .map(co => ({
+                    id: `custom_${co.id}`,  
+                    isCustom: true,
+                    originalId: co.id,
+                    productName: `Custom ${co.categoryName} - ${co.subCategoryName || ''}`,
+                    price: co.totalPrice / Math.max(1, co.quantity), 
+                    quantity: co.quantity,
+                    imageUrl: co.designImageUrl,
+                    originalImageUrl: co.designImageUrl,
+                    mergedImageUrl: co.designImageUrl,
+                }));
+
+            setCartItems([...cartRes.data, ...customItems]);
         } catch (error) {
             console.error('Error fetching cart:', error);
         } finally {
@@ -43,7 +61,13 @@ export default function CartSidebar({ isOpen, onClose }) {
     const updateQuantity = async (id, newQty) => {
         if (newQty < 1) return;
         try {
-            await axios.put(`/api/cart/item/${id}`, { quantity: newQty });
+            const isCustom = typeof id === 'string' && id.startsWith('custom_');
+            if (isCustom) {
+                const originalId = id.replace('custom_', '');
+                await axios.put(`/api/custom-orders/item/${originalId}`, { quantity: newQty });
+            } else {
+                await axios.put(`/api/cart/item/${id}`, { quantity: newQty });
+            }
             setCartItems(items =>
                 items.map(item =>
                     item.id === id ? { ...item, quantity: newQty } : item
@@ -56,7 +80,13 @@ export default function CartSidebar({ isOpen, onClose }) {
 
     const removeItem = async (id) => {
         try {
-            await axios.delete(`/api/cart/item/${id}`);
+            const isCustom = typeof id === 'string' && id.startsWith('custom_');
+            if (isCustom) {
+                const originalId = id.replace('custom_', '');
+                await axios.delete(`/api/custom-orders/item/${originalId}`);
+            } else {
+                await axios.delete(`/api/cart/item/${id}`);
+            }
             setCartItems(items => items.filter(item => item.id !== id));
         } catch (error) {
             console.error('Error removing item:', error);

@@ -467,3 +467,4 @@ Hibernate:
         category c1_0 
     where
         c1_0.id=?
+^C
