@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "Customer")
+@Table(name = "customer")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,20 +13,20 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CustomerID")
+    @Column(name = "customer_id")
     private Long customerId;
 
-    @Column(name = "Name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "Email", unique = true, nullable = false)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "Address")
+    @Column(name = "address")
     private String address;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "Role")
+    @Column(name = "role")
     private UserRole role = UserRole.USER;
 
         // The unique ID Google assigns every user — used to find them on login
