@@ -3,6 +3,7 @@ import axios from 'axios';
 import { X, Plus, Minus, Trash2 } from 'lucide-react';
 import './CartSidebar.css';
 import { authService } from '../services/authService';
+import { checkoutService } from '../services/checkoutService';
 
 export default function CartSidebar({ isOpen, onClose }) {
     const [cartItems, setCartItems] = useState([]);
@@ -67,6 +68,25 @@ export default function CartSidebar({ isOpen, onClose }) {
         (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
         0
     );
+
+    const handleCheckout = async () => {
+        const user = authService.getUserDetails();
+        if (!user) {
+            alert('Please log in to checkout.');
+            return;
+        }
+        try {
+            const response = await checkoutService.createCartSession(user.id);
+            if (response?.url) {
+                window.location.href = response.url;
+            } else {
+                alert('Unable to start checkout.');
+            }
+        } catch (error) {
+            console.error('Error starting checkout:', error);
+            alert('Unable to start checkout.');
+        }
+    };
 
     return (
         <>
@@ -146,7 +166,7 @@ export default function CartSidebar({ isOpen, onClose }) {
                                 LKR {total.toLocaleString()}
                             </span>
                         </div>
-                        <button className="cart-sidebar__checkout">CHECKOUT</button>
+                        <button className="cart-sidebar__checkout" onClick={handleCheckout}>CHECKOUT</button>
                     </div>
                 )}
             </aside>
