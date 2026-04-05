@@ -43,6 +43,9 @@ public class SecurityConfig {
                 // Google OAuth2 flow
                 .requestMatchers("/oauth2/**", "/login/oauth2/**", "/login/**").permitAll()
 
+                // Stripe checkout + webhook
+                .requestMatchers("/api/checkout/**").permitAll()
+
                 // Public read access
                 .requestMatchers("/", "/api/products/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
