@@ -44,7 +44,7 @@ export default function CartSidebar({ isOpen, onClose }) {
     const updateQuantity = async (id, newQty) => {
         if (newQty < 1) return;
         try {
-            await axios.put(`/api/cart/${id}`, { quantity: newQty });
+            await axios.put(`/api/cart/item/${id}`, { quantity: newQty });
             setCartItems(items =>
                 items.map(item =>
                     item.id === id ? { ...item, quantity: newQty } : item
@@ -57,7 +57,7 @@ export default function CartSidebar({ isOpen, onClose }) {
 
     const removeItem = async (id) => {
         try {
-            await axios.delete(`/api/cart/${id}`);
+            await axios.delete(`/api/cart/item/${id}`);
             setCartItems(items => items.filter(item => item.id !== id));
         } catch (error) {
             console.error('Error removing item:', error);
@@ -65,7 +65,7 @@ export default function CartSidebar({ isOpen, onClose }) {
     };
 
     const total = cartItems.reduce(
-        (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
+        (sum, item) => sum + (item.product?.price || 0) * (item.quantity || 0),
         0
     );
 
@@ -115,16 +115,16 @@ export default function CartSidebar({ isOpen, onClose }) {
                             {cartItems.map(item => (
                                 <li key={item.id} className="cart-item">
                                     <div className="cart-item__image">
-                                        {item.imageUrl ? (
-                                            <img src={item.imageUrl} alt={item.productName} />
+                                        {item.product?.imageUrl ? (
+                                            <img src={item.product.imageUrl} alt={item.product?.name} />
                                         ) : (
                                             <div className="cart-item__image-placeholder">INKA</div>
                                         )}
                                     </div>
                                     <div className="cart-item__details">
-                                        <p className="cart-item__name">{item.productName}</p>
+                                        <p className="cart-item__name">{item.product?.name}</p>
                                         <p className="cart-item__price">
-                                            LKR {item.price?.toLocaleString()}
+                                            LKR {item.product?.price?.toLocaleString()}
                                         </p>
                                         <div className="cart-item__quantity">
                                             <button
