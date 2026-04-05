@@ -22,8 +22,9 @@ public class CheckoutService {
 
     private static final String PROVIDER_STRIPE = "stripe";
     private static final String CURRENCY = "LKR";
-    private static final long FREE_SHIPPING_THRESHOLD = 100;
-    private static final long DEFAULT_SHIPPING_FEE = 9;
+    private static final BigDecimal MINOR_UNIT_FACTOR = BigDecimal.valueOf(100);
+    private static final BigDecimal FREE_SHIPPING_THRESHOLD = BigDecimal.valueOf(100);
+    private static final BigDecimal DEFAULT_SHIPPING_FEE = BigDecimal.valueOf(9);
 
     private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
@@ -71,7 +72,8 @@ public class CheckoutService {
         order.setCurrency(CURRENCY);
 
         List<OrderItem> items = new ArrayList<>();
-        long subtotal = 0;
+        long subtotalMinor = 0;
+        BigDecimal subtotalMajor = BigDecimal.ZERO;
 
         for (CartItem cartItem : cartItems) {
             Product product = cartItem.getProduct();
@@ -89,15 +91,20 @@ public class CheckoutService {
             item.setLineTotal(lineTotal);
             items.add(item);
 
-            subtotal += lineTotal;
+                subtotalMinor += lineTotal;
+                subtotalMajor = subtotalMajor.add(BigDecimal.valueOf(product.getPrice())
+                    .multiply(BigDecimal.valueOf(quantity)));
         }
 
-        long shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : DEFAULT_SHIPPING_FEE;
-        long total = subtotal + shipping;
+            BigDecimal shippingMajor = subtotalMajor.compareTo(FREE_SHIPPING_THRESHOLD) >= 0
+                ? BigDecimal.ZERO
+                : DEFAULT_SHIPPING_FEE;
+            long shippingMinor = toMinorAmount(shippingMajor.doubleValue());
+            long totalMinor = subtotalMinor + shippingMinor;
 
-        order.setSubtotalAmount(subtotal);
-        order.setShippingAmount(shipping);
-        order.setTotalAmount(total);
+            order.setSubtotalAmount(subtotalMinor);
+            order.setShippingAmount(shippingMinor);
+            order.setTotalAmount(totalMinor);
         order.setItems(items);
 
         Order savedOrder = orderRepository.save(order);
@@ -121,12 +128,12 @@ public class CheckoutService {
                     .build());
         }
 
-        if (shipping > 0) {
+        if (shippingMinor > 0) {
             paramsBuilder.addLineItem(SessionCreateParams.LineItem.builder()
                     .setQuantity(1L)
                     .setPriceData(SessionCreateParams.LineItem.PriceData.builder()
                             .setCurrency(CURRENCY.toLowerCase())
-                            .setUnitAmount(shipping)
+                    .setUnitAmount(shippingMinor)
                             .setProductData(SessionCreateParams.LineItem.PriceData.ProductData.builder()
                                     .setName("Shipping")
                                     .build())
@@ -145,7 +152,7 @@ public class CheckoutService {
         payment.setProvider(PROVIDER_STRIPE);
         payment.setStatus(PaymentStatus.PENDING);
         payment.setCurrency(CURRENCY);
-        payment.setAmount(total);
+        payment.setAmount(totalMinor);
         payment.setStripeSessionId(session.getId());
         payment.setStripePaymentIntentId(session.getPaymentIntent());
         paymentRepository.save(payment);
@@ -174,7 +181,8 @@ public class CheckoutService {
         order.setCurrency(CURRENCY);
 
         List<OrderItem> items = new ArrayList<>();
-        long subtotal = 0;
+        long subtotalMinor = 0;
+        BigDecimal subtotalMajor = BigDecimal.ZERO;
 
         for (CustomOrder customOrder : customOrders) {
             long unitAmount = toMinorAmount(customOrder.getTotalPrice());
@@ -191,15 +199,21 @@ public class CheckoutService {
             item.setLineTotal(lineTotal);
             items.add(item);
 
-            subtotal += lineTotal;
+            subtotalMinor += lineTotal;
+            if (customOrder.getTotalPrice() != null) {
+                subtotalMajor = subtotalMajor.add(BigDecimal.valueOf(customOrder.getTotalPrice()));
+            }
         }
 
-        long shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : DEFAULT_SHIPPING_FEE;
-        long total = subtotal + shipping;
+        BigDecimal shippingMajor = subtotalMajor.compareTo(FREE_SHIPPING_THRESHOLD) >= 0
+                ? BigDecimal.ZERO
+                : DEFAULT_SHIPPING_FEE;
+        long shippingMinor = toMinorAmount(shippingMajor.doubleValue());
+        long totalMinor = subtotalMinor + shippingMinor;
 
-        order.setSubtotalAmount(subtotal);
-        order.setShippingAmount(shipping);
-        order.setTotalAmount(total);
+        order.setSubtotalAmount(subtotalMinor);
+        order.setShippingAmount(shippingMinor);
+        order.setTotalAmount(totalMinor);
         order.setItems(items);
 
         Order savedOrder = orderRepository.save(order);
@@ -223,12 +237,12 @@ public class CheckoutService {
                     .build());
         }
 
-        if (shipping > 0) {
+        if (shippingMinor > 0) {
             paramsBuilder.addLineItem(SessionCreateParams.LineItem.builder()
                     .setQuantity(1L)
                     .setPriceData(SessionCreateParams.LineItem.PriceData.builder()
                             .setCurrency(CURRENCY.toLowerCase())
-                            .setUnitAmount(shipping)
+                    .setUnitAmount(shippingMinor)
                             .setProductData(SessionCreateParams.LineItem.PriceData.ProductData.builder()
                                     .setName("Shipping")
                                     .build())
@@ -247,7 +261,7 @@ public class CheckoutService {
         payment.setProvider(PROVIDER_STRIPE);
         payment.setStatus(PaymentStatus.PENDING);
         payment.setCurrency(CURRENCY);
-        payment.setAmount(total);
+        payment.setAmount(totalMinor);
         payment.setStripeSessionId(session.getId());
         payment.setStripePaymentIntentId(session.getPaymentIntent());
         paymentRepository.save(payment);
@@ -302,7 +316,9 @@ public class CheckoutService {
         if (amount == null) {
             return 0;
         }
-        BigDecimal value = BigDecimal.valueOf(amount).setScale(0, RoundingMode.HALF_UP);
+        BigDecimal value = BigDecimal.valueOf(amount)
+            .multiply(MINOR_UNIT_FACTOR)
+            .setScale(0, RoundingMode.HALF_UP);
         return value.longValue();
     }
 
