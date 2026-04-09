@@ -101,7 +101,6 @@ public List<ProductDTO> getAllProductsForAdmin() {
             .map(this::convertToDTO)
             .collect(Collectors.toList());
 }
-
     // Helper: converts Product entity → ProductDTO
     private ProductDTO convertToDTO(Product product) {
         ProductDTO dto = new ProductDTO();

@@ -66,6 +66,4 @@ private Category convertToEntity(CategoryDTO dto) {
     category.setImageUrl(dto.getImageUrl());
     return category;
 }
-
-
 }

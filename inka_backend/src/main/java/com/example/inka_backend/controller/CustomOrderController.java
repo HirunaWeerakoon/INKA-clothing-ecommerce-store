@@ -36,7 +36,6 @@ public class CustomOrderController {
     public ResponseEntity<List<CustomOrder>> getAllOrders() {
         return ResponseEntity.ok(customOrderService.getAllOrders());
     }
-
     // PUT /api/custom-orders/item/{id} — update quantity
     @PutMapping("/item/{id}")
     public ResponseEntity<CustomOrder> updateQuantity(

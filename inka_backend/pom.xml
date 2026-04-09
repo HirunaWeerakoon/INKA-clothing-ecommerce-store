@@ -59,6 +59,12 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- Depending on Java version, JAXB may be needed -->
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
+		</dependency>
 		<!-- JWT for authentication -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>

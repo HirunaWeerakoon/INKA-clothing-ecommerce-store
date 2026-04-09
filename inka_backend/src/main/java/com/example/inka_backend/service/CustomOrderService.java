@@ -36,7 +36,6 @@ public class CustomOrderService {
     public List<CustomOrder> getAllOrders() {
         return customOrderRepository.findAll();
     }
-
     public CustomOrder updateQuantity(Long id, int quantity) {
         CustomOrder order = customOrderRepository.findById(id).orElseThrow(() -> new RuntimeException("Not found"));
         order.setQuantity(quantity);
