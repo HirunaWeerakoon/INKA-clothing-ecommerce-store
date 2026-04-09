@@ -14,7 +14,7 @@ export default function CheckoutSuccess() {
         }
 
         const timer = setTimeout(() => {
-            navigate('/', { replace: true });
+            navigate('/account/orders', { replace: true });
         }, 5000);
 
         return () => clearTimeout(timer);
@@ -24,8 +24,8 @@ export default function CheckoutSuccess() {
         <div className="placeholder-page">
             <h1>Payment successful</h1>
             <p>Your payment was received. Thank you for your order.</p>
-            <p>Redirecting to home in 5 seconds…</p>
-            <Link to="/account/orders">View orders</Link>
+            <p>Redirecting to your orders in 5 seconds...</p>
+            <Link to="/account/orders">View orders now</Link>
         </div>
     );
 }
