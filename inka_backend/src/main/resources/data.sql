@@ -1,9 +1,9 @@
 -- =============================================
--- INKA Clothing E-Commerce — Seed Data
+-- INKA Clothing E-Commerce — Seed Data (MySQL)
 -- =============================================
 
 -- Categories
-INSERT INTO category (id, name, image_url) VALUES
+INSERT IGNORE INTO category (id, name, image_url) VALUES
 (1, 'T-Shirts', 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400'),
 (2, 'Denims', 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=400'),
 (3, 'Tote Bags', 'https://images.unsplash.com/photo-1544816155-12df9643f363?w=400'),
@@ -11,7 +11,7 @@ INSERT INTO category (id, name, image_url) VALUES
 
 
 -- Products: T-Shirts (category_id = 1)
-INSERT INTO products (product_id, category_id, name, description, price, stock, is_available, best_seller, image_url, image1, image2, image3, image4, image5) VALUES
+INSERT IGNORE INTO products (product_id, category_id, name, description, price, stock, is_available, best_seller, image_url, image1, image2, image3, image4, image5) VALUES
 (1, 1, 'Classic Black Tee', 'Premium 100% cotton black t-shirt with a relaxed fit. Perfect for everyday wear.', 2500.00, 50, TRUE, TRUE,
  'https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=400',
  'https://images.unsplash.com/photo-1503341504253-dff4815485f1?w=600',
@@ -45,7 +45,7 @@ INSERT INTO products (product_id, category_id, name, description, price, stock, 
  NULL, NULL, NULL, NULL);
 
 -- Products: Denims (category_id = 2)
-INSERT INTO products (product_id, category_id, name, description, price, stock, is_available, best_seller, image_url, image1, image2, image3, image4, image5) VALUES
+INSERT IGNORE INTO products (product_id, category_id, name, description, price, stock, is_available, best_seller, image_url, image1, image2, image3, image4, image5) VALUES
 (6, 2, 'Slim Fit Dark Wash Jeans', 'Modern slim fit jeans in dark indigo wash. Stretch denim for all-day comfort.', 5500.00, 20, TRUE, TRUE,
  'https://images.unsplash.com/photo-1542272604-787c3835535d?w=400',
  'https://images.unsplash.com/photo-1542272604-787c3835535d?w=600',
@@ -64,7 +64,7 @@ INSERT INTO products (product_id, category_id, name, description, price, stock, 
  NULL, NULL, NULL, NULL);
 
 -- Products: Tote Bags (category_id = 3)
-INSERT INTO products (product_id, category_id, name, description, price, stock, is_available, best_seller, image_url, image1, image2, image3, image4, image5) VALUES
+INSERT IGNORE INTO products (product_id, category_id, name, description, price, stock, is_available, best_seller, image_url, image1, image2, image3, image4, image5) VALUES
 (9, 3, 'Canvas Tote Bag', 'Sturdy canvas tote with INKA branding. Eco-friendly and stylish.', 1800.00, 40, TRUE, TRUE,
  'https://images.unsplash.com/photo-1544816155-12df9643f363?w=400',
  'https://images.unsplash.com/photo-1544816155-12df9643f363?w=600',
@@ -86,16 +86,16 @@ INSERT INTO products (product_id, category_id, name, description, price, stock, 
 --(1, 'Lewis Hamilton', 'lewis@mercedes.com', '44 Stevenage Road, London, UK', 'USER');
 
 -- Sub Categories for T-Shirts (category_id = 1)
-INSERT INTO sub_category (name, image_url, category_id) VALUES ('Crew Neck', null, 1);
-INSERT INTO sub_category (name, image_url, category_id) VALUES ('V-Neck', null, 1);
-INSERT INTO sub_category (name, image_url, category_id) VALUES ('Polo', null, 1);
+INSERT IGNORE INTO sub_category (id, name, image_url, category_id) VALUES (1, 'Crew Neck', NULL, 1);
+INSERT IGNORE INTO sub_category (id, name, image_url, category_id) VALUES (2, 'V-Neck', NULL, 1);
+INSERT IGNORE INTO sub_category (id, name, image_url, category_id) VALUES (3, 'Polo', NULL, 1);
 
 -- Sub Categories for Denims (category_id = 2)
-INSERT INTO sub_category (name, image_url, category_id) VALUES ('Slim Fit', null, 2);
-INSERT INTO sub_category (name, image_url, category_id) VALUES ('Regular', null, 2);
-INSERT INTO sub_category (name, image_url, category_id) VALUES ('Wide Leg', null, 2);
+INSERT IGNORE INTO sub_category (id, name, image_url, category_id) VALUES (4, 'Slim Fit', NULL, 2);
+INSERT IGNORE INTO sub_category (id, name, image_url, category_id) VALUES (5, 'Regular', NULL, 2);
+INSERT IGNORE INTO sub_category (id, name, image_url, category_id) VALUES (6, 'Wide Leg', NULL, 2);
 
 -- Sub Categories for Tote Bags (category_id = 3)
-INSERT INTO sub_category (name, image_url, category_id) VALUES ('Small', null, 3);
-INSERT INTO sub_category (name, image_url, category_id) VALUES ('Medium', null, 3);
-INSERT INTO sub_category (name, image_url, category_id) VALUES ('Large', null, 3);
+INSERT IGNORE INTO sub_category (id, name, image_url, category_id) VALUES (7, 'Small', NULL, 3);
+INSERT IGNORE INTO sub_category (id, name, image_url, category_id) VALUES (8, 'Medium', NULL, 3);
+INSERT IGNORE INTO sub_category (id, name, image_url, category_id) VALUES (9, 'Large', NULL, 3);

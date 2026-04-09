@@ -29,45 +29,42 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable())
 
-            .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-            .authorizeHttpRequests(auth -> auth
+                .authorizeHttpRequests(auth -> auth
 
-                // H2 console — allow all dispatcher types so it works without a session
-                .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
-                .requestMatchers("/h2-console/**").permitAll()
+                        // H2 console — allow all dispatcher types so it works without a session
+                        .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
 
-                // Google OAuth2 flow
-                .requestMatchers("/oauth2/**", "/login/oauth2/**", "/login/**").permitAll()
+                        // Google OAuth2 flow
+                        .requestMatchers("/oauth2/**", "/login/oauth2/**", "/login/**").permitAll()
 
-                // Public read access
-                .requestMatchers("/", "/api/products/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
-                .requestMatchers("/api/images/**").permitAll() // Cloudinary image upload endpoint
+                        // Public read access
+                        .requestMatchers("/", "/api/products/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
+                        .requestMatchers("/api/images/**").permitAll() // Cloudinary image upload endpoint
 
-                // Admin only
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        // Admin only
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-                // Everything else requires a valid JWT
-                .anyRequest().authenticated()
-            
-            )
+                        // Everything else requires a valid JWT
+                        .anyRequest().authenticated()
 
-            .oauth2Login(oauth -> oauth
-                .userInfoEndpoint(userInfo ->
-                    userInfo.userService(customOAuth2CustomerService))
-                .successHandler(customSuccessHandler)
-            )
+                )
 
-            .addFilterBefore(jwtAuthenticationFilter,
-                UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login(oauth -> oauth
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2CustomerService))
+                        .successHandler(customSuccessHandler))
 
-            // Required for H2 console to render in iframe
-            .headers(headers -> headers.frameOptions(frame -> frame.disable()));
+                .addFilterBefore(jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class)
+
+                // Required for H2 console to render in iframe
+                .headers(headers -> headers.frameOptions(frame -> frame.disable()));
 
         return http.build();
     }

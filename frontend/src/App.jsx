@@ -11,6 +11,7 @@ import ProductGrid from './components/ProductGrid';
 import ProductPage from './components/ProductPage';
 import HomePage from './pages/Home/HomePage';
 import OAuth2RedirectHandler from './pages/OAuth2RedirectHandler';
+import AdminPanel from './pages/Admin/AdminPanel';
 import CustomPage from './pages/Custom/CustomPage';
 import './App.css';
 import Cart from './pages/Cart/Cart';
@@ -55,6 +56,8 @@ function App() {
             <Route path="reviews" element={<MyReviews />} />
           </Route>
         </Route>
+        {/* Admin panel — outside AppLayout so it has its own full-page layout without site header/footer */}
+        <Route path="/admin" element={<AdminPanel />} />
       </Routes>
 
       <CartSidebar isOpen={cartOpen} onClose={() => setCartOpen(false)} />

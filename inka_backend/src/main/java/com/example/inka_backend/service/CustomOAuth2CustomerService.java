@@ -30,14 +30,23 @@ public class CustomOAuth2CustomerService extends DefaultOAuth2UserService {
         String name       = oAuth2User.getAttribute("name");
         String pictureUrl = oAuth2User.getAttribute("picture");
 
-        // find existing customer by googleId, or create a brand new one
-        Customer customer = customerRepository.findByGoogleId(googleId)
-                .orElseGet(() -> {
-                    Customer newCustomer = new Customer();
-                    newCustomer.setGoogleId(googleId);
-                    newCustomer.setRole(UserRole.USER);
-                    return newCustomer;
-                });
+// Check if this email belongs to the admin account
+boolean isAdmin = "admininka@gmail.com".equals(email);
+
+Customer customer = customerRepository.findByGoogleId(googleId)
+        .orElseGet(() -> {
+            Customer newCustomer = new Customer();
+            newCustomer.setGoogleId(googleId);
+            // Assign ADMIN role if this is the admin email, otherwise USER
+            newCustomer.setRole(isAdmin ? UserRole.ADMIN : UserRole.USER);
+            return newCustomer;
+        });
+
+// If customer already exists, make sure admin email always has ADMIN role
+// (in case they were created earlier as USER)
+if (isAdmin) {
+    customer.setRole(UserRole.ADMIN);
+}
 
         //always sync latest info from Google
         customer.setEmail(email);

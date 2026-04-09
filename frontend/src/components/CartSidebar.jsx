@@ -16,8 +16,26 @@ export default function CartSidebar({ isOpen, onClose }) {
         }
         setLoading(true);
         try {
-            const response = await axios.get(`/api/cart/${user.id}`);
-            setCartItems(response.data);
+            const [cartRes, customRes] = await Promise.all([
+                axios.get(`/api/cart/${user.id}`),
+                axios.get(`/api/custom-orders/${user.id}`).catch(() => ({ data: [] }))
+            ]);
+
+            const customItems = customRes.data
+                .filter(co => co.status === 'IN_CART')
+                .map(co => ({
+                    id: `custom_${co.id}`,  
+                    isCustom: true,
+                    originalId: co.id,
+                    productName: `Custom ${co.categoryName} - ${co.subCategoryName || ''}`,
+                    price: co.totalPrice / Math.max(1, co.quantity), 
+                    quantity: co.quantity,
+                    imageUrl: co.designImageUrl,
+                    originalImageUrl: co.designImageUrl,
+                    mergedImageUrl: co.designImageUrl,
+                }));
+
+            setCartItems([...cartRes.data, ...customItems]);
         } catch (error) {
             console.error('Error fetching cart:', error);
         } finally {
@@ -43,7 +61,13 @@ export default function CartSidebar({ isOpen, onClose }) {
     const updateQuantity = async (id, newQty) => {
         if (newQty < 1) return;
         try {
-            await axios.put(`/api/cart/${id}`, { quantity: newQty });
+            const isCustom = typeof id === 'string' && id.startsWith('custom_');
+            if (isCustom) {
+                const originalId = id.replace('custom_', '');
+                await axios.put(`/api/custom-orders/item/${originalId}`, { quantity: newQty });
+            } else {
+                await axios.put(`/api/cart/item/${id}`, { quantity: newQty });
+            }
             setCartItems(items =>
                 items.map(item =>
                     item.id === id ? { ...item, quantity: newQty } : item
@@ -56,7 +80,13 @@ export default function CartSidebar({ isOpen, onClose }) {
 
     const removeItem = async (id) => {
         try {
-            await axios.delete(`/api/cart/${id}`);
+            const isCustom = typeof id === 'string' && id.startsWith('custom_');
+            if (isCustom) {
+                const originalId = id.replace('custom_', '');
+                await axios.delete(`/api/custom-orders/item/${originalId}`);
+            } else {
+                await axios.delete(`/api/cart/item/${id}`);
+            }
             setCartItems(items => items.filter(item => item.id !== id));
         } catch (error) {
             console.error('Error removing item:', error);
@@ -64,9 +94,51 @@ export default function CartSidebar({ isOpen, onClose }) {
     };
 
     const total = cartItems.reduce(
-        (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
+        (sum, item) => sum + ((item.product?.price || item.price || 0) * (item.quantity || 0)),
         0
     );
+
+    const handleCheckout = async () => {
+        if (cartItems.length === 0) return;
+        try {
+            // Get auth details from JWT token
+            const user = authService.getUserDetails();
+            const customerId = user?.id || 0;
+            const customerName = user?.email || 'Guest User';
+            const customerEmail = user?.email || 'guest@example.com';
+
+            // Flatten nested product data for clean storage in temp orders
+            const flatItems = cartItems.map(item => ({
+                productId: item.product?.productId || item.productId || item.id,
+                productName: item.product?.name || item.productName || 'Unknown',
+                imageUrl: item.product?.imageUrl || item.imageUrl || '',
+                price: item.product?.price || item.price || 0,
+                quantity: item.quantity || 1,
+                originalImageUrl: item.originalImageUrl || null,
+                mergedImageUrl: item.mergedImageUrl || null,
+            }));
+
+            // Find if any custom design images exist
+            const customItem = flatItems.find(item => item.originalImageUrl || (item.imageUrl && item.imageUrl.includes('merged')));
+
+            await axios.post('/api/temp-orders/checkout', {
+                customerId: customerId,
+                customerName: customerName,
+                customerEmail: customerEmail,
+                totalAmount: total,
+                originalImageUrl: customItem?.originalImageUrl || null,
+                mergedImageUrl: customItem?.mergedImageUrl || customItem?.imageUrl || null,
+                cartItems: flatItems
+            });
+
+            setCartItems([]);
+            alert('Checkout successful! Sent to Admin Temp Orders.');
+            onClose();
+        } catch (error) {
+            console.error('Checkout failed:', error);
+            alert('Checkout failed.');
+        }
+    };
 
     return (
         <>
@@ -95,16 +167,16 @@ export default function CartSidebar({ isOpen, onClose }) {
                             {cartItems.map(item => (
                                 <li key={item.id} className="cart-item">
                                     <div className="cart-item__image">
-                                        {item.imageUrl ? (
-                                            <img src={item.imageUrl} alt={item.productName} />
+                                        {item.product?.imageUrl || item.imageUrl ? (
+                                            <img src={item.product?.imageUrl || item.imageUrl} alt={item.product?.name || item.productName} />
                                         ) : (
                                             <div className="cart-item__image-placeholder">INKA</div>
                                         )}
                                     </div>
                                     <div className="cart-item__details">
-                                        <p className="cart-item__name">{item.productName}</p>
+                                        <p className="cart-item__name">{item.product?.name || item.productName}</p>
                                         <p className="cart-item__price">
-                                            LKR {item.price?.toLocaleString()}
+                                            LKR {(item.product?.price || item.price)?.toLocaleString()}
                                         </p>
                                         <div className="cart-item__quantity">
                                             <button
@@ -146,7 +218,9 @@ export default function CartSidebar({ isOpen, onClose }) {
                                 LKR {total.toLocaleString()}
                             </span>
                         </div>
-                        <button className="cart-sidebar__checkout">CHECKOUT</button>
+                        <button className="cart-sidebar__checkout" onClick={handleCheckout} disabled={cartItems.length === 0}>
+                            CHECKOUT
+                        </button>
                     </div>
                 )}
             </aside>

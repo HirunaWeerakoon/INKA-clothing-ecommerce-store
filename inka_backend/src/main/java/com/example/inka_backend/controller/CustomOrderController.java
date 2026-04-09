@@ -36,4 +36,19 @@ public class CustomOrderController {
     public ResponseEntity<List<CustomOrder>> getAllOrders() {
         return ResponseEntity.ok(customOrderService.getAllOrders());
     }
+    // PUT /api/custom-orders/item/{id} — update quantity
+    @PutMapping("/item/{id}")
+    public ResponseEntity<CustomOrder> updateQuantity(
+            @PathVariable Long id,
+            @RequestBody java.util.Map<String, Integer> body) {
+        int quantity = body.getOrDefault("quantity", 1);
+        return ResponseEntity.ok(customOrderService.updateQuantity(id, quantity));
+    }
+
+    // DELETE /api/custom-orders/item/{id} — delete custom order
+    @DeleteMapping("/item/{id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+        customOrderService.deleteOrder(id);
+        return ResponseEntity.noContent().build();
+    }
 }

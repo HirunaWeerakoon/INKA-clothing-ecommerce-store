@@ -336,7 +336,8 @@ export default function CustomPage() {
                 designImageUrl: mainDesignUrl,
                 totalPrice: singleTotal,
             });
-            alert('Custom order placed successfully!');
+            window.dispatchEvent(new Event('cart-updated'));
+            alert('Custom design added to cart! 🛒');
         } catch (err) {
             console.error(err);
             alert('Something went wrong. Please try again.');
@@ -376,7 +377,8 @@ export default function CustomPage() {
             }
             if (allOk) {
                 setVariations([]);
-                alert(`${variations.length} variation(s) ordered successfully!`);
+                window.dispatchEvent(new Event('cart-updated'));
+                alert(`${variations.length} variation(s) added to your cart! 🛒`);
             } else {
                 alert('Some variations failed to save.');
             }

@@ -55,6 +55,52 @@ public class ProductService {
         return convertToDTO(productRepository.save(product));
     }
 
+    // UPDATE an existing product
+public ProductDTO updateProduct(Long productId, ProductDTO dto) {
+    // Find the existing product or throw error
+    Product existing = productRepository.findById(productId)
+            .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
+
+    // Update fields from DTO
+    existing.setName(dto.getName());
+    existing.setDescription(dto.getDescription());
+    existing.setPrice(dto.getPrice());
+    existing.setStock(dto.getStock());
+    existing.setIsAvailable(dto.getIsAvailable());
+    existing.setBestSeller(dto.getBestSeller());
+    existing.setImageUrl(dto.getImageUrl());
+    existing.setImage1(dto.getImage1());
+    existing.setImage2(dto.getImage2());
+    existing.setImage3(dto.getImage3());
+    existing.setImage4(dto.getImage4());
+    existing.setImage5(dto.getImage5());
+
+    // Update category if provided
+    if (dto.getCategoryId() != null) {
+        Category category = categoryRepository.findById(dto.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found with id: " + dto.getCategoryId()));
+        existing.setCategory(category);
+    }
+
+    return convertToDTO(productRepository.save(existing));
+}
+
+// DELETE a product by ID
+public void deleteProduct(Long productId) {
+    // Check if it exists before deleting
+    if (!productRepository.existsById(productId)) {
+        throw new RuntimeException("Product not found with id: " + productId);
+    }
+    productRepository.deleteById(productId);
+}
+
+// GET ALL products including unavailable ones (admin view)
+public List<ProductDTO> getAllProductsForAdmin() {
+    return productRepository.findAll()
+            .stream()
+            .map(this::convertToDTO)
+            .collect(Collectors.toList());
+}
     // Helper: converts Product entity → ProductDTO
     private ProductDTO convertToDTO(Product product) {
         ProductDTO dto = new ProductDTO();
