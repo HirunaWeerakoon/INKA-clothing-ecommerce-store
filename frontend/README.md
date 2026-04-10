@@ -2,6 +2,45 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Project Setup (Backend + Stripe)
+
+### Backend .env (required)
+Create `inka_backend/.env` with these keys:
+
+```
+MYSQL_URL=
+MYSQL_USERNAME=
+MYSQL_PASSWORD=
+
+GOOGLE_OAUTH_CLIENT_ID=
+GOOGLE_OAUTH_CLIENT_SECRET=
+
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+STRIPE_SUCCESS_URL=http://localhost:3000/checkout/success
+STRIPE_CANCEL_URL=http://localhost:3000/checkout/cancel
+```
+
+Start backend:
+
+```
+cd ../inka_backend
+./mvnw spring-boot:run
+```
+
+### Stripe webhook (local dev)
+Install Stripe CLI and run:
+
+```
+stripe listen --forward-to localhost:8080/api/checkout/webhook/stripe
+```
+
+Copy the `whsec_...` value into `STRIPE_WEBHOOK_SECRET`.
+
 ## Available Scripts
 
 In the project directory, you can run:
