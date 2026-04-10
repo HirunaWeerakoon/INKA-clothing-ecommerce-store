@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { Upload, X, Loader, RotateCcw, ZoomIn, ZoomOut, Move, Trash2, ShoppingCart, Plus } from 'lucide-react';
 import { uploadImage } from '../../services/cloudinary';
 import { authService } from '../../services/authService';
+import { checkoutService } from '../../services/checkoutService';
 import axios from 'axios';
 import './CustomPage.css';
 
@@ -328,7 +329,7 @@ export default function CustomPage() {
         try {
             const shots = await captureScreenshots();
             const mainDesignUrl = shots['Front'] || Object.values(shots)[0] || '';
-            await axios.post('/api/custom-orders', {
+            const orderResponse = await axios.post('/api/custom-orders', {
                 customerId: user.id,
                 categoryName: selectedCategory.categoryName,
                 subCategoryName: selectedSub?.name || '',
@@ -362,15 +363,19 @@ export default function CustomPage() {
             const shots = await captureScreenshots();
             const mainDesignUrl = shots['Front'] || Object.values(shots)[0] || '';
             let allOk = true;
+            const createdIds = [];
             for (const v of variations) {
                 try {
-                    await axios.post('/api/custom-orders', {
+                    const orderResponse = await axios.post('/api/custom-orders', {
                         customerId: user.id,
                         categoryName: selectedCategory.categoryName,
                         subCategoryName: selectedSub?.name || '',
                         gsm: v.gsm, material: v.material, size: v.size, color: v.color,
                         quantity: v.qty, designImageUrl: mainDesignUrl, totalPrice: v.total,
                     });
+                    if (orderResponse.data?.id) {
+                        createdIds.push(orderResponse.data.id);
+                    }
                 } catch {
                     allOk = false;
                 }
@@ -381,6 +386,13 @@ export default function CustomPage() {
                 alert(`${variations.length} variation(s) added to your cart! 🛒`);
             } else {
                 alert('Some variations failed to save.');
+                return;
+            }
+            const session = await checkoutService.createCustomOrdersSession(createdIds);
+            if (session?.url) {
+                window.location.href = session.url;
+            } else {
+                alert('Unable to start payment.');
             }
         } catch (err) {
             console.error(err);
@@ -605,7 +617,7 @@ export default function CustomPage() {
                             <div className="single-order-actions">
                                 <button className="btn-checkout btn-checkout--full"
                                     onClick={handleSingleCheckout} disabled={checkoutLoading}>
-                                    {checkoutLoading ? 'Placing Order…' : '🛒 Add to Cart'}
+                                    {checkoutLoading ? 'Starting Payment…' : 'Pay with Stripe'}
                                 </button>
                                 <p className="single-order-hint">
                                     Ordering multiple sizes or colors?{' '}
@@ -652,7 +664,7 @@ export default function CustomPage() {
                                 {variations.length > 0 && (
                                     <button className="btn-checkout btn-checkout--full"
                                         onClick={() => setShowModal(true)} disabled={checkoutLoading}>
-                                        {checkoutLoading ? 'Placing Order…' : `Checkout (${variations.length} variation${variations.length > 1 ? 's' : ''})`}
+                                        {checkoutLoading ? 'Starting Payment…' : `Checkout (${variations.length} variation${variations.length > 1 ? 's' : ''})`}
                                     </button>
                                 )}
                             </div>
@@ -691,7 +703,7 @@ export default function CustomPage() {
                                 <button className="modal-btn-cancel" onClick={() => setShowModal(false)}>Cancel</button>
                                 <button className="modal-btn-confirm" onClick={handleWholesaleCheckout}
                                     disabled={checkoutLoading || variations.length === 0}>
-                                    {checkoutLoading ? 'Processing…' : 'Confirm & Add to Cart'}
+                                    {checkoutLoading ? 'Processing…' : 'Confirm & Pay'}
                                 </button>
                             </div>
                         </div>

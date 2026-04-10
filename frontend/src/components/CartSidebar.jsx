@@ -3,6 +3,7 @@ import axios from 'axios';
 import { X, Plus, Minus, Trash2 } from 'lucide-react';
 import './CartSidebar.css';
 import { authService } from '../services/authService';
+import { checkoutService } from '../services/checkoutService';
 
 export default function CartSidebar({ isOpen, onClose }) {
     const [cartItems, setCartItems] = useState([]);
@@ -99,44 +100,29 @@ export default function CartSidebar({ isOpen, onClose }) {
     );
 
     const handleCheckout = async () => {
-        if (cartItems.length === 0) return;
+        const user = authService.getUserDetails();
+        if (!user) {
+            alert('Please log in to checkout.');
+            return;
+        }
+        
         try {
-            // Get auth details from JWT token
-            const user = authService.getUserDetails();
-            const customerId = user?.id || 0;
-            const customerName = user?.email || 'Guest User';
-            const customerEmail = user?.email || 'guest@example.com';
-
-            // Flatten nested product data for clean storage in temp orders
-            const flatItems = cartItems.map(item => ({
-                productId: item.product?.productId || item.productId || item.id,
-                productName: item.product?.name || item.productName || 'Unknown',
-                imageUrl: item.product?.imageUrl || item.imageUrl || '',
-                price: item.product?.price || item.price || 0,
-                quantity: item.quantity || 1,
-                originalImageUrl: item.originalImageUrl || null,
-                mergedImageUrl: item.mergedImageUrl || null,
-            }));
-
-            // Find if any custom design images exist
-            const customItem = flatItems.find(item => item.originalImageUrl || (item.imageUrl && item.imageUrl.includes('merged')));
-
-            await axios.post('/api/temp-orders/checkout', {
-                customerId: customerId,
-                customerName: customerName,
-                customerEmail: customerEmail,
-                totalAmount: total,
-                originalImageUrl: customItem?.originalImageUrl || null,
-                mergedImageUrl: customItem?.mergedImageUrl || customItem?.imageUrl || null,
-                cartItems: flatItems
-            });
-
-            setCartItems([]);
-            alert('Checkout successful! Sent to Admin Temp Orders.');
-            onClose();
+            const hasCustom = cartItems.some(item => item.isCustom);
+            const standardItems = cartItems.filter(item => !item.isCustom);
+            
+            if (hasCustom && standardItems.length === 0) {
+                 const customIds = cartItems.filter(i => i.isCustom).map(i => i.originalId);
+                 const response = await checkoutService.createCustomOrdersSession(customIds);
+                 if (response?.url) window.location.href = response.url;
+            } else if (!hasCustom) {
+                 const response = await checkoutService.createCartSession(user.id);
+                 if (response?.url) window.location.href = response.url;
+            } else {
+                 alert('For now, please checkout custom items and regular items separately.');
+            }
         } catch (error) {
-            console.error('Checkout failed:', error);
-            alert('Checkout failed.');
+            console.error('Error starting checkout:', error);
+            alert('Unable to start checkout.');
         }
     };
 

@@ -2,9 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { ShoppingCart, Trash2, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { cartService } from '../../services/cartService';
-
-// Using customer ID 1 until authentication is in place
-const CUSTOMER_ID = 1;
+import { checkoutService } from '../../services/checkoutService';
+import { authService } from '../../services/authService';
 
 export default function Cart() {
     const [cartItems, setCartItems] = useState([]);
@@ -14,7 +13,9 @@ export default function Cart() {
     const fetchCart = useCallback(async () => {
         try {
             setLoading(true);
-            const data = await cartService.getCart(CUSTOMER_ID);
+            const user = authService.getUserDetails();
+            const customerId = user?.id ?? 1;
+            const data = await cartService.getCart(customerId);
             setCartItems(data);
             setError(null);
         } catch {
@@ -51,10 +52,30 @@ export default function Cart() {
 
     const handleClearCart = async () => {
         try {
-            await cartService.clearCart(CUSTOMER_ID);
+            const user = authService.getUserDetails();
+            const customerId = user?.id ?? 1;
+            await cartService.clearCart(customerId);
             setCartItems([]);
         } catch {
             setError('Failed to clear cart.');
+        }
+    };
+
+    const handleCheckout = async () => {
+        const user = authService.getUserDetails();
+        if (!user) {
+            setError('Please log in to checkout.');
+            return;
+        }
+        try {
+            const response = await checkoutService.createCartSession(user.id);
+            if (response?.url) {
+                window.location.href = response.url;
+            } else {
+                setError('Unable to start checkout.');
+            }
+        } catch {
+            setError('Unable to start checkout.');
         }
     };
 
@@ -184,7 +205,7 @@ export default function Cart() {
                             <span>LKR {total.toFixed(2)}</span>
                         </div>
 
-                        <button className="btn-checkout">
+                        <button className="btn-checkout" onClick={handleCheckout}>
                             Proceed to Checkout
                         </button>
                     </aside>

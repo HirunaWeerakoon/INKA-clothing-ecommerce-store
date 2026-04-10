@@ -13,6 +13,8 @@ import HomePage from './pages/Home/HomePage';
 import OAuth2RedirectHandler from './pages/OAuth2RedirectHandler';
 import AdminPanel from './pages/Admin/AdminPanel';
 import CustomPage from './pages/Custom/CustomPage';
+import CheckoutSuccess from './pages/Checkout/CheckoutSuccess';
+import CheckoutCancel from './pages/Checkout/CheckoutCancel';
 import './App.css';
 import Cart from './pages/Cart/Cart';
 
@@ -46,6 +48,8 @@ function App() {
           <Route path="custom" element={<CustomPage />} />
           <Route path="about" element={<div className="placeholder-page">About Placeholder</div>} />
           <Route path="oauth2/redirect" element={<OAuth2RedirectHandler />} />
+          <Route path="checkout/success" element={<CheckoutSuccess />} />
+          <Route path="checkout/cancel" element={<CheckoutCancel />} />
 
           <Route path="cart" element={<Cart />} />
 
