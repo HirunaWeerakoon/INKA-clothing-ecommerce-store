@@ -72,7 +72,7 @@ export default function AdminPanel() {
   const [stockEdits, setStockEdits] = useState({});
   const [users, setUsers] = useState([]);
   const [stats, setStats] = useState(null);
-  const [tempOrders, setTempOrders] = useState([]);
+  const [orders, setOrders] = useState([]);
 
   // Form states
   const [form, setForm] = useState(EMPTY_FORM);
@@ -104,23 +104,29 @@ export default function AdminPanel() {
     if (activeTab === 'products') fetchCategories();
     if (activeTab === 'stock') fetchStock();
     if (activeTab === 'users') fetchUsers();
-    if (activeTab === 'tempOrders') fetchTempOrders();
+    if (activeTab === 'orders') fetchOrders();
   }, [activeTab]);
 
-  // Fetch temporary orders
-  const fetchTempOrders = async () => {
+  // Fetch real orders
+  const fetchOrders = async () => {
     try {
-      const { data } = await axios.get('/api/temp-orders');
-      setTempOrders(data);
+      const token = localStorage.getItem('token');
+      const { data } = await axios.get('/api/admin/orders', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setOrders(data);
     } catch (err) {
-      setOrderMessage('Failed to load temp orders.');
+      setOrderMessage('Failed to load orders.');
     }
   };
 
-  const updateTempOrderStatus = async (id, status) => {
+  const updateOrderStatus = async (id, status) => {
     try {
-      await axios.put(`/api/temp-orders/${id}/status`, { status });
-      fetchTempOrders();
+      const token = localStorage.getItem('token');
+      await axios.put(`/api/admin/orders/${id}/status`, { status }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      fetchOrders();
     } catch (err) {
       alert('Failed to update order status');
     }
@@ -427,11 +433,11 @@ export default function AdminPanel() {
           </button>
 
           <button
-            className={activeTab === 'tempOrders' ? 'admin-nav-item active' : 'admin-nav-item'}
-            onClick={() => setActiveTab('tempOrders')}
+            className={activeTab === 'orders' ? 'admin-nav-item active' : 'admin-nav-item'}
+            onClick={() => setActiveTab('orders')}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-3V4c0-1.1-.9-2-2-2H9c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM9 4h6v3H9V4z"/></svg>
-            Orders (Temp)
+            Orders
           </button>
         </nav>
 
@@ -793,23 +799,44 @@ export default function AdminPanel() {
           </div>
         )}
 
-        {/* ── TEMP ORDERS TAB ── */}
-        {activeTab === 'tempOrders' && (
+        {/* ── ORDERS TAB ── */}
+        {activeTab === 'orders' && (
           <div className="admin-content">
-            <h2 className="admin-section-title">Temporary Orders</h2>
+            <h2 className="admin-section-title">Orders</h2>
             {orderMessage && <p className="admin-message">{orderMessage}</p>}
 
             <div className="admin-orders-list">
-              {tempOrders.map((o) => (
+              {orders.map((o) => (
                 <div key={o.id} className="admin-order-card">
                   <div className="order-card-header">
-                    <h3>Order #{o.id}</h3>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                      <h3>Order #{o.id}</h3>
+                      <select
+                        className={`modern-status-select status-${o.status.toLowerCase()}`}
+                        value={o.status}
+                        onChange={(e) => updateOrderStatus(o.id, e.target.value)}
+                        style={{ padding: '4px 10px', borderRadius: '20px', fontSize: '0.85rem' }}
+                      >
+                        <option value="PENDING">Pending</option>
+                        <option value="PAID">Paid</option>
+                        <option value="PROCESSING">Processing</option>
+                        <option value="DELIVERING">Delivering</option>
+                        <option value="DELIVERED">Delivered</option>
+                        <option value="CANCELLED">Cancelled</option>
+                        <option value="FAILED">Failed</option>
+                      </select>
+                    </div>
                     <span className="order-date">{new Date(o.createdAt).toLocaleString()}</span>
                   </div>
                   <div className="order-card-body">
                     <div className="order-customer-row">
                       <p><strong>Customer:</strong> {o.customerName} ({o.customerEmail})</p>
-                      <p><strong>Total:</strong> LKR {o.totalAmount?.toLocaleString()}</p>
+                      <p><strong>Total:</strong> {o.currency} {o.totalAmount?.toLocaleString()}</p>
+                      {o.stripeSessionId && (
+                        <p style={{fontSize: '0.8rem', color: '#888', marginTop: '4px'}}>
+                          <strong>Stripe Ref:</strong> {o.stripeSessionId}
+                        </p>
+                      )}
                     </div>
                     
                     <div className="modern-order-table-container">
@@ -817,74 +844,55 @@ export default function AdminPanel() {
                           <thead>
                              <tr>
                                 <th>Item</th>
-                                <th>Status</th>
+                                <th>Type</th>
                                 <th>Quantity</th>
-                                <th>Price</th>
+                                <th>Unit Price</th>
                                 <th>Amount</th>
                              </tr>
                           </thead>
                           <tbody>
-                             {(() => {
-                                 let parsedItems = [];
-                                 try {
-                                    parsedItems = JSON.parse(o.cartItemsJson);
-                                 } catch(e) {
-                                    return <tr><td colSpan="5" style={{textAlign:'center', color:'#888', padding:'1rem'}}>Old order format. Cannot display tabular data.</td></tr>;
-                                 }
-                                 
-                                 return parsedItems.map((item, idx) => {
-                                    // Handle both flat and nested product object structures
-                                    const productName = item.product?.name || item.productName || item.name || 'Unknown';
-                                    const productImage = item.product?.imageUrl || item.imageUrl || 'https://via.placeholder.com/50';
-                                    const productId = item.product?.productId || item.productId || item.id || '—';
-                                    const price = item.product?.price || item.price || 0;
-                                    const qty = item.quantity || 1;
-                                    return (
-                                    <tr key={idx}>
-                                       <td>
-                                         <div className="modern-item-cell">
-                                            <img src={productImage} alt={productName} className="modern-item-img" />
-                                            <div className="modern-item-info">
-                                               <span className="modern-item-name">{productName}</span>
-                                               <span className="modern-item-sub">Product ID: {productId}</span>
-                                            </div>
-                                         </div>
-                                       </td>
-                                       <td>
-                                          <select
-                                            className={`modern-status-select status-${o.status.toLowerCase()}`}
-                                            value={o.status}
-                                            onChange={(e) => updateTempOrderStatus(o.id, e.target.value)}
-                                          >
-                                            <option value="Processing">Processing</option>
-                                            <option value="Delivering">Delivering</option>
-                                            <option value="Delivered">Delivered</option>
-                                          </select>
-                                       </td>
-                                       <td style={{textAlign: 'center'}}>{qty}</td>
-                                       <td>LKR {price.toLocaleString()}</td>
-                                       <td>LKR {(price * qty).toLocaleString()}</td>
-                                    </tr>
-                                    );
-                                 });
-                             })()}
+                             {o.items?.map((item) => {
+                                const productImage = item.imageUrl || item.designImageUrl || 'https://via.placeholder.com/50';
+                                const itemType = item.customOrderId ? 'Custom' : 'Standard';
+                                const refId = item.customOrderId || item.productId || '—';
+                                return (
+                                  <tr key={item.id}>
+                                     <td>
+                                       <div className="modern-item-cell">
+                                          <img src={productImage} alt={item.name} className="modern-item-img" />
+                                          <div className="modern-item-info">
+                                             <span className="modern-item-name">{item.name}</span>
+                                             <span className="modern-item-sub">Ref ID: {refId}</span>
+                                          </div>
+                                       </div>
+                                     </td>
+                                     <td>{itemType}</td>
+                                     <td style={{textAlign: 'center'}}>{item.quantity}</td>
+                                     <td>{o.currency} {item.unitAmount?.toLocaleString()}</td>
+                                     <td>{o.currency} {item.lineTotal?.toLocaleString()}</td>
+                                  </tr>
+                                );
+                             })}
                           </tbody>
                        </table>
                     </div>
 
-                    {(o.originalImageUrl || o.mergedImageUrl) && (
-                      <div className="order-downloads">
-                        <strong>Custom Design Links:</strong>
-                        <div style={{ display: 'flex', gap: '10px', marginTop: '5px' }}>
-                          {o.originalImageUrl && <a href={o.originalImageUrl} target="_blank" rel="noreferrer" className="quick-action-btn">Download Original</a>}
-                          {o.mergedImageUrl && <a href={o.mergedImageUrl} target="_blank" rel="noreferrer" className="quick-action-btn">Download Merged</a>}
+                    {o.items?.some(i => i.designImageUrl) && (
+                      <div className="order-downloads" style={{ marginTop: '15px' }}>
+                        <strong>Custom Design Downloads:</strong>
+                        <div style={{ display: 'flex', gap: '10px', marginTop: '5px', flexWrap: 'wrap' }}>
+                          {o.items.filter(i => i.designImageUrl).map(item => (
+                            <a key={item.id} href={item.designImageUrl} target="_blank" rel="noreferrer" className="quick-action-btn">
+                              {item.name} Design
+                            </a>
+                          ))}
                         </div>
                       </div>
                     )}
                   </div>
                 </div>
               ))}
-              {tempOrders.length === 0 && <p>No temporary orders found.</p>}
+              {orders.length === 0 && <p>No orders found.</p>}
             </div>
           </div>
         )}
