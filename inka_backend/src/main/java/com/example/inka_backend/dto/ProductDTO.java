@@ -2,8 +2,7 @@ package com.example.inka_backend.dto;
 
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDTO {
@@ -17,4 +16,9 @@ public class ProductDTO {
     private String imageUrl;
     private Long categoryId;
     private String categoryName;
+    private String image1;
+    private String image2;
+    private String image3;
+    private String image4;
+    private String image5;
 }

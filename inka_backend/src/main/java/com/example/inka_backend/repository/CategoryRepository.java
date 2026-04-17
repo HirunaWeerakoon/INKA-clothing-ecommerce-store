@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    // You can add this to help find categories by name for your UI
-    java.util.Optional<Category> findByCategoryName(String categoryName);
+    // No extra methods needed — JpaRepository covers everything!
 }

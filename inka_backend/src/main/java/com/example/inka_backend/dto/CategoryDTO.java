@@ -2,8 +2,7 @@ package com.example.inka_backend.dto;
 
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryDTO {

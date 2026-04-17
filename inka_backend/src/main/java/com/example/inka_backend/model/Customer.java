@@ -4,23 +4,36 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "customers")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Table(name = "customer")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Customer {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "customer_id")
+    private Long customerId;
 
+    @Column(name = "name")
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = false) // Passwords should never be null
-    private String password;
-
+    @Column(name = "address")
     private String address;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "role")
     private UserRole role = UserRole.USER;
+
+        // The unique ID Google assigns every user — used to find them on login
+    @Column(name = "google_id", unique = true)
+    private String googleId;
+ 
+    // Google profile photo — shown next to their review later
+    @Column(name = "picture_url")
+    private String pictureUrl;
 }

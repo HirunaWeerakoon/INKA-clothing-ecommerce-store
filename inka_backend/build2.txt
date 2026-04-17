@@ -1,0 +1,209 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------------< com.example:inka_backend >----------------------
+[INFO] Building inka_backend 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ inka_backend ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ inka_backend ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 18 source files with javac [debug parameters release 21] to target\classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/model/Category.java:[29,20] variable imageUrl is already defined in class com.example.inka_backend.model.Category
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[21,22] cannot find symbol
+  symbol:   method setCategoryName(java.lang.String)
+  location: variable oversized of type com.example.inka_backend.model.Category
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[24,20] cannot find symbol
+  symbol:   method setCategoryName(java.lang.String)
+  location: variable hoodies of type com.example.inka_backend.model.Category
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[30,17] cannot find symbol
+  symbol:   method setName(java.lang.String)
+  location: variable tee1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[31,17] cannot find symbol
+  symbol:   method setPrice(double)
+  location: variable tee1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[32,17] cannot find symbol
+  symbol:   method setCategory(com.example.inka_backend.model.Category)
+  location: variable tee1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[33,17] cannot find symbol
+  symbol:   method setStock(int)
+  location: variable tee1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[34,17] cannot find symbol
+  symbol:   method setIsAvailable(boolean)
+  location: variable tee1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[37,20] cannot find symbol
+  symbol:   method setName(java.lang.String)
+  location: variable hoodie1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[38,20] cannot find symbol
+  symbol:   method setPrice(double)
+  location: variable hoodie1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[39,20] cannot find symbol
+  symbol:   method setCategory(com.example.inka_backend.model.Category)
+  location: variable hoodie1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[40,20] cannot find symbol
+  symbol:   method setStock(int)
+  location: variable hoodie1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[41,20] cannot find symbol
+  symbol:   method setIsAvailable(boolean)
+  location: variable hoodie1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[47,25] cannot find symbol
+  symbol:   method setName(java.lang.String)
+  location: variable testCustomer of type com.example.inka_backend.model.Customer
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[48,25] cannot find symbol
+  symbol:   method setEmail(java.lang.String)
+  location: variable testCustomer of type com.example.inka_backend.model.Customer
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[49,25] cannot find symbol
+  symbol:   method setPassword(java.lang.String)
+  location: variable testCustomer of type com.example.inka_backend.model.Customer
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[50,25] cannot find symbol
+  symbol:   method setRole(com.example.inka_backend.model.UserRole)
+  location: variable testCustomer of type com.example.inka_backend.model.Customer
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/CategoryService.java:[28,35] cannot find symbol
+  symbol:   method getId()
+  location: variable category of type com.example.inka_backend.model.Category
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/CategoryService.java:[29,37] cannot find symbol
+  symbol:   method getCategoryName()
+  location: variable category of type com.example.inka_backend.model.Category
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/CustomerService.java:[22,41] cannot find symbol
+  symbol:   method getName()
+  location: variable updatedData of type com.example.inka_backend.model.Customer
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/CustomerService.java:[23,44] cannot find symbol
+  symbol:   method getAddress()
+  location: variable updatedData of type com.example.inka_backend.model.Customer
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/ProductService.java:[44,33] cannot find symbol
+  symbol:   method getProductId()
+  location: variable product of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/ProductService.java:[45,28] cannot find symbol
+  symbol:   method getName()
+  location: variable product of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/ProductService.java:[46,35] cannot find symbol
+  symbol:   method getDescription()
+  location: variable product of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/ProductService.java:[47,29] cannot find symbol
+  symbol:   method getPrice()
+  location: variable product of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/ProductService.java:[48,29] cannot find symbol
+  symbol:   method getStock()
+  location: variable product of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/ProductService.java:[49,35] cannot find symbol
+  symbol:   method getIsAvailable()
+  location: variable product of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/ProductService.java:[50,34] cannot find symbol
+  symbol:   method getCategory()
+  location: variable product of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/ProductService.java:[51,36] cannot find symbol
+  symbol:   method getCategory()
+  location: variable product of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/ProductService.java:[52,32] cannot find symbol
+  symbol:   method getImageUrl()
+  location: variable product of type com.example.inka_backend.model.Product
+[INFO] 30 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.543 s
+[INFO] Finished at: 2026-03-03T15:07:02+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.14.1:compile (default-compile) on project inka_backend: Compilation failure: Compilation failure: 
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/model/Category.java:[29,20] variable imageUrl is already defined in class com.example.inka_backend.model.Category
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[21,22] cannot find symbol
+[ERROR]   symbol:   method setCategoryName(java.lang.String)
+[ERROR]   location: variable oversized of type com.example.inka_backend.model.Category
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[24,20] cannot find symbol
+[ERROR]   symbol:   method setCategoryName(java.lang.String)
+[ERROR]   location: variable hoodies of type com.example.inka_backend.model.Category
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[30,17] cannot find symbol
+[ERROR]   symbol:   method setName(java.lang.String)
+[ERROR]   location: variable tee1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[31,17] cannot find symbol
+[ERROR]   symbol:   method setPrice(double)
+[ERROR]   location: variable tee1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[32,17] cannot find symbol
+[ERROR]   symbol:   method setCategory(com.example.inka_backend.model.Category)
+[ERROR]   location: variable tee1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[33,17] cannot find symbol
+[ERROR]   symbol:   method setStock(int)
+[ERROR]   location: variable tee1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[34,17] cannot find symbol
+[ERROR]   symbol:   method setIsAvailable(boolean)
+[ERROR]   location: variable tee1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[37,20] cannot find symbol
+[ERROR]   symbol:   method setName(java.lang.String)
+[ERROR]   location: variable hoodie1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[38,20] cannot find symbol
+[ERROR]   symbol:   method setPrice(double)
+[ERROR]   location: variable hoodie1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[39,20] cannot find symbol
+[ERROR]   symbol:   method setCategory(com.example.inka_backend.model.Category)
+[ERROR]   location: variable hoodie1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[40,20] cannot find symbol
+[ERROR]   symbol:   method setStock(int)
+[ERROR]   location: variable hoodie1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[41,20] cannot find symbol
+[ERROR]   symbol:   method setIsAvailable(boolean)
+[ERROR]   location: variable hoodie1 of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[47,25] cannot find symbol
+[ERROR]   symbol:   method setName(java.lang.String)
+[ERROR]   location: variable testCustomer of type com.example.inka_backend.model.Customer
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[48,25] cannot find symbol
+[ERROR]   symbol:   method setEmail(java.lang.String)
+[ERROR]   location: variable testCustomer of type com.example.inka_backend.model.Customer
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[49,25] cannot find symbol
+[ERROR]   symbol:   method setPassword(java.lang.String)
+[ERROR]   location: variable testCustomer of type com.example.inka_backend.model.Customer
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/config/DataLoader.java:[50,25] cannot find symbol
+[ERROR]   symbol:   method setRole(com.example.inka_backend.model.UserRole)
+[ERROR]   location: variable testCustomer of type com.example.inka_backend.model.Customer
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/CategoryService.java:[28,35] cannot find symbol
+[ERROR]   symbol:   method getId()
+[ERROR]   location: variable category of type com.example.inka_backend.model.Category
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/CategoryService.java:[29,37] cannot find symbol
+[ERROR]   symbol:   method getCategoryName()
+[ERROR]   location: variable category of type com.example.inka_backend.model.Category
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/CustomerService.java:[22,41] cannot find symbol
+[ERROR]   symbol:   method getName()
+[ERROR]   location: variable updatedData of type com.example.inka_backend.model.Customer
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/CustomerService.java:[23,44] cannot find symbol
+[ERROR]   symbol:   method getAddress()
+[ERROR]   location: variable updatedData of type com.example.inka_backend.model.Customer
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/ProductService.java:[44,33] cannot find symbol
+[ERROR]   symbol:   method getProductId()
+[ERROR]   location: variable product of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/ProductService.java:[45,28] cannot find symbol
+[ERROR]   symbol:   method getName()
+[ERROR]   location: variable product of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/ProductService.java:[46,35] cannot find symbol
+[ERROR]   symbol:   method getDescription()
+[ERROR]   location: variable product of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/ProductService.java:[47,29] cannot find symbol
+[ERROR]   symbol:   method getPrice()
+[ERROR]   location: variable product of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/ProductService.java:[48,29] cannot find symbol
+[ERROR]   symbol:   method getStock()
+[ERROR]   location: variable product of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/ProductService.java:[49,35] cannot find symbol
+[ERROR]   symbol:   method getIsAvailable()
+[ERROR]   location: variable product of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/ProductService.java:[50,34] cannot find symbol
+[ERROR]   symbol:   method getCategory()
+[ERROR]   location: variable product of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/ProductService.java:[51,36] cannot find symbol
+[ERROR]   symbol:   method getCategory()
+[ERROR]   location: variable product of type com.example.inka_backend.model.Product
+[ERROR] /C:/A/Studies/Y2S2/project/inka_clothing_ecommerce_store/inka_backend/src/main/java/com/example/inka_backend/service/ProductService.java:[52,32] cannot find symbol
+[ERROR]   symbol:   method getImageUrl()
+[ERROR]   location: variable product of type com.example.inka_backend.model.Product
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

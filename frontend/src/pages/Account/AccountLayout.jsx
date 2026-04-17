@@ -1,7 +1,13 @@
 import { Outlet, NavLink } from 'react-router-dom';
 import { User } from 'lucide-react';
+import { authService } from '../../services/authService';
 
 export default function AccountLayout() {
+    const handleLogout = () => {
+        authService.removeToken();
+        window.location.href = '/';
+    };
+
     return (
         <div className="account-container">
             <div className="account-header">
@@ -9,7 +15,7 @@ export default function AccountLayout() {
                     <User size={28} strokeWidth={2.5} />
                     <h1>My Account</h1>
                 </div>
-                <button className="btn-logout">Log Out</button>
+                <button className="btn-logout" onClick={handleLogout}>Log Out</button>
             </div>
 
             <div className="account-divider"></div>
