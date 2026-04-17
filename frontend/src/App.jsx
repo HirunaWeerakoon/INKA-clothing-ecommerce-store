@@ -7,6 +7,7 @@ import AccountLayout from './pages/Account/AccountLayout';
 import MyDetails from './pages/Account/MyDetails';
 import MyOrders from './pages/Account/MyOrders';
 import MyReviews from './pages/Account/MyReviews';
+import AuthPage from './pages/Account/AuthPage';
 import ProductGrid from './components/ProductGrid';
 import ProductPage from './components/ProductPage';
 import HomePage from './pages/Home/HomePage';
@@ -52,6 +53,7 @@ function App() {
           <Route path="checkout/cancel" element={<CheckoutCancel />} />
 
           <Route path="cart" element={<Cart />} />
+          <Route path="login" element={<AuthPage />} />
 
           <Route path="account" element={<AccountLayout />}>
             <Route index element={<Navigate to="details" replace />} />

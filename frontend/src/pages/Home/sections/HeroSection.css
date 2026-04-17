@@ -7,6 +7,7 @@
   background-color: #f6f6f6;
   align-items: center;
   min-height: 520px;
+  height: 520px;   
   overflow: hidden;
 }
 
@@ -17,6 +18,7 @@
   gap: 20px;
   padding: 60px 40px 60px 0;
   justify-content: center;
+  align-self: center;
 }
 
 .hero__headline {
@@ -90,7 +92,7 @@
   height: 100%;
   display: block;
   object-fit: cover;
-  object-position: top center;
+  object-position: 20% top;   /* shifted left to reveal hand on right */
   mix-blend-mode: multiply;
 }
 

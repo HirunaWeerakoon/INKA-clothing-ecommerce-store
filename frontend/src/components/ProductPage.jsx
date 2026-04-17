@@ -237,7 +237,15 @@ export default function ProductPage() {
                         <p style={{ padding: '20px', fontSize: '15px' }}>{product.description}</p>
                     </div>
                 )}
-                {activeTab === 'sizeguide' && <div className="pp-tab-placeholder" />}
+                {activeTab === 'sizeguide' && (
+                    <div className="pp-tab-placeholder pp-sizeguide-wrap">
+                        <img
+                            src="/size-chart.png"
+                            alt="Size chart"
+                            className="pp-sizeguide-image"
+                        />
+                    </div>
+                )}
 
                 {/* ── REVIEWS TAB — now connected to the backend ── */}
                 {activeTab === 'reviews' && (

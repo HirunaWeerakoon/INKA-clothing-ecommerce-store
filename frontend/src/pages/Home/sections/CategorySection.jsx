@@ -5,15 +5,34 @@ import './CategorySection.css';
 
 // Fallback static categories when backend has no data yet
 const FALLBACK_CATEGORIES = [
-  { categoryId: 1, categoryName: 'T-SHIRTS',    imageUrl: null },
-  { categoryId: 2, categoryName: 'DENIMS',      imageUrl: null },
-  { categoryId: 3, categoryName: 'TOTE BAGS',   imageUrl: null },
-  { categoryId: 4, categoryName: 'ACCESSORIES', imageUrl: null },
+  { categoryId: 1, categoryName: 'T-SHIRTS', imageUrl: '/category-tshirt.jpg' },
+  { categoryId: 2, categoryName: 'DENIMS', imageUrl: '/category-denim.jpg' },
+  { categoryId: 3, categoryName: 'TOTE BAGS', imageUrl: '/category-tote.jpg' },
+  { categoryId: 4, categoryName: 'ACCESSORIES', imageUrl: '/accessories.jpeg' },
 ];
+
+const CATEGORY_IMAGE_MAP = {
+  TSHIRTS: '/category-tshirt.jpg',
+  DENIMS: '/category-denim.jpg',
+  TOTEBAGS: '/category-tote.jpg',
+  ACCESSORIES: '/accessories.jpeg',
+};
 
 function CategorySection() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading]       = useState(true);
+
+  const normalizeCategoryName = (name = '') => name.toUpperCase().replace(/[^A-Z]/g, '');
+
+  const getCategoryImage = (category) => {
+    const normalizedName = normalizeCategoryName(category.categoryName);
+    const mappedImage = CATEGORY_IMAGE_MAP[normalizedName];
+
+    // Always prefer local mapped images for known home categories.
+    if (mappedImage) return mappedImage;
+    if (category.imageUrl) return category.imageUrl;
+    return '/home-image.png';
+  };
 
   useEffect(() => {
     getAllCategories()
@@ -42,15 +61,14 @@ function CategorySection() {
               key={cat.categoryId}
               className="category-card"
             >
-              {cat.imageUrl ? (
-                <img
-                  src={cat.imageUrl}
-                  alt={cat.categoryName}
-                  className="category-card__img"
-                />
-              ) : (
-                <div className="category-card__placeholder" aria-hidden="true" />
-              )}
+              <img
+                src={getCategoryImage(cat)}
+                alt={cat.categoryName}
+                className="category-card__img"
+                onError={(e) => {
+                  e.currentTarget.src = '/home-image.png';
+                }}
+              />
               <span className="category-card__label">{cat.categoryName}</span>
             </Link>
           ))}
