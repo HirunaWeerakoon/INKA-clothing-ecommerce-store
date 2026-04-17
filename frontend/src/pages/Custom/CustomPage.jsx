@@ -403,7 +403,7 @@ export default function CustomPage() {
     return (
         <div className="custom-page">
             <section className="custom-hero">
-                <img src="/hero_image.png" alt="INKA hero" className="custom-hero__bg" />
+                <img src="/bg-web.png" alt="INKA hero" className="custom-hero__bg" />
             </section>
 
             <div className="custom-content">
