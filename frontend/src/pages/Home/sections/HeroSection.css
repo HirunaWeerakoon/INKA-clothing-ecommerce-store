@@ -1,23 +1,31 @@
+/* ─── Hero Section ───────────────────────────────────────────────────────────
+   Two-column grid: text left, image right
+   mix-blend-mode: multiply on the image dissolves its white background
+   so it sits naturally on the section's grey background
+──────────────────────────────────────────────────────────────────────────── */
 .hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 32px;
-  padding: 48px 40px;
+  gap: 0;
+  padding: 0 0 0 56px;
   background-color: var(--color-light);
   align-items: center;
-  min-height: 380px;
+  min-height: 520px;
+  overflow: hidden;
 }
 
-/* Left text content */
+/* ─── Left: Text Content ─────────────────────────────────────────────────── */
 .hero__content {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  padding: 60px 40px 60px 0;
+  justify-content: center;
 }
 
 .hero__headline {
   font-family: var(--font-heading);
-  font-size: clamp(32px, 5vw, 52px);
+  font-size: clamp(28px, 3.8vw, 48px);
   line-height: 1.05;
   color: var(--color-black);
   letter-spacing: 1px;
@@ -26,8 +34,8 @@
 
 .hero__sub {
   font-size: 14px;
-  color: var(--color-black);
-  line-height: 1.6;
+  color: #555;
+  line-height: 1.7;
   font-weight: 400;
 }
 
@@ -35,18 +43,20 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
-/* Shared button styles */
+/* ─── Buttons ─────────────────────────────────────────────────────────────── */
 .btn {
   display: inline-block;
-  padding: 10px 22px;
-  font-size: 13px;
+  padding: 12px 28px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.8px;
   text-transform: uppercase;
-  transition: background-color 0.2s, color 0.2s;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
 
 .btn--filled {
@@ -64,27 +74,42 @@
   background-color: transparent;
   color: var(--color-black);
   border: 2px solid var(--color-black);
+  text-decoration: none;
 }
 
-.btn--outline:hover {
+/* FIX: increased specificity using .hero__actions as parent
+   to override any global a:hover rules from index.css or App.css */
+.hero__actions .btn--outline:hover,
+.hero__actions .btn--outline:focus {
   background-color: var(--color-black);
   color: var(--color-white);
+  border-color: var(--color-black);
+  text-decoration: none;
 }
 
-/* Right image */
+/* ─── Right: Image ───────────────────────────────────────────────────────────
+   mix-blend-mode: multiply makes the white PNG background invisible
+   by blending it into the section's grey background mathematically.
+   white × grey = grey — so the box disappears, models float naturally.
+──────────────────────────────────────────────────────────────────────────── */
 .hero__image-wrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  border-radius: 4px;
-  overflow: hidden;
-  background-color: var(--color-gray);
+  height: 100%;
+  min-height: 520px;
+  align-self: stretch;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 .hero__image {
   width: 100%;
   height: 100%;
+  display: block;
   object-fit: cover;
+  object-position: top center;    /* keep faces visible, not cropped */
+  mix-blend-mode: multiply;       /* dissolves white PNG background into section bg */
 }
 
 .hero__image-placeholder {
@@ -93,13 +118,20 @@
   background-color: var(--color-gray);
 }
 
+/* ─── Responsive ──────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .hero {
     grid-template-columns: 1fr;
-    padding: 32px 24px;
+    padding: 40px 24px 0;
+    min-height: unset;
+  }
+
+  .hero__content {
+    padding: 0 0 32px 0;
   }
 
   .hero__image-wrapper {
+    min-height: 360px;
     order: -1;
   }
 }
