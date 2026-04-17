@@ -1,20 +1,16 @@
-/* ─── Hero Section ───────────────────────────────────────────────────────────
-   Two-column grid: text left, image right
-   mix-blend-mode: multiply on the image dissolves its white background
-   so it sits naturally on the section's grey background
-──────────────────────────────────────────────────────────────────────────── */
+/* ─── Hero Section ─────────────────────────────────────────────────────────── */
 .hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0;
   padding: 0 0 0 56px;
-  background-color: var(--color-light);
+  background-color: #f6f6f6;
   align-items: center;
   min-height: 520px;
   overflow: hidden;
 }
 
-/* ─── Left: Text Content ─────────────────────────────────────────────────── */
+/* ─── Left: Text Content ───────────────────────────────────────────────────── */
 .hero__content {
   display: flex;
   flex-direction: column;
@@ -24,12 +20,12 @@
 }
 
 .hero__headline {
-  font-family: var(--font-heading);
   font-size: clamp(28px, 3.8vw, 48px);
   line-height: 1.05;
-  color: var(--color-black);
+  color: #000000;
   letter-spacing: 1px;
   text-transform: uppercase;
+  font-weight: 900;
 }
 
 .hero__sub {
@@ -46,7 +42,7 @@
   margin-top: 4px;
 }
 
-/* ─── Buttons ─────────────────────────────────────────────────────────────── */
+/* ─── Buttons ──────────────────────────────────────────────────────────────── */
 .btn {
   display: inline-block;
   padding: 12px 28px;
@@ -56,42 +52,28 @@
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  background-color: transparent;
+  color: #000000;
+  border: none;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 .btn--filled {
-  background-color: var(--color-black);
-  color: var(--color-white);
-  border: 2px solid var(--color-black);
-}
-
-.btn--filled:hover {
-  background-color: #333;
-  border-color: #333;
+  /* intentionally same as base */
 }
 
 .btn--outline {
-  background-color: transparent;
-  color: var(--color-black);
-  border: 2px solid var(--color-black);
-  text-decoration: none;
+  /* intentionally same as base */
 }
 
-/* FIX: increased specificity using .hero__actions as parent
-   to override any global a:hover rules from index.css or App.css */
-.hero__actions .btn--outline:hover,
-.hero__actions .btn--outline:focus {
-  background-color: var(--color-black);
-  color: var(--color-white);
-  border-color: var(--color-black);
-  text-decoration: none;
+.hero__actions .btn:hover,
+.hero__actions .btn:focus {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
 }
 
-/* ─── Right: Image ───────────────────────────────────────────────────────────
-   mix-blend-mode: multiply makes the white PNG background invisible
-   by blending it into the section's grey background mathematically.
-   white × grey = grey — so the box disappears, models float naturally.
-──────────────────────────────────────────────────────────────────────────── */
+/* ─── Right: Image ─────────────────────────────────────────────────────────── */
 .hero__image-wrapper {
   position: relative;
   width: 100%;
@@ -108,17 +90,17 @@
   height: 100%;
   display: block;
   object-fit: cover;
-  object-position: top center;    /* keep faces visible, not cropped */
-  mix-blend-mode: multiply;       /* dissolves white PNG background into section bg */
+  object-position: top center;
+  mix-blend-mode: multiply;
 }
 
 .hero__image-placeholder {
   position: absolute;
   inset: 0;
-  background-color: var(--color-gray);
+  background-color: #d4d4d4;
 }
 
-/* ─── Responsive ──────────────────────────────────────────────────────────── */
+/* ─── Responsive ───────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .hero {
     grid-template-columns: 1fr;
