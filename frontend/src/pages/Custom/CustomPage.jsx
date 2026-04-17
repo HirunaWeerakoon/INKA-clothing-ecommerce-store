@@ -8,15 +8,15 @@ import './CustomPage.css';
 
 const CATEGORY_CONFIG = {
     'T-SHIRTS': {
-        views: ['Front', 'Back', 'Side'],
-        images: { Front: '/tshirt-front.jpg', Back: '/tshirt-back.jpg', Side: '/tshirt-side.png' },
+        views: ['Front', 'Back', 'Left', 'Right'],
+        images: { Front: '/tshirt-front.jpg', Back: '/tshirt-back.jpg', Left: '/tshirt-side-left.png', Right: '/tshirt-side-right.png' },
         printArea: { top: 0.22, left: 0.28, width: 0.44, height: 0.45 },
         thumbnail: '/category-tshirt.jpg',
         customizable: true,
         subImages: {
-            'CREW NECK': { Front: '/tshirt-front.jpg', Back: '/tshirt-back.jpg', Side: '/tshirt-side.png' },
-            'V-NECK': { Front: '/vneck-tshirt-front.png', Back: '/vneck-tshirt-back.png', Side: '/tshirt-side.png' },
-            'POLO': { Front: '/polo-front.png', Back: '/polo-back.png', Side: '/polo-side.png' },
+            'CREW NECK': { Front: '/tshirt-front.jpg', Back: '/tshirt-back.jpg', Left: '/tshirt-side-left.png', Right: '/tshirt-side-right.png' },
+            'V-NECK': { Front: '/vneck-tshirt-front.png', Back: '/vneck-tshirt-back.png', Left: '/tshirt-side-left.png', Right: '/tshirt-side-right.png' },
+            'POLO': { Front: '/polo-front.png', Back: '/polo-back.png', Left: '/polo-side-left.png', Right: '/polo-side-right.png' },
         },
     },
     'DENIMS': {
