@@ -338,7 +338,6 @@ export default function CustomPage() {
                 totalPrice: singleTotal,
             });
             window.dispatchEvent(new Event('cart-updated'));
-            alert('Custom design added to cart! 🛒');
         } catch (err) {
             console.error(err);
             alert('Something went wrong. Please try again.');
@@ -383,7 +382,6 @@ export default function CustomPage() {
             if (allOk) {
                 setVariations([]);
                 window.dispatchEvent(new Event('cart-updated'));
-                alert(`${variations.length} variation(s) added to your cart! 🛒`);
             } else {
                 alert('Some variations failed to save.');
                 return;
