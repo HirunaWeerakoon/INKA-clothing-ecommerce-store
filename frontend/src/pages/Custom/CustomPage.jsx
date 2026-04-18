@@ -8,15 +8,15 @@ import './CustomPage.css';
 
 const CATEGORY_CONFIG = {
     'T-SHIRTS': {
-        views: ['Front', 'Back', 'Side'],
-        images: { Front: '/tshirt-front.jpg', Back: '/tshirt-back.jpg', Side: '/tshirt-side.png' },
+        views: ['Front', 'Back', 'Left', 'Right'],
+        images: { Front: '/tshirt-front.png', Back: '/tshirt-back.png', Left: '/tshirt-side-left.png', Right: '/tshirt-side-right.png' },
         printArea: { top: 0.22, left: 0.28, width: 0.44, height: 0.45 },
         thumbnail: '/category-tshirt.jpg',
         customizable: true,
         subImages: {
-            'CREW NECK': { Front: '/tshirt-front.jpg', Back: '/tshirt-back.jpg', Side: '/tshirt-side.png' },
-            'V-NECK': { Front: '/vneck-tshirt-front.png', Back: '/vneck-tshirt-back.png', Side: '/tshirt-side.png' },
-            'POLO': { Front: '/polo-front.png', Back: '/polo-back.png', Side: '/polo-side.png' },
+            'CREW NECK': { Front: '/tshirt-front.png', Back: '/tshirt-back.png', Left: '/tshirt-side-left.png', Right: '/tshirt-side-right.png' },
+            'V-NECK': { Front: '/vneck-tshirt-front.png', Back: '/vneck-tshirt-back.png', Left: '/tshirt-side-left.png', Right: '/tshirt-side-right.png' },
+            'POLO': { Front: '/polo-front.png', Back: '/polo-back.png', Left: '/polo-side-left.png', Right: '/polo-side-right.png' },
         },
     },
     'DENIMS': {
@@ -338,7 +338,6 @@ export default function CustomPage() {
                 totalPrice: singleTotal,
             });
             window.dispatchEvent(new Event('cart-updated'));
-            alert('Custom design added to cart! 🛒');
         } catch (err) {
             console.error(err);
             alert('Something went wrong. Please try again.');
@@ -383,7 +382,6 @@ export default function CustomPage() {
             if (allOk) {
                 setVariations([]);
                 window.dispatchEvent(new Event('cart-updated'));
-                alert(`${variations.length} variation(s) added to your cart! 🛒`);
             } else {
                 alert('Some variations failed to save.');
                 return;
@@ -405,7 +403,7 @@ export default function CustomPage() {
     return (
         <div className="custom-page">
             <section className="custom-hero">
-                <img src="/hero_image.png" alt="INKA hero" className="custom-hero__bg" />
+                <img src="/bg-web.png" alt="INKA hero" className="custom-hero__bg" />
             </section>
 
             <div className="custom-content">
