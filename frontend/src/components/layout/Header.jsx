@@ -1,9 +1,10 @@
-import { Search, User, ShoppingCart, LogOut } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Search, User, ShoppingCart } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { authService } from '../../services/authService';
 
 export default function Header({ onCartOpen }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const isActive = (path) => location.pathname === path;
 
   // Check authentication status and role
@@ -12,8 +13,7 @@ export default function Header({ onCartOpen }) {
   const isAdmin = userDetails && userDetails.role === 'ADMIN';
 
   const handleLogin = () => {
-    // Redirect to Spring Boot Google OAuth2 login endpoint
-    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+    navigate('/login');
   };
 
   const handleLogout = () => {

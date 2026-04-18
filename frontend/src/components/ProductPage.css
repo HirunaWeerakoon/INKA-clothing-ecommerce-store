@@ -322,6 +322,22 @@
   border-radius: 2px;
 }
 
+.pp-sizeguide-wrap {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.pp-sizeguide-image {
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
 /* RELATED PRODUCTS */
 .pp-related {
   padding: 32px 48px 48px;
