@@ -131,6 +131,8 @@ export default function Cart() {
                                 <div className="cart-item-info">
                                     <p className="cart-item-name">{item.product?.name ?? 'Product'}</p>
                                     <p className="cart-item-desc">{item.product?.description ?? ''}</p>
+                                    {item.color && <p className="cart-item-variant">Color: {item.color}</p>}
+                                    {item.size && <p className="cart-item-variant">Size: {item.size}</p>}
                                     <p className="cart-item-unit-price">
                                         LKR {item.product?.price?.toFixed(2)}
                                     </p>

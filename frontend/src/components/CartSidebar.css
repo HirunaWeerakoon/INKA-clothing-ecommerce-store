@@ -233,3 +233,11 @@
 .cart-sidebar__checkout:hover {
     background: #333;
 }
+
+.cart-item__variant {
+    font-size: 0.72rem;
+    color: #888;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.03em;
+}

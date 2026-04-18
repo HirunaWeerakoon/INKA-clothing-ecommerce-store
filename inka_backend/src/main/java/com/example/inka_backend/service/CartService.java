@@ -28,13 +28,14 @@ public class CartService {
         return cartItemRepository.findByCustomer_CustomerId(customerId);
     }
 
-    public CartItem addOrUpdateItem(Long customerId, Long productId, int quantity) {
+    public CartItem addOrUpdateItem(Long customerId, Long productId, int quantity, String color, String size) {
         Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found with id " + customerId));
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found with id " + productId));
+                .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        return cartItemRepository.findByCustomer_CustomerIdAndProduct_ProductId(customerId, productId)
+        return cartItemRepository
+                .findByCustomer_CustomerIdAndProduct_ProductIdAndColorAndSize(customerId, productId, color, size)
                 .map(existing -> {
                     existing.setQuantity(existing.getQuantity() + quantity);
                     return cartItemRepository.save(existing);
@@ -44,6 +45,8 @@ public class CartService {
                     newItem.setCustomer(customer);
                     newItem.setProduct(product);
                     newItem.setQuantity(quantity);
+                    newItem.setColor(color);
+                    newItem.setSize(size);
                     return cartItemRepository.save(newItem);
                 });
     }
