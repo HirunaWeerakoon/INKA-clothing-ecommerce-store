@@ -11,6 +11,10 @@
   margin-bottom: 16px;
 }
 
+.filter-dropdown {
+  position: relative;
+}
+
 .filter-btn {
   display: flex;
   align-items: center;
@@ -29,6 +33,48 @@
 
 .filter-btn:hover {
   background: #000;
+  color: #fff;
+}
+
+.filter-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 180px;
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 20;
+}
+
+.filter-option {
+  width: 100%;
+  text-align: left;
+  border: 1px solid transparent;
+  background: #fff;
+  color: #333;
+  padding: 6px 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.filter-option:hover {
+  border-color: #000;
+  color: #000;
+}
+
+.filter-option--active {
+  background: #000;
+  border-color: #000;
   color: #fff;
 }
 
@@ -63,4 +109,38 @@
   color: #aaa;
   letter-spacing: 2px;
   text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .product-section {
+    padding: 20px 16px 40px;
+  }
+
+  .filter-bar {
+    flex-wrap: wrap;
+  }
+
+  .product-count {
+    margin-left: 0;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+}
+
+@media (max-width: 520px) {
+  .filter-menu {
+    min-width: 160px;
+  }
+
+  .filter-option {
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
 }
