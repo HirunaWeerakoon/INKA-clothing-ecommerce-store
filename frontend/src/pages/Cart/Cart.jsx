@@ -125,12 +125,21 @@ export default function Cart() {
                         {cartItems.map(item => (
                             <div key={item.id} className="cart-item">
                                 {/* Product Image Placeholder */}
-                                <div className="cart-item-img" />
+                                <div className="cart-item-img">
+                                    {item.product?.imageUrl ? (
+                                        <img src={item.product.imageUrl} alt={item.product?.name}
+                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    ) : (
+                                        <span style={{ fontSize: '0.65rem', color: '#aaa' }}>INKA</span>
+                                    )}
+                                </div>
 
                                 {/* Info */}
                                 <div className="cart-item-info">
                                     <p className="cart-item-name">{item.product?.name ?? 'Product'}</p>
                                     <p className="cart-item-desc">{item.product?.description ?? ''}</p>
+                                    {item.color && <p className="cart-item-variant">Color: {item.color}</p>}
+                                    {item.size && <p className="cart-item-variant">Size: {item.size}</p>}
                                     <p className="cart-item-unit-price">
                                         LKR {item.product?.price?.toFixed(2)}
                                     </p>

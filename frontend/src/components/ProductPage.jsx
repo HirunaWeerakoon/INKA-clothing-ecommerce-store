@@ -49,7 +49,7 @@ export default function ProductPage() {
             .then(response => setProduct(response.data))
             .catch(error => console.error('Error fetching product:', error));
     }, [id]);
- 
+
     // fetch average rating and review count when product loads ────
     useEffect(() => {
         if (!id) return;
@@ -66,7 +66,7 @@ export default function ProductPage() {
         if (!selectedSize) {
             setCartMessage('Please select a size');
             setIsCartError(true);
-            setTimeout(() => {setCartMessage(''); setIsCartError(false);}, 2000);
+            setTimeout(() => { setCartMessage(''); setIsCartError(false); }, 2000);
             return;
         }
 
@@ -74,15 +74,18 @@ export default function ProductPage() {
         if (!user) {
             setCartMessage('Please log in to add to cart');
             setIsCartError(true);
-            setTimeout(() => {setCartMessage(''); setIsCartError(false);}, 2000);
+            setTimeout(() => { setCartMessage(''); setIsCartError(false); }, 2000);
             return;
         }
 
         setAddingToCart(true);
         try {
+            const selectedColorLabel = COLORS.find(c => c.hex === selectedColor)?.label || selectedColor;
             await axios.post(`/api/cart/${user.id}/add`, {
                 productId: product.productId,
-                quantity: 1
+                quantity: 1,
+                color: selectedColorLabel,
+                size: selectedSize
             });
             setCartMessage('Added to cart!');
             setIsCartError(false);
@@ -93,7 +96,7 @@ export default function ProductPage() {
             setIsCartError(true);
         } finally {
             setAddingToCart(false);
-            setTimeout(() => {setCartMessage(''); setIsCartError(false);}, 2000);
+            setTimeout(() => { setCartMessage(''); setIsCartError(false); }, 2000);
         }
     };
 
@@ -127,21 +130,21 @@ export default function ProductPage() {
                         }
                     </div>
                     {thumbnails.length > 0 && (
-                    <div className="pp-thumbs">
-                        {thumbnails.map((img, i) => (
-                            <button
-                                key={i}
-                                className={`pp-thumb${activeThumb === i ? ' active' : ''}`}
-                                onClick={() => setActiveThumb(i)}
-                                style={{
-                                    backgroundImage: `url(${img})`,
-                                    backgroundSize: 'cover',
-                                    backgroundPosition: 'center',
-                                }}
-                                aria-label={`Thumbnail ${i + 1}`}
-                            />
-                        ))}
-                    </div>
+                        <div className="pp-thumbs">
+                            {thumbnails.map((img, i) => (
+                                <button
+                                    key={i}
+                                    className={`pp-thumb${activeThumb === i ? ' active' : ''}`}
+                                    onClick={() => setActiveThumb(i)}
+                                    style={{
+                                        backgroundImage: `url(${img})`,
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center',
+                                    }}
+                                    aria-label={`Thumbnail ${i + 1}`}
+                                />
+                            ))}
+                        </div>
                     )}
                 </div>
 
@@ -151,7 +154,7 @@ export default function ProductPage() {
                     <div className="pp-rating-row">
                         <StarRating rating={avgRating} />
                         <span>({reviewCount} reviews)</span>
-                        </div>
+                    </div>
                     <p className="pp-price">LKR {product.price?.toLocaleString()}</p>
                     <p className="pp-vat">Inclusive of VAT</p>
 
