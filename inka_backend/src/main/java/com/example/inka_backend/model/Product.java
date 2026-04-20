@@ -53,6 +53,12 @@ public class Product {
     @Column(name = "image5")
     private String image5;
 
+    @Column(name = "available_colors")
+    private String availableColors;
+
+    @Column(name = "available_sizes")
+    private String availableSizes;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     @JsonBackReference

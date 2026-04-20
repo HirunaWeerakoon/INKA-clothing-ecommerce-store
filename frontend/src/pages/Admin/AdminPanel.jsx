@@ -23,6 +23,9 @@ import { adminGetAllUsers, adminDeleteUser } from '../../services/adminUserServi
 import { uploadImage } from '../../services/cloudinary';
 import './AdminPanel.css';
 
+const ALL_COLORS = ['Black', 'White', 'Navy', 'Grey', 'Tan', 'Red', 'Blue', 'Green'];
+const ALL_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+
 // Empty form state for product add/edit
 const EMPTY_FORM = {
   name: '',
@@ -33,6 +36,8 @@ const EMPTY_FORM = {
   imageUrl: '',
   isAvailable: true,
   bestSeller: false,
+  availableColors: [],
+  availableSizes: [],
 };
 
 // Empty form state for category add/edit
@@ -243,6 +248,8 @@ export default function AdminPanel() {
         price: parseFloat(form.price),
         stock: parseInt(form.stock),
         categoryId: form.categoryId ? parseInt(form.categoryId) : null,
+        availableColors: form.availableColors.join(','),
+        availableSizes: form.availableSizes.join(','),
       });
       setMessage('Product added successfully!');
       setForm(EMPTY_FORM);
@@ -267,6 +274,8 @@ export default function AdminPanel() {
       imageUrl: product.imageUrl || '',
       isAvailable: product.isAvailable ?? true,
       bestSeller: product.bestSeller ?? false,
+      availableColors: product.availableColors ? product.availableColors.split(',') : [],
+      availableSizes: product.availableSizes ? product.availableSizes.split(',') : [],
     });
   };
 
@@ -288,6 +297,8 @@ export default function AdminPanel() {
         price: parseFloat(form.price),
         stock: parseInt(form.stock),
         categoryId: form.categoryId ? parseInt(form.categoryId) : null,
+        availableColors: form.availableColors.join(','),
+        availableSizes: form.availableSizes.join(','),
       });
       setMessage('Product updated successfully!');
       setSelectedProduct(null);
@@ -377,6 +388,9 @@ export default function AdminPanel() {
     }
   };
 
+  const toggleArrayItem = (arr, item) =>
+    arr.includes(item) ? arr.filter(i => i !== item) : [...arr, item];
+
   return (
     <div className="admin-wrapper">
 
@@ -392,7 +406,7 @@ export default function AdminPanel() {
             onClick={() => setActiveTab('dashboard')}
           >
             {/* Dashboard icon */}
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /></svg>
             Dashboard
           </button>
 
@@ -401,7 +415,7 @@ export default function AdminPanel() {
             onClick={() => setActiveTab('products')}
           >
             {/* Products icon */}
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 01-8 0" /></svg>
             Products
           </button>
 
@@ -410,7 +424,7 @@ export default function AdminPanel() {
             onClick={() => setActiveTab('category')}
           >
             {/* Category icon */}
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
             Category
           </button>
 
@@ -419,7 +433,7 @@ export default function AdminPanel() {
             onClick={() => setActiveTab('stock')}
           >
             {/* Stock icon */}
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
             Stock
           </button>
 
@@ -428,7 +442,7 @@ export default function AdminPanel() {
             onClick={() => setActiveTab('users')}
           >
             {/* Users icon */}
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" /></svg>
             Users
           </button>
 
@@ -436,14 +450,14 @@ export default function AdminPanel() {
             className={activeTab === 'orders' ? 'admin-nav-item active' : 'admin-nav-item'}
             onClick={() => setActiveTab('orders')}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-3V4c0-1.1-.9-2-2-2H9c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM9 4h6v3H9V4z"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 7h-3V4c0-1.1-.9-2-2-2H9c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM9 4h6v3H9V4z" /></svg>
             Orders
           </button>
         </nav>
 
         {/* Back to site link at bottom of sidebar */}
         <a href="/" className="admin-back-link">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
           Back to site
         </a>
       </aside>
@@ -465,7 +479,7 @@ export default function AdminPanel() {
 
               <div className="stat-card">
                 <div className="stat-icon stat-icon-products">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 01-8 0" /></svg>
                 </div>
                 <div className="stat-info">
                   <span className="stat-label">Total Products</span>
@@ -475,7 +489,7 @@ export default function AdminPanel() {
 
               <div className="stat-card">
                 <div className="stat-icon stat-icon-categories">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
                 </div>
                 <div className="stat-info">
                   <span className="stat-label">Categories</span>
@@ -485,7 +499,7 @@ export default function AdminPanel() {
 
               <div className="stat-card">
                 <div className="stat-icon stat-icon-users">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" /></svg>
                 </div>
                 <div className="stat-info">
                   <span className="stat-label">Total Users</span>
@@ -496,7 +510,7 @@ export default function AdminPanel() {
               {/* Low stock card — highlighted in amber if any */}
               <div className={`stat-card ${stats?.lowStockCount > 0 ? 'stat-card-warning' : ''}`}>
                 <div className="stat-icon stat-icon-stock">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
                 </div>
                 <div className="stat-info">
                   <span className="stat-label">Low Stock Items</span>
@@ -559,7 +573,40 @@ export default function AdminPanel() {
                 </select>
                 <label>Product Image</label>
                 <input type="file" accept="image/*" onChange={handleImageFileChange} />
-                {imageFile && <p style={{fontSize:'0.8rem',color:'#666',margin:'0.25rem 0'}}>Selected: {imageFile.name}</p>}
+                {imageFile && <p style={{ fontSize: '0.8rem', color: '#666', margin: '0.25rem 0' }}>Selected: {imageFile.name}</p>}
+                <label>Available Colors</label>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                  {ALL_COLORS.map(color => (
+                    <button type="button" key={color}
+                      onClick={() => setForm(f => ({ ...f, availableColors: toggleArrayItem(f.availableColors, color) }))}
+                      style={{
+                        padding: '0.3rem 0.8rem', borderRadius: '20px', border: '1.5px solid',
+                        cursor: 'pointer', fontSize: '0.78rem', fontWeight: 700,
+                        background: form.availableColors.includes(color) ? '#111' : '#f5f5f5',
+                        color: form.availableColors.includes(color) ? '#fff' : '#333',
+                        borderColor: form.availableColors.includes(color) ? '#111' : '#ddd',
+                      }}>
+                      {color}
+                    </button>
+                  ))}
+                </div>
+
+                <label>Available Sizes</label>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                  {ALL_SIZES.map(size => (
+                    <button type="button" key={size}
+                      onClick={() => setForm(f => ({ ...f, availableSizes: toggleArrayItem(f.availableSizes, size) }))}
+                      style={{
+                        padding: '0.3rem 0.8rem', borderRadius: '20px', border: '1.5px solid',
+                        cursor: 'pointer', fontSize: '0.78rem', fontWeight: 700,
+                        background: form.availableSizes.includes(size) ? '#111' : '#f5f5f5',
+                        color: form.availableSizes.includes(size) ? '#fff' : '#333',
+                        borderColor: form.availableSizes.includes(size) ? '#111' : '#ddd',
+                      }}>
+                      {size}
+                    </button>
+                  ))}
+                </div>
                 <label className="checkbox-row">
                   <input name="isAvailable" type="checkbox" checked={form.isAvailable} onChange={handleChange} />
                   Available
@@ -612,9 +659,42 @@ export default function AdminPanel() {
                       ))}
                     </select>
                     <label>Product Image</label>
-                    {form.imageUrl && <img src={form.imageUrl} alt="Current" style={{width:60,height:60,objectFit:'cover',borderRadius:6,marginBottom:8}} />}
+                    {form.imageUrl && <img src={form.imageUrl} alt="Current" style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 6, marginBottom: 8 }} />}
                     <input type="file" accept="image/*" onChange={handleImageFileChange} />
-                    {imageFile && <p style={{fontSize:'0.8rem',color:'#666',margin:'0.25rem 0'}}>New file: {imageFile.name}</p>}
+                    {imageFile && <p style={{ fontSize: '0.8rem', color: '#666', margin: '0.25rem 0' }}>New file: {imageFile.name}</p>}
+                    <label>Available Colors</label>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                      {ALL_COLORS.map(color => (
+                        <button type="button" key={color}
+                          onClick={() => setForm(f => ({ ...f, availableColors: toggleArrayItem(f.availableColors, color) }))}
+                          style={{
+                            padding: '0.3rem 0.8rem', borderRadius: '20px', border: '1.5px solid',
+                            cursor: 'pointer', fontSize: '0.78rem', fontWeight: 700,
+                            background: form.availableColors.includes(color) ? '#111' : '#f5f5f5',
+                            color: form.availableColors.includes(color) ? '#fff' : '#333',
+                            borderColor: form.availableColors.includes(color) ? '#111' : '#ddd',
+                          }}>
+                          {color}
+                        </button>
+                      ))}
+                    </div>
+
+                    <label>Available Sizes</label>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                      {ALL_SIZES.map(size => (
+                        <button type="button" key={size}
+                          onClick={() => setForm(f => ({ ...f, availableSizes: toggleArrayItem(f.availableSizes, size) }))}
+                          style={{
+                            padding: '0.3rem 0.8rem', borderRadius: '20px', border: '1.5px solid',
+                            cursor: 'pointer', fontSize: '0.78rem', fontWeight: 700,
+                            background: form.availableSizes.includes(size) ? '#111' : '#f5f5f5',
+                            color: form.availableSizes.includes(size) ? '#fff' : '#333',
+                            borderColor: form.availableSizes.includes(size) ? '#111' : '#ddd',
+                          }}>
+                          {size}
+                        </button>
+                      ))}
+                    </div>
                     <label className="checkbox-row">
                       <input name="isAvailable" type="checkbox" checked={form.isAvailable} onChange={handleChange} />
                       Available
@@ -833,48 +913,48 @@ export default function AdminPanel() {
                       <p><strong>Customer:</strong> {o.customerName} ({o.customerEmail})</p>
                       <p><strong>Total:</strong> {o.currency} {o.totalAmount?.toLocaleString()}</p>
                       {o.stripeSessionId && (
-                        <p style={{fontSize: '0.8rem', color: '#888', marginTop: '4px'}}>
+                        <p style={{ fontSize: '0.8rem', color: '#888', marginTop: '4px' }}>
                           <strong>Stripe Ref:</strong> {o.stripeSessionId}
                         </p>
                       )}
                     </div>
-                    
+
                     <div className="modern-order-table-container">
-                       <table className="modern-order-table">
-                          <thead>
-                             <tr>
-                                <th>Item</th>
-                                <th>Type</th>
-                                <th>Quantity</th>
-                                <th>Unit Price</th>
-                                <th>Amount</th>
-                             </tr>
-                          </thead>
-                          <tbody>
-                             {o.items?.map((item) => {
-                                const productImage = item.imageUrl || item.designImageUrl || 'https://via.placeholder.com/50';
-                                const itemType = item.customOrderId ? 'Custom' : 'Standard';
-                                const refId = item.customOrderId || item.productId || '—';
-                                return (
-                                  <tr key={item.id}>
-                                     <td>
-                                       <div className="modern-item-cell">
-                                          <img src={productImage} alt={item.name} className="modern-item-img" />
-                                          <div className="modern-item-info">
-                                             <span className="modern-item-name">{item.name}</span>
-                                             <span className="modern-item-sub">Ref ID: {refId}</span>
-                                          </div>
-                                       </div>
-                                     </td>
-                                     <td>{itemType}</td>
-                                     <td style={{textAlign: 'center'}}>{item.quantity}</td>
-                                     <td>{o.currency} {item.unitAmount?.toLocaleString()}</td>
-                                     <td>{o.currency} {item.lineTotal?.toLocaleString()}</td>
-                                  </tr>
-                                );
-                             })}
-                          </tbody>
-                       </table>
+                      <table className="modern-order-table">
+                        <thead>
+                          <tr>
+                            <th>Item</th>
+                            <th>Type</th>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {o.items?.map((item) => {
+                            const productImage = item.imageUrl || item.designImageUrl || 'https://via.placeholder.com/50';
+                            const itemType = item.customOrderId ? 'Custom' : 'Standard';
+                            const refId = item.customOrderId || item.productId || '—';
+                            return (
+                              <tr key={item.id}>
+                                <td>
+                                  <div className="modern-item-cell">
+                                    <img src={productImage} alt={item.name} className="modern-item-img" />
+                                    <div className="modern-item-info">
+                                      <span className="modern-item-name">{item.name}</span>
+                                      <span className="modern-item-sub">Ref ID: {refId}</span>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td>{itemType}</td>
+                                <td style={{ textAlign: 'center' }}>{item.quantity}</td>
+                                <td>{o.currency} {item.unitAmount?.toLocaleString()}</td>
+                                <td>{o.currency} {item.lineTotal?.toLocaleString()}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
                     </div>
 
                     {o.items?.some(i => i.designImageUrl) && (
