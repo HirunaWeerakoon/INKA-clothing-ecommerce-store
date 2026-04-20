@@ -24,4 +24,10 @@ public class CartItem {
 
     @Column(nullable = false)
     private Integer quantity;
+
+    @Column(name = "color")
+    private String color;
+
+    @Column(name = "size")
+    private String size;
 }
