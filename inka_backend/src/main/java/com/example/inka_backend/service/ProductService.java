@@ -51,12 +51,14 @@ public class ProductService {
 
     // Create a new product
     public ProductDTO createProduct(ProductDTO dto) {
+        validateProductPayload(dto);
         Product product = convertToEntity(dto);
         return convertToDTO(productRepository.save(product));
     }
 
     // UPDATE an existing product
 public ProductDTO updateProduct(Long productId, ProductDTO dto) {
+    validateProductPayload(dto);
     // Find the existing product or throw error
     Product existing = productRepository.findById(productId)
             .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
@@ -83,6 +85,24 @@ public ProductDTO updateProduct(Long productId, ProductDTO dto) {
     }
 
     return convertToDTO(productRepository.save(existing));
+}
+
+private void validateProductPayload(ProductDTO dto) {
+    if (dto == null) {
+        throw new IllegalArgumentException("Product payload is required.");
+    }
+    if (dto.getName() == null || dto.getName().trim().isEmpty()) {
+        throw new IllegalArgumentException("Product name is required.");
+    }
+    if (dto.getPrice() == null || dto.getPrice() < 0) {
+        throw new IllegalArgumentException("Price must be a non-negative number.");
+    }
+    if (dto.getStock() == null || dto.getStock() < 0) {
+        throw new IllegalArgumentException("Stock must be a non-negative integer.");
+    }
+    if (dto.getCategoryId() == null) {
+        throw new IllegalArgumentException("Category is required.");
+    }
 }
 
 // DELETE a product by ID
@@ -130,7 +150,8 @@ public List<ProductDTO> getAllProductsForAdmin() {
         product.setPrice(dto.getPrice());
         product.setDescription(dto.getDescription());
         product.setStock(dto.getStock());
-        product.setIsAvailable(dto.getIsAvailable());
+        product.setIsAvailable(dto.getIsAvailable() != null ? dto.getIsAvailable() : Boolean.TRUE);
+        product.setBestSeller(dto.getBestSeller() != null ? dto.getBestSeller() : Boolean.FALSE);
         product.setImageUrl(dto.getImageUrl());
         product.setImage1(dto.getImage1());
         product.setImage2(dto.getImage2());

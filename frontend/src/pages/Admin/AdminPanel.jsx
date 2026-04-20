@@ -23,6 +23,20 @@ import { adminGetAllUsers, adminDeleteUser } from '../../services/adminUserServi
 import { uploadImage } from '../../services/cloudinary';
 import './AdminPanel.css';
 
+const getApiErrorMessage = (err, fallback) => {
+  const responseData = err?.response?.data;
+  if (typeof responseData === 'string' && responseData.trim()) {
+    return responseData;
+  }
+  if (responseData?.message) {
+    return responseData.message;
+  }
+  if (err?.message) {
+    return err.message;
+  }
+  return fallback;
+};
+
 // Empty form state for product add/edit
 const EMPTY_FORM = {
   name: '',
@@ -222,20 +236,32 @@ export default function AdminPanel() {
   const handleImageFileChange = (e) => {
     if (e.target.files && e.target.files[0]) {
       setImageFile(e.target.files[0]);
+    } else {
+      setImageFile(null);
     }
   };
 
   // Handle Add Product
   const handleAdd = async (e) => {
     e.preventDefault();
+    if (!form.categoryId) {
+      setMessage('Please select a category before saving the product.');
+      return;
+    }
     try {
       let imageUrl = form.imageUrl;
       // Upload image to Cloudinary if a file was selected
       if (imageFile) {
-        setUploading(true);
-        setMessage('Uploading image...');
-        imageUrl = await uploadImage(imageFile);
-        setUploading(false);
+        try {
+          setUploading(true);
+          setMessage('Uploading image...');
+          imageUrl = await uploadImage(imageFile);
+        } catch (uploadErr) {
+          imageUrl = form.imageUrl || '';
+          setMessage(`Image upload failed (${getApiErrorMessage(uploadErr, 'Unknown upload error')}). Saving product without Cloudinary image.`);
+        } finally {
+          setUploading(false);
+        }
       }
       await adminCreateProduct({
         ...form,
@@ -251,7 +277,7 @@ export default function AdminPanel() {
       fetchStats();
     } catch (err) {
       setUploading(false);
-      setMessage('Failed to add product.');
+      setMessage(`Failed to add product: ${getApiErrorMessage(err, 'Unknown error')}`);
     }
   };
 
@@ -274,13 +300,23 @@ export default function AdminPanel() {
   const handleEdit = async (e) => {
     e.preventDefault();
     if (!selectedProduct) return;
+    if (!form.categoryId) {
+      setMessage('Please select a category before updating the product.');
+      return;
+    }
     try {
       let imageUrl = form.imageUrl;
       if (imageFile) {
-        setUploading(true);
-        setMessage('Uploading image...');
-        imageUrl = await uploadImage(imageFile);
-        setUploading(false);
+        try {
+          setUploading(true);
+          setMessage('Uploading image...');
+          imageUrl = await uploadImage(imageFile);
+        } catch (uploadErr) {
+          imageUrl = form.imageUrl || '';
+          setMessage(`Image upload failed (${getApiErrorMessage(uploadErr, 'Unknown upload error')}). Updating product without Cloudinary image.`);
+        } finally {
+          setUploading(false);
+        }
       }
       await adminUpdateProduct(selectedProduct.productId, {
         ...form,
@@ -296,7 +332,7 @@ export default function AdminPanel() {
       fetchProducts();
     } catch (err) {
       setUploading(false);
-      setMessage('Failed to update product.');
+      setMessage(`Failed to update product: ${getApiErrorMessage(err, 'Unknown error')}`);
     }
   };
 
@@ -547,16 +583,23 @@ export default function AdminPanel() {
                 <label>Description</label>
                 <input name="description" value={form.description} onChange={handleChange} />
                 <label>Price</label>
-                <input name="price" type="number" value={form.price} onChange={handleChange} required />
+                <input name="price" type="number" min="0" step="0.01" value={form.price} onChange={handleChange} required />
                 <label>Stock</label>
-                <input name="stock" type="number" value={form.stock} onChange={handleChange} required />
+                <input name="stock" type="number" min="0" step="1" value={form.stock} onChange={handleChange} required />
                 <label>Category</label>
-                <select name="categoryId" value={form.categoryId} onChange={handleChange}>
+                <select name="categoryId" value={form.categoryId} onChange={handleChange} required>
                   <option value="">Select a category</option>
                   {categories.map((c) => (
                     <option key={c.categoryId} value={c.categoryId}>{c.categoryName}</option>
                   ))}
                 </select>
+                <label>Image URL (optional)</label>
+                <input
+                  name="imageUrl"
+                  value={form.imageUrl}
+                  onChange={handleChange}
+                  placeholder="https://example.com/product-image.jpg"
+                />
                 <label>Product Image</label>
                 <input type="file" accept="image/*" onChange={handleImageFileChange} />
                 {imageFile && <p style={{fontSize:'0.8rem',color:'#666',margin:'0.25rem 0'}}>Selected: {imageFile.name}</p>}
@@ -601,16 +644,23 @@ export default function AdminPanel() {
                     <label>Description</label>
                     <input name="description" value={form.description} onChange={handleChange} />
                     <label>Price</label>
-                    <input name="price" type="number" value={form.price} onChange={handleChange} required />
+                    <input name="price" type="number" min="0" step="0.01" value={form.price} onChange={handleChange} required />
                     <label>Stock</label>
-                    <input name="stock" type="number" value={form.stock} onChange={handleChange} required />
+                    <input name="stock" type="number" min="0" step="1" value={form.stock} onChange={handleChange} required />
                     <label>Category</label>
-                    <select name="categoryId" value={form.categoryId} onChange={handleChange}>
+                    <select name="categoryId" value={form.categoryId} onChange={handleChange} required>
                       <option value="">Select a category</option>
                       {categories.map((c) => (
                         <option key={c.categoryId} value={c.categoryId}>{c.categoryName}</option>
                       ))}
                     </select>
+                    <label>Image URL (optional)</label>
+                    <input
+                      name="imageUrl"
+                      value={form.imageUrl}
+                      onChange={handleChange}
+                      placeholder="https://example.com/product-image.jpg"
+                    />
                     <label>Product Image</label>
                     {form.imageUrl && <img src={form.imageUrl} alt="Current" style={{width:60,height:60,objectFit:'cover',borderRadius:6,marginBottom:8}} />}
                     <input type="file" accept="image/*" onChange={handleImageFileChange} />
