@@ -123,13 +123,20 @@ export default function AdminPanel() {
     if (activeTab === 'products') fetchCategories();
     if (activeTab === 'stock') fetchStock();
     if (activeTab === 'users') fetchUsers();
-    if (activeTab === 'orders') fetchOrders();
+    if (activeTab === 'orders') {
+      const token = authService.getToken();
+      if (token) {
+        fetchOrders();
+      } else {
+        setTimeout(() => fetchOrders(), 500);
+      }
+    }
   }, [activeTab]);
 
   // Fetch real orders
   const fetchOrders = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = authService.getToken();
       const { data } = await axios.get('/api/admin/orders', {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -141,7 +148,7 @@ export default function AdminPanel() {
 
   const updateOrderStatus = async (id, status) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = authService.getToken();
       await axios.put(`/api/admin/orders/${id}/status`, { status }, {
         headers: { Authorization: `Bearer ${token}` }
       });
