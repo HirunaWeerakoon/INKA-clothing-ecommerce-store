@@ -91,20 +91,20 @@ public class CheckoutService {
             item.setLineTotal(lineTotal);
             items.add(item);
 
-                subtotalMinor += lineTotal;
-                subtotalMajor = subtotalMajor.add(BigDecimal.valueOf(product.getPrice())
+            subtotalMinor += lineTotal;
+            subtotalMajor = subtotalMajor.add(BigDecimal.valueOf(product.getPrice())
                     .multiply(BigDecimal.valueOf(quantity)));
         }
 
-            BigDecimal shippingMajor = subtotalMajor.compareTo(FREE_SHIPPING_THRESHOLD) >= 0
+        BigDecimal shippingMajor = subtotalMajor.compareTo(FREE_SHIPPING_THRESHOLD) >= 0
                 ? BigDecimal.ZERO
                 : DEFAULT_SHIPPING_FEE;
-            long shippingMinor = toMinorAmount(shippingMajor.doubleValue());
-            long totalMinor = subtotalMinor + shippingMinor;
+        long shippingMinor = toMinorAmount(shippingMajor.doubleValue());
+        long totalMinor = subtotalMinor + shippingMinor;
 
-            order.setSubtotalAmount(subtotalMinor);
-            order.setShippingAmount(shippingMinor);
-            order.setTotalAmount(totalMinor);
+        order.setSubtotalAmount(subtotalMinor);
+        order.setShippingAmount(shippingMinor);
+        order.setTotalAmount(totalMinor);
         order.setItems(items);
 
         Order savedOrder = orderRepository.save(order);
@@ -133,7 +133,7 @@ public class CheckoutService {
                     .setQuantity(1L)
                     .setPriceData(SessionCreateParams.LineItem.PriceData.builder()
                             .setCurrency(CURRENCY.toLowerCase())
-                    .setUnitAmount(shippingMinor)
+                            .setUnitAmount(shippingMinor)
                             .setProductData(SessionCreateParams.LineItem.PriceData.ProductData.builder()
                                     .setName("Shipping")
                                     .build())
@@ -218,6 +218,12 @@ public class CheckoutService {
 
         Order savedOrder = orderRepository.save(order);
 
+        // Mark custom orders as PENDING immediately so they disappear from cart
+        for (CustomOrder customOrder : customOrders) {
+            customOrder.setStatus("PENDING");
+            customOrderRepository.save(customOrder);
+        }
+
         SessionCreateParams.Builder paramsBuilder = SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .setSuccessUrl(successUrl)
@@ -242,7 +248,135 @@ public class CheckoutService {
                     .setQuantity(1L)
                     .setPriceData(SessionCreateParams.LineItem.PriceData.builder()
                             .setCurrency(CURRENCY.toLowerCase())
-                    .setUnitAmount(shippingMinor)
+                            .setUnitAmount(shippingMinor)
+                            .setProductData(SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                                    .setName("Shipping")
+                                    .build())
+                            .build())
+                    .build());
+        }
+
+        Session session = Session.create(paramsBuilder.build());
+
+        savedOrder.setStripeSessionId(session.getId());
+        savedOrder.setStripePaymentIntentId(session.getPaymentIntent());
+        orderRepository.save(savedOrder);
+
+        Payment payment = new Payment();
+        payment.setOrder(savedOrder);
+        payment.setProvider(PROVIDER_STRIPE);
+        payment.setStatus(PaymentStatus.PENDING);
+        payment.setCurrency(CURRENCY);
+        payment.setAmount(totalMinor);
+        payment.setStripeSessionId(session.getId());
+        payment.setStripePaymentIntentId(session.getPaymentIntent());
+        paymentRepository.save(payment);
+
+        return session.getUrl();
+    }
+
+    @Transactional
+    public String createMixedCheckoutSession(Long customerId, List<Long> customOrderIds) throws StripeException {
+        List<CartItem> cartItems = cartItemRepository.findByCustomer_CustomerId(customerId);
+        List<CustomOrder> customOrders = customOrderRepository.findAllById(customOrderIds);
+
+        if (cartItems.isEmpty() && customOrders.isEmpty()) {
+            throw new IllegalStateException("Nothing to checkout");
+        }
+
+        Order order = new Order();
+        order.setCustomerId(customerId);
+        order.setOrderType(OrderType.MIXED);
+        order.setCurrency(CURRENCY);
+
+        List<OrderItem> items = new ArrayList<>();
+        long subtotalMinor = 0;
+        BigDecimal subtotalMajor = BigDecimal.ZERO;
+
+        for (CartItem cartItem : cartItems) {
+            Product product = cartItem.getProduct();
+            long unitAmount = toMinorAmount(product.getPrice());
+            int quantity = cartItem.getQuantity();
+            long lineTotal = unitAmount * quantity;
+
+            OrderItem item = new OrderItem();
+            item.setOrder(order);
+            item.setItemType(OrderItemType.PRODUCT);
+            item.setProductId(product.getProductId());
+            item.setName(product.getName());
+            item.setUnitAmount(unitAmount);
+            item.setQuantity(quantity);
+            item.setLineTotal(lineTotal);
+            items.add(item);
+
+            subtotalMinor += lineTotal;
+            subtotalMajor = subtotalMajor.add(
+                    BigDecimal.valueOf(product.getPrice()).multiply(BigDecimal.valueOf(quantity)));
+        }
+
+        for (CustomOrder customOrder : customOrders) {
+            long unitAmount = toMinorAmount(customOrder.getTotalPrice());
+            long lineTotal = unitAmount;
+
+            OrderItem item = new OrderItem();
+            item.setOrder(order);
+            item.setItemType(OrderItemType.CUSTOM);
+            item.setCustomOrderId(customOrder.getId());
+            item.setName(buildCustomOrderName(customOrder));
+            item.setUnitAmount(unitAmount);
+            item.setQuantity(1);
+            item.setLineTotal(lineTotal);
+            items.add(item);
+
+            subtotalMinor += lineTotal;
+            if (customOrder.getTotalPrice() != null) {
+                subtotalMajor = subtotalMajor.add(BigDecimal.valueOf(customOrder.getTotalPrice()));
+            }
+        }
+
+        BigDecimal shippingMajor = subtotalMajor.compareTo(FREE_SHIPPING_THRESHOLD) >= 0
+                ? BigDecimal.ZERO : DEFAULT_SHIPPING_FEE;
+        long shippingMinor = toMinorAmount(shippingMajor.doubleValue());
+        long totalMinor = subtotalMinor + shippingMinor;
+
+        order.setSubtotalAmount(subtotalMinor);
+        order.setShippingAmount(shippingMinor);
+        order.setTotalAmount(totalMinor);
+        order.setItems(items);
+
+        Order savedOrder = orderRepository.save(order);
+
+        // Mark custom orders as PENDING immediately so they disappear from cart
+        for (CustomOrder customOrder : customOrders) {
+            customOrder.setStatus("PENDING");
+            customOrderRepository.save(customOrder);
+        }
+
+        SessionCreateParams.Builder paramsBuilder = SessionCreateParams.builder()
+                .setMode(SessionCreateParams.Mode.PAYMENT)
+                .setSuccessUrl(successUrl)
+                .setCancelUrl(cancelUrl)
+                .putMetadata("orderId", String.valueOf(savedOrder.getId()));
+
+        for (OrderItem item : items) {
+            paramsBuilder.addLineItem(SessionCreateParams.LineItem.builder()
+                    .setQuantity(Long.valueOf(item.getQuantity()))
+                    .setPriceData(SessionCreateParams.LineItem.PriceData.builder()
+                            .setCurrency(CURRENCY.toLowerCase())
+                            .setUnitAmount(item.getUnitAmount())
+                            .setProductData(SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                                    .setName(item.getName())
+                                    .build())
+                            .build())
+                    .build());
+        }
+
+        if (shippingMinor > 0) {
+            paramsBuilder.addLineItem(SessionCreateParams.LineItem.builder()
+                    .setQuantity(1L)
+                    .setPriceData(SessionCreateParams.LineItem.PriceData.builder()
+                            .setCurrency(CURRENCY.toLowerCase())
+                            .setUnitAmount(shippingMinor)
                             .setProductData(SessionCreateParams.LineItem.PriceData.ProductData.builder()
                                     .setName("Shipping")
                                     .build())
@@ -291,23 +425,12 @@ public class CheckoutService {
             paymentRepository.save(payment);
 
             Order order = payment.getOrder();
-            order.setStatus(OrderStatus.PAID);
+            order.setStatus(OrderStatus.PENDING);
             order.setStripePaymentIntentId(session.getPaymentIntent());
             orderRepository.save(order);
 
-            if (order.getOrderType() == OrderType.CART) {
+            if (order.getOrderType() == OrderType.CART || order.getOrderType() == OrderType.MIXED) {
                 cartItemRepository.deleteByCustomer_CustomerId(order.getCustomerId());
-            }
-
-            if (order.getOrderType() == OrderType.CUSTOM) {
-                for (OrderItem item : order.getItems()) {
-                    if (item.getCustomOrderId() != null) {
-                        customOrderRepository.findById(item.getCustomOrderId()).ifPresent(customOrder -> {
-                            customOrder.setStatus("PAID");
-                            customOrderRepository.save(customOrder);
-                        });
-                    }
-                }
             }
         }
     }
@@ -317,8 +440,8 @@ public class CheckoutService {
             return 0;
         }
         BigDecimal value = BigDecimal.valueOf(amount)
-            .multiply(MINOR_UNIT_FACTOR)
-            .setScale(0, RoundingMode.HALF_UP);
+                .multiply(MINOR_UNIT_FACTOR)
+                .setScale(0, RoundingMode.HALF_UP);
         return value.longValue();
     }
 
@@ -326,6 +449,6 @@ public class CheckoutService {
         String category = customOrder.getCategoryName() == null ? "Custom" : customOrder.getCategoryName();
         String sub = customOrder.getSubCategoryName() == null ? "" : " - " + customOrder.getSubCategoryName();
         String qty = customOrder.getQuantity() == null ? "" : " (Qty " + customOrder.getQuantity() + ")";
-        return category + "" + sub + qty;
+        return category + sub + qty;
     }
 }

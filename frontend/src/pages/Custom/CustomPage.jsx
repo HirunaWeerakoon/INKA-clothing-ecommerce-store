@@ -71,31 +71,26 @@ function designKey(subId, view) {
     return `${subId ?? 'none'}__${view}`;
 }
 
-// ── Load an image URL into an HTMLImageElement ─────────────────────────────
-function loadImage(src) {
+function loadImage(src, crossOrigin = true) {
     return new Promise((resolve, reject) => {
         const img = new Image();
-        img.crossOrigin = 'anonymous';
+        if (crossOrigin) img.crossOrigin = 'anonymous';
         img.onload = () => resolve(img);
         img.onerror = reject;
         img.src = src;
     });
 }
 
-// ── Pixel-perfect composite: draws garment + design onto an offscreen canvas
-// Uses the exact same transform math as the CSS (translate → rotate → scale,
-// all relative to the DOM canvas dimensions so positions match 1-to-1).
 async function buildComposite(garmentSrc, design, printArea, domWidth, domHeight) {
     const OUTPUT_W = 1200;
     const OUTPUT_H = 1200;
 
-    // Scale factor from DOM pixels → output canvas pixels
     const sx = OUTPUT_W / domWidth;
     const sy = OUTPUT_H / domHeight;
 
     const [garmentImg, designImg] = await Promise.all([
-        loadImage(garmentSrc),
-        loadImage(design.url),
+        loadImage(garmentSrc, false),
+        loadImage(design.url, true),
     ]);
 
     const offscreen = document.createElement('canvas');
@@ -103,31 +98,20 @@ async function buildComposite(garmentSrc, design, printArea, domWidth, domHeight
     offscreen.height = OUTPUT_H;
     const ctx = offscreen.getContext('2d');
 
-    // 1. Draw the garment scaled to fill the output canvas
     ctx.drawImage(garmentImg, 0, 0, OUTPUT_W, OUTPUT_H);
 
-    // 2. Compute the print-area rectangle in output-canvas pixels
     const paLeft = printArea.left * OUTPUT_W;
     const paTop = printArea.top * OUTPUT_H;
     const paWidth = printArea.width * OUTPUT_W;
     const paHeight = printArea.height * OUTPUT_H;
 
-    // 3. The CSS overlay is centred inside the print area div.
-    //    The design image uses transform-origin: center center of that div.
-    //    So the pivot point in canvas pixels is the centre of the print area
-    //    plus the drag offset (converted from DOM pixels → canvas pixels).
     const pivotX = paLeft + paWidth / 2 + design.x * sx;
     const pivotY = paTop + paHeight / 2 + design.y * sy;
 
-    // 4. Apply the same transform stack as the CSS:
-    //    translate(pivot) → rotate → scale → draw centred
     ctx.save();
     ctx.translate(pivotX, pivotY);
     ctx.rotate((design.rotation * Math.PI) / 180);
     ctx.scale(design.scale, design.scale);
-
-    // The design image fills the print area div (max-width/max-height: 100%
-    // with object-fit: contain), so we draw it at the print-area size centred.
     ctx.drawImage(designImg, -paWidth / 2, -paHeight / 2, paWidth, paHeight);
     ctx.restore();
 
@@ -155,6 +139,7 @@ export default function CustomPage() {
     const [orderMode, setOrderMode] = useState(MODE_SINGLE);
     const [variations, setVariations] = useState([]);
     const [showModal, setShowModal] = useState(false);
+    const [addedToCart, setAddedToCart] = useState(false);
 
     const fileInputRef = useRef(null);
     const canvasRef = useRef(null);
@@ -211,7 +196,6 @@ export default function CustomPage() {
         const file = e.target.files?.[0];
         if (!file) return;
         setUploadError(null);
-        // Only create a local preview — Cloudinary upload happens at checkout
         const localUrl = URL.createObjectURL(file);
         const k = designKey(subId, activeView);
         setDesigns(d => ({
@@ -291,12 +275,10 @@ export default function CustomPage() {
     const grandTotal = variations.reduce((sum, v) => sum + v.total, 0);
     const grandQty = variations.reduce((sum, v) => sum + v.qty, 0);
 
-    // ── Build composite images for every view that has a design ───────────
     async function captureScreenshots() {
         const viewScreenshots = {};
         const activeImages = getActiveImages(selectedCategory?.categoryName, selectedSub?.name);
 
-        // DOM canvas dimensions — needed to map drag offsets to canvas pixels
         const domW = canvasRef.current?.offsetWidth || 600;
         const domH = canvasRef.current?.offsetHeight || 480;
 
@@ -304,12 +286,10 @@ export default function CustomPage() {
             const d = designs[designKey(subId, view)];
             if (!d?.url) continue;
 
-            // 1. Upload the original raw design file to Cloudinary
             if (d._file) {
                 await uploadImage(d._file);
             }
 
-            // 2. Build pixel-perfect composite and upload it
             const garmentSrc = activeImages[view];
             const blob = await buildComposite(garmentSrc, d, PRINT_AREA, domW, domH);
             const compositeFile = new File([blob], `composite-${view.toLowerCase()}.png`, { type: 'image/png' });
@@ -329,7 +309,7 @@ export default function CustomPage() {
         try {
             const shots = await captureScreenshots();
             const mainDesignUrl = shots['Front'] || Object.values(shots)[0] || '';
-            const orderResponse = await axios.post('/api/custom-orders', {
+            await axios.post('/api/custom-orders', {
                 customerId: user.id,
                 categoryName: selectedCategory.categoryName,
                 subCategoryName: selectedSub?.name || '',
@@ -338,6 +318,8 @@ export default function CustomPage() {
                 totalPrice: singleTotal,
             });
             window.dispatchEvent(new Event('cart-updated'));
+            setAddedToCart(true);
+            setTimeout(() => setAddedToCart(false), 3000);
         } catch (err) {
             console.error(err);
             alert('Something went wrong. Please try again.');
@@ -486,7 +468,7 @@ export default function CustomPage() {
                             <img
                                 key={`${selectedCategory?.categoryId}-${selectedSub?.id}-${activeView}`}
                                 src={tshirtImages[activeView]} alt={`${activeView} view`}
-                                className="canvas-tshirt-base" crossOrigin="anonymous" draggable={false}
+                                className="canvas-tshirt-base" draggable={false}
                                 onError={e => { e.currentTarget.style.display = 'none'; }}
                             />
 
@@ -615,8 +597,13 @@ export default function CustomPage() {
                             <div className="single-order-actions">
                                 <button className="btn-checkout btn-checkout--full"
                                     onClick={handleSingleCheckout} disabled={checkoutLoading}>
-                                    {checkoutLoading ? 'Starting Payment…' : 'Pay with Stripe'}
+                                    {checkoutLoading ? 'Adding to Cart…' : 'Add to Cart'}
                                 </button>
+                                {addedToCart && (
+                                    <p style={{ color: '#22a722', fontWeight: '500', marginTop: '8px', fontSize: '14px' }}>
+                                        Added to cart!
+                                    </p>
+                                )}
                                 <p className="single-order-hint">
                                     Ordering multiple sizes or colors?{' '}
                                     <button className="link-btn" onClick={() => setOrderMode(MODE_WHOLESALE)}>

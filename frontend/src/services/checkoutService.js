@@ -15,4 +15,9 @@ export const checkoutService = {
         const response = await axios.post('/api/checkout/custom-orders', { customOrderIds });
         return response.data;
     },
+
+    createMixedSession: async (customerId, customOrderIds) => {
+        const response = await axios.post(`/api/checkout/mixed?customerId=${customerId}`, { customOrderIds });
+        return response.data;
+    },
 };
