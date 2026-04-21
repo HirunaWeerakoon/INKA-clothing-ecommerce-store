@@ -35,16 +35,39 @@ public class AdminOrderController {
 
     @GetMapping
     public ResponseEntity<List<AdminOrderDTO>> getAllOrders() {
-        List<Order> orders = orderRepository.findAll().stream()
-                .filter(o -> o.getStatus() != OrderStatus.PENDING && o.getStatus() != OrderStatus.FAILED)
+        List<Order> orders = orderRepository.findAllByOrderByCreatedAtDesc();
+
+        // Collect all IDs upfront to batch load
+        List<Long> customerIds = orders.stream()
+                .map(Order::getCustomerId)
+                .distinct()
                 .collect(java.util.stream.Collectors.toList());
-                
-        // Sort descending by created at
-        orders.sort((a,b) -> {
-            if (a.getCreatedAt() == null || b.getCreatedAt() == null) return 0;
-            return b.getCreatedAt().compareTo(a.getCreatedAt());
-        });
-        
+
+        List<Long> productIds = orders.stream()
+                .flatMap(o -> o.getItems().stream())
+                .map(OrderItem::getProductId)
+                .filter(id -> id != null)
+                .distinct()
+                .collect(java.util.stream.Collectors.toList());
+
+        List<Long> customOrderIds = orders.stream()
+                .flatMap(o -> o.getItems().stream())
+                .map(OrderItem::getCustomOrderId)
+                .filter(id -> id != null)
+                .distinct()
+                .collect(java.util.stream.Collectors.toList());
+
+        // Batch load into maps
+        Map<Long, Customer> customerMap = customerRepository.findAllById(customerIds)
+                .stream().collect(java.util.stream.Collectors.toMap(Customer::getCustomerId, c -> c));
+
+        Map<Long, Product> productMap = productRepository.findAllById(productIds)
+                .stream().collect(java.util.stream.Collectors.toMap(Product::getProductId, p -> p));
+
+        Map<Long, CustomOrder> customOrderMap = customOrderRepository.findAllById(customOrderIds)
+                .stream().collect(java.util.stream.Collectors.toMap(CustomOrder::getId, co -> co));
+
+        // Build DTOs
         List<AdminOrderDTO> dtos = new ArrayList<>();
         for (Order order : orders) {
             AdminOrderDTO dto = new AdminOrderDTO();
@@ -60,7 +83,7 @@ public class AdminOrderController {
             dto.setStripePaymentIntentId(order.getStripePaymentIntentId());
             dto.setCreatedAt(order.getCreatedAt());
 
-            Customer customer = customerRepository.findById(order.getCustomerId()).orElse(null);
+            Customer customer = customerMap.get(order.getCustomerId());
             if (customer != null) {
                 dto.setCustomerName(customer.getName());
                 dto.setCustomerEmail(customer.getEmail());
@@ -81,17 +104,13 @@ public class AdminOrderController {
                 itemDTO.setLineTotal(item.getLineTotal());
 
                 if (item.getProductId() != null) {
-                    Product product = productRepository.findById(item.getProductId()).orElse(null);
-                    if (product != null) {
-                        itemDTO.setImageUrl(product.getImageUrl());
-                    }
+                    Product product = productMap.get(item.getProductId());
+                    if (product != null) itemDTO.setImageUrl(product.getImageUrl());
                 }
-                
+
                 if (item.getCustomOrderId() != null) {
-                    CustomOrder customOrder = customOrderRepository.findById(item.getCustomOrderId()).orElse(null);
-                    if (customOrder != null) {
-                        itemDTO.setDesignImageUrl(customOrder.getDesignImageUrl());
-                    }
+                    CustomOrder customOrder = customOrderMap.get(item.getCustomOrderId());
+                    if (customOrder != null) itemDTO.setDesignImageUrl(customOrder.getDesignImageUrl());
                 }
 
                 itemDTOs.add(itemDTO);
@@ -99,10 +118,9 @@ public class AdminOrderController {
             dto.setItems(itemDTOs);
             dtos.add(dto);
         }
-        
+
         return ResponseEntity.ok(dtos);
     }
-
     @PutMapping("/{id}/status")
     public ResponseEntity<Order> updateOrderStatus(@PathVariable Long id, @RequestBody Map<String, String> payload) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found with id " + id));
