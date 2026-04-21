@@ -115,6 +115,9 @@ export default function AdminPanel() {
     fetchProducts();
     fetchCategories();
     fetchStats();
+    fetchStock();
+    fetchUsers();
+    fetchOrders();
   }, []);
 
   // Load data when tab changes
@@ -149,7 +152,7 @@ export default function AdminPanel() {
   const updateOrderStatus = async (id, status) => {
     try {
       const token = authService.getToken();
-      await axios.put(`/api/admin/orders/${id}/status`, { status }, {
+      await axios.put(`/api/admin/orders/${id}/status`, { status: status.toUpperCase() }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchOrders();
