@@ -971,7 +971,7 @@ export default function AdminPanel() {
                   <div className="order-card-body">
                     <div className="order-customer-row">
                       <p><strong>Customer:</strong> {o.customerName} ({o.customerEmail})</p>
-                      <p><strong>Total:</strong> {o.currency} {o.totalAmount?.toLocaleString()}</p>
+                      <p><strong>Total:</strong> {o.currency} {(o.totalAmount / 100)?.toLocaleString()}</p>
                       {o.stripeSessionId && (
                         <p style={{ fontSize: '0.8rem', color: '#888', marginTop: '4px' }}>
                           <strong>Stripe Ref:</strong> {o.stripeSessionId}
@@ -1008,8 +1008,8 @@ export default function AdminPanel() {
                                 </td>
                                 <td>{itemType}</td>
                                 <td style={{ textAlign: 'center' }}>{item.quantity}</td>
-                                <td>{o.currency} {item.unitAmount?.toLocaleString()}</td>
-                                <td>{o.currency} {item.lineTotal?.toLocaleString()}</td>
+                                <td>{o.currency} {(item.unitAmount / 100)?.toLocaleString()}</td>
+                                <td>{o.currency} {(item.lineTotal / 100)?.toLocaleString()}</td>
                               </tr>
                             );
                           })}
