@@ -70,7 +70,7 @@ export default function MyDetails() {
                     />
                 </div>
 
-                <div className="form-group mt-xl">
+                <div className="form-group" style={{ marginTop: '1.25rem' }}>
                     <Input
                         label="My Address"
                         id="address"
@@ -80,7 +80,7 @@ export default function MyDetails() {
                     />
                 </div>
 
-                <div className="form-actions mt-xl">
+                <div className="form-actions" style={{ marginTop: '1.5rem' }}>
                     <button type="submit" className="btn btn-primary" style={{ padding: '0.75rem 1.5rem', backgroundColor: '#000', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
                         Save Changes
                     </button>
