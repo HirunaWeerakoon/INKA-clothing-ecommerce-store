@@ -930,12 +930,10 @@ export default function AdminPanel() {
                     {u.role}
                   </span>
                   {/* Prevent admin from deleting themselves */}
-                  {u.email !== userDetails?.email && (
+                  {u.email !== userDetails?.email ? (
                     <button className="btn-delete" onClick={() => handleDeleteUser(u.customerId)}>Delete</button>
-                  )}
-                  {/* Show a dash if this is the currently logged in admin */}
-                  {u.email === userDetails?.email && (
-                    <span className="user-you-badge">You</span>
+                  ) : (
+                    <span className="user-you-badge" style={{ minWidth: '60px', display: 'inline-block', textAlign: 'center' }}>You</span>
                   )}
                 </div>
               ))}
