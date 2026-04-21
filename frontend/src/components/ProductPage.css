@@ -322,6 +322,19 @@
   border-radius: 2px;
 }
 
+.pp-description-wrap {
+  min-height: 140px;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  padding: 20px;
+}
+
+.pp-description-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #333;
+}
+
 .pp-sizeguide-wrap {
   background: #fff;
   display: flex;

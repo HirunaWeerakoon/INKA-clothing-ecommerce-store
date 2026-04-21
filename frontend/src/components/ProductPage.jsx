@@ -48,6 +48,7 @@ export default function ProductPage() {
     const [relatedProducts, setRelatedProducts] = useState([]);
 
     useEffect(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
         axios.get(`/api/products/${id}`)
             .then(response => setProduct(response.data))
             .catch(error => console.error('Error fetching product:', error));
@@ -128,6 +129,17 @@ export default function ProductPage() {
         }
     };
 
+    const categoryName = (product?.categoryName || product?.category?.categoryName || '').toLowerCase();
+    const categoryId = product?.categoryId || product?.category?.categoryId;
+    const isDenimProduct = categoryName.includes('denim') || categoryId === 2;
+    const hideSizeGuide = categoryName.includes('tote') || categoryName.includes('accessor') || categoryId === 3 || categoryId === 4;
+
+    useEffect(() => {
+        if (hideSizeGuide && activeTab === 'sizeguide') {
+            setActiveTab('description');
+        }
+    }, [hideSizeGuide, activeTab]);
+
     if (!product) return <div className="loading">Loading...</div>;
 
     // Build gallery: use image1-5 if available, fallback to imageUrl
@@ -139,7 +151,7 @@ export default function ProductPage() {
 
     const TABS = [
         { id: 'description', label: 'Description' },
-        { id: 'sizeguide', label: 'Size Guide' },
+        ...(!hideSizeGuide ? [{ id: 'sizeguide', label: 'Size Guide' }] : []),
         { id: 'reviews', label: 'Reviews' },
     ];
 
@@ -264,15 +276,15 @@ export default function ProductPage() {
             {/* TAB CONTENT */}
             <div className="pp-tab-content">
                 {activeTab === 'description' && (
-                    <div className="pp-tab-placeholder">
-                        <p style={{ padding: '20px', fontSize: '15px' }}>{product.description}</p>
+                    <div className="pp-tab-placeholder pp-description-wrap">
+                        <p className="pp-description-text">{product.description}</p>
                     </div>
                 )}
-                {activeTab === 'sizeguide' && (
+                {activeTab === 'sizeguide' && !hideSizeGuide && (
                     <div className="pp-tab-placeholder pp-sizeguide-wrap">
                         <img
-                            src="/size-chart.png"
-                            alt="Size chart"
+                            src={isDenimProduct ? '/denim-size-chart.jpeg' : '/size-chart.png'}
+                            alt={isDenimProduct ? 'Denim size chart' : 'Size chart'}
                             className="pp-sizeguide-image"
                         />
                     </div>
