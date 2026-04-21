@@ -72,3 +72,50 @@ export const searchProducts = async (query) => {
     return searchableText.includes(searchTerm);
   });
 };
+
+/**
+ * Get up to 4 products related to the given product.
+ * Priority: same category, excluding the current product.
+ */
+export const getRelatedProducts = async (currentProduct, limit = 4) => {
+  if (!currentProduct?.productId) {
+    return [];
+  }
+
+  const products = await getAllProductsCached();
+  const currentCategoryId = currentProduct.categoryId || currentProduct.category?.categoryId;
+  const currentCategoryName = (currentProduct.categoryName || currentProduct.category?.categoryName || '').toLowerCase();
+
+  const sameCategoryProducts = products.filter((product) => {
+    if (!product || product.productId === currentProduct.productId) {
+      return false;
+    }
+
+    const productCategoryId = product.categoryId || product.category?.categoryId;
+    const productCategoryName = (product.categoryName || product.category?.categoryName || '').toLowerCase();
+
+    if (currentCategoryId && productCategoryId) {
+      return productCategoryId === currentCategoryId;
+    }
+
+    if (currentCategoryName && productCategoryName) {
+      return productCategoryName === currentCategoryName;
+    }
+
+    return false;
+  });
+
+  if (sameCategoryProducts.length >= limit) {
+    return sameCategoryProducts.slice(0, limit);
+  }
+
+  const fallbackProducts = products.filter((product) => {
+    if (!product || product.productId === currentProduct.productId) {
+      return false;
+    }
+
+    return !sameCategoryProducts.some((sameCategoryProduct) => sameCategoryProduct.productId === product.productId);
+  });
+
+  return [...sameCategoryProducts, ...fallbackProducts].slice(0, limit);
+};
