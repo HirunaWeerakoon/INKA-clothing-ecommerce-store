@@ -10,23 +10,26 @@ import com.example.inka_backend.repository.CustomerRepository;
 import com.example.inka_backend.repository.ProductRepository;
 import com.example.inka_backend.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
+import com.example.inka_backend.repository.OrderItemRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class ReviewService {
-
+    private final OrderItemRepository orderItemRepository;
     private final ReviewRepository reviewRepository;
     private final ProductRepository productRepository;
     private final CustomerRepository customerRepository;
 
     public ReviewService(ReviewRepository reviewRepository,
                          ProductRepository productRepository,
-                         CustomerRepository customerRepository) {
+                         CustomerRepository customerRepository,
+                         OrderItemRepository orderItemRepository) {
         this.reviewRepository = reviewRepository;
         this.productRepository = productRepository;
         this.customerRepository = customerRepository;
+        this.orderItemRepository = orderItemRepository;
     }
 
     public List<ReviewResponseDTO> getReviewsByProduct(Long productId) {
@@ -57,11 +60,17 @@ public class ReviewService {
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
         // Check for duplicate — return 409 with a clear message instead of crashing
+        // Check if customer has purchased the product
+        if (!orderItemRepository.existsByProductIdAndCustomerId(
+                request.getProductId(), customerId)) {
+            throw new RuntimeException("You can only review products you have purchased");
+        }
+
+// Check for duplicate review
         if (reviewRepository.existsByProduct_ProductIdAndCustomer_CustomerId(
                 request.getProductId(), customerId)) {
             throw new AlreadyReviewedException("You have already submitted a review for this product");
         }
-
         Review review = new Review();
         review.setProduct(product);
         review.setCustomer(customer);

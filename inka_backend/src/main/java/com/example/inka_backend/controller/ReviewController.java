@@ -7,6 +7,7 @@ import com.example.inka_backend.service.ReviewService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -46,7 +47,11 @@ public class ReviewController {
         String token = authHeader.replace("Bearer ", "");
         Long customerId = jwtTokenProvider.getUserIdFromJWT(token);
 
-        return ResponseEntity.ok(reviewService.createReview(request, customerId));
+        try {
+            return ResponseEntity.ok(reviewService.createReview(request, customerId));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(403).build();
+        }
     }
 
     // PROTECTED — only the author can delete their own review
