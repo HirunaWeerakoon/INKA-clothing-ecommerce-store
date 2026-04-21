@@ -110,15 +110,22 @@ export default function CartSidebar({ isOpen, onClose }) {
             const hasCustom = cartItems.some(item => item.isCustom);
             const standardItems = cartItems.filter(item => !item.isCustom);
 
+            let response;
+
             if (hasCustom && standardItems.length === 0) {
                 const customIds = cartItems.filter(i => i.isCustom).map(i => i.originalId);
-                const response = await checkoutService.createCustomOrdersSession(customIds);
-                if (response?.url) window.location.href = response.url;
+                response = await checkoutService.createCustomOrdersSession(customIds);
             } else if (!hasCustom) {
-                const response = await checkoutService.createCartSession(user.id);
-                if (response?.url) window.location.href = response.url;
+                response = await checkoutService.createCartSession(user.id);
             } else {
-                alert('For now, please checkout custom items and regular items separately.');
+
+                response = await checkoutService.createMixedSession(user.id,
+                    cartItems.filter(i => i.isCustom).map(i => i.originalId));
+            }
+
+            if (response?.url) {
+                setCartItems([]);
+                window.location.href = response.url;
             }
         } catch (error) {
             console.error('Error starting checkout:', error);
