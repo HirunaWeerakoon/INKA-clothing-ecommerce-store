@@ -152,12 +152,16 @@ export default function AdminPanel() {
   const updateOrderStatus = async (id, status) => {
     try {
       const token = authService.getToken();
+      // Update UI immediately
+      setOrders(prev => prev.map(o =>
+        o.id === id ? { ...o, status: status.toUpperCase() } : o
+      ));
       await axios.put(`/api/admin/orders/${id}/status`, { status: status.toUpperCase() }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      fetchOrders();
     } catch (err) {
       alert('Failed to update order status');
+      fetchOrders(); // Revert on error
     }
   };
 
