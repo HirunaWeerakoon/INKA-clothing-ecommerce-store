@@ -4,6 +4,8 @@ import axios from 'axios';
 import './ProductPage.css';
 import ReviewSection from './ReviewSection';   // ← NEW
 import { authService } from '../services/authService';
+import ProductCard from './ProductCard';
+import { getRelatedProducts } from '../services/productService';
 
 const HeartIcon = () => (
     <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -43,6 +45,7 @@ export default function ProductPage() {
     const [isCartError, setIsCartError] = useState(false);
     const [avgRating, setAvgRating] = useState(0);
     const [reviewCount, setReviewCount] = useState(0);
+    const [relatedProducts, setRelatedProducts] = useState([]);
 
     useEffect(() => {
         axios.get(`/api/products/${id}`)
@@ -61,6 +64,31 @@ export default function ProductPage() {
             setReviewCount(reviewsRes.data.length || 0);
         }).catch(err => console.error('Error fetching review stats:', err));
     }, [id]);
+
+    useEffect(() => {
+        let mounted = true;
+
+        const loadRelatedProducts = async () => {
+            if (!product?.productId) return;
+            try {
+                const related = await getRelatedProducts(product);
+                if (mounted) {
+                    setRelatedProducts(related);
+                }
+            } catch (error) {
+                console.error('Error loading related products:', error);
+                if (mounted) {
+                    setRelatedProducts([]);
+                }
+            }
+        };
+
+        loadRelatedProducts();
+
+        return () => {
+            mounted = false;
+        };
+    }, [product]);
 
     const handleAddToCart = async () => {
         if (!selectedSize) {
@@ -259,13 +287,15 @@ export default function ProductPage() {
             {/* RELATED PRODUCTS */}
             <section className="pp-related">
                 <h2 className="pp-related-title">Related Products</h2>
-                <div className="pp-related-grid">
-                    {[0, 1, 2, 3].map((i) => (
-                        <div key={i} className="pp-related-card">
-                            <div className="pp-related-img" />
-                        </div>
-                    ))}
-                </div>
+                {relatedProducts.length > 0 ? (
+                    <div className="pp-related-grid">
+                        {relatedProducts.map((relatedProduct) => (
+                            <ProductCard key={relatedProduct.productId} product={relatedProduct} />
+                        ))}
+                    </div>
+                ) : (
+                    <p className="pp-related-empty">No related products available right now.</p>
+                )}
             </section>
 
         </div>
