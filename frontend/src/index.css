@@ -8,6 +8,8 @@
   --danger: #ff0000;
   --black: #000000;
   --border-radius: 8px;
+  --color-dark: #111111;
+  --color-white: #ffffff;
 }
 
 * {

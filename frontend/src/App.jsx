@@ -21,6 +21,7 @@ import './App.css';
 import Cart from './pages/Cart/Cart';
 
 import { authService } from './services/authService';
+import AboutPage from './pages/About/AboutPage';
 
 // Initialize axios interceptors globally
 authService.setupAxiosInterceptors();
@@ -48,7 +49,7 @@ function App() {
           <Route path="shop" element={<ProductGrid />} />
           <Route path="product/:id" element={<ProductPage />} />
           <Route path="custom" element={<CustomPage />} />
-          <Route path="about" element={<div className="placeholder-page">About Placeholder</div>} />
+          <Route path="about" element={<AboutPage />} />
           <Route path="search" element={<SearchResultsPage />} />
           <Route path="oauth2/redirect" element={<OAuth2RedirectHandler />} />
           <Route path="checkout/success" element={<CheckoutSuccess />} />
