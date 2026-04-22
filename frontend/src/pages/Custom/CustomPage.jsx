@@ -267,6 +267,7 @@ export default function CustomPage() {
     }
 
     function handleRemoveVariation(id) { setVariations(v => v.filter(i => i.id !== id)); }
+
     function handleVariationQty(id, newQty) {
         if (newQty < 1) return;
         setVariations(v => v.map(i => i.id === id ? { ...i, qty: newQty, total: i.unitPrice * newQty } : i));
@@ -275,27 +276,30 @@ export default function CustomPage() {
     const grandTotal = variations.reduce((sum, v) => sum + v.total, 0);
     const grandQty = variations.reduce((sum, v) => sum + v.qty, 0);
 
+    // ── Parallel screenshot capture & upload ──
     async function captureScreenshots() {
-        const viewScreenshots = {};
         const activeImages = getActiveImages(selectedCategory?.categoryName, selectedSub?.name);
-
         const domW = canvasRef.current?.offsetWidth || 600;
         const domH = canvasRef.current?.offsetHeight || 480;
 
-        for (const view of views) {
-            const d = designs[designKey(subId, view)];
-            if (!d?.url) continue;
+        const viewsWithDesigns = views.filter(view => designs[designKey(subId, view)]?.url);
 
-            if (d._file) {
-                await uploadImage(d._file);
-            }
+        const results = await Promise.all(
+            viewsWithDesigns.map(async (view) => {
+                const d = designs[designKey(subId, view)];
+                const garmentSrc = activeImages[view];
+                const blob = await buildComposite(garmentSrc, d, PRINT_AREA, domW, domH);
+                const compositeFile = new File(
+                    [blob],
+                    `composite-${view.toLowerCase()}.png`,
+                    { type: 'image/png' }
+                );
+                const url = await uploadImage(compositeFile);
+                return [view, url];
+            })
+        );
 
-            const garmentSrc = activeImages[view];
-            const blob = await buildComposite(garmentSrc, d, PRINT_AREA, domW, domH);
-            const compositeFile = new File([blob], `composite-${view.toLowerCase()}.png`, { type: 'image/png' });
-            viewScreenshots[view] = await uploadImage(compositeFile);
-        }
-        return viewScreenshots;
+        return Object.fromEntries(results);
     }
 
     async function handleSingleCheckout() {
@@ -309,14 +313,17 @@ export default function CustomPage() {
         try {
             const shots = await captureScreenshots();
             const mainDesignUrl = shots['Front'] || Object.values(shots)[0] || '';
+
             await axios.post('/api/custom-orders', {
                 customerId: user.id,
                 categoryName: selectedCategory.categoryName,
                 subCategoryName: selectedSub?.name || '',
                 gsm, material, size, color, quantity: qty,
                 designImageUrl: mainDesignUrl,
+                allDesignImageUrls: JSON.stringify(shots),
                 totalPrice: singleTotal,
             });
+
             window.dispatchEvent(new Event('cart-updated'));
             setAddedToCart(true);
             setTimeout(() => setAddedToCart(false), 3000);
@@ -352,7 +359,10 @@ export default function CustomPage() {
                         categoryName: selectedCategory.categoryName,
                         subCategoryName: selectedSub?.name || '',
                         gsm: v.gsm, material: v.material, size: v.size, color: v.color,
-                        quantity: v.qty, designImageUrl: mainDesignUrl, totalPrice: v.total,
+                        quantity: v.qty,
+                        designImageUrl: mainDesignUrl,
+                        allDesignImageUrls: JSON.stringify(shots),
+                        totalPrice: v.total,
                     });
                     if (orderResponse.data?.id) {
                         createdIds.push(orderResponse.data.id);

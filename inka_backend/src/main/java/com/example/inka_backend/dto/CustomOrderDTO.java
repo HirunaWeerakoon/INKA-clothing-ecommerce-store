@@ -15,5 +15,6 @@ public class CustomOrderDTO {
     private String color;
     private Integer quantity;
     private String designImageUrl;
+    private String allDesignImageUrls; // ← add this
     private Double totalPrice;
 }

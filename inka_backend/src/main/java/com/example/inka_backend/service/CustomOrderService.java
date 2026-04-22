@@ -24,6 +24,7 @@ public class CustomOrderService {
         order.setColor(dto.getColor());
         order.setQuantity(dto.getQuantity());
         order.setDesignImageUrl(dto.getDesignImageUrl());
+        order.setAllDesignImageUrls(dto.getAllDesignImageUrls());
         order.setTotalPrice(dto.getTotalPrice());
         order.setStatus("IN_CART");
         return customOrderRepository.save(order);

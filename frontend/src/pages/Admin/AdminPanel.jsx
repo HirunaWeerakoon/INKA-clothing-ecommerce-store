@@ -25,22 +25,15 @@ import './AdminPanel.css';
 
 const getApiErrorMessage = (err, fallback) => {
   const responseData = err?.response?.data;
-  if (typeof responseData === 'string' && responseData.trim()) {
-    return responseData;
-  }
-  if (responseData?.message) {
-    return responseData.message;
-  }
-  if (err?.message) {
-    return err.message;
-  }
+  if (typeof responseData === 'string' && responseData.trim()) return responseData;
+  if (responseData?.message) return responseData.message;
+  if (err?.message) return err.message;
   return fallback;
 };
 
 const ALL_COLORS = ['Black', 'White', 'Navy', 'Grey', 'Tan', 'Red', 'Blue', 'Green'];
 const ALL_SIZES = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
-// Empty form state for product add/edit
 const EMPTY_FORM = {
   name: '',
   description: '',
@@ -54,37 +47,26 @@ const EMPTY_FORM = {
   availableSizes: [],
 };
 
-// Empty form state for category add/edit
 const EMPTY_CAT_FORM = {
   categoryName: '',
   imageUrl: '',
 };
 
 export default function AdminPanel() {
-  // Redirect non-admin users away immediately — route guard
   const navigate = useNavigate();
 
   useEffect(() => {
     const userDetails = authService.getUserDetails();
     const isAdmin = userDetails && userDetails.role === 'ADMIN';
-    if (!isAdmin) {
-      navigate('/');
-    }
+    if (!isAdmin) navigate('/');
   }, [navigate]);
 
-  // Get logged in admin's name from JWT for the greeting
   const userDetails = authService.getUserDetails();
 
-  // Which sidebar tab is active
   const [activeTab, setActiveTab] = useState('dashboard');
-
-  // Product actions
   const [activeAction, setActiveAction] = useState('add');
-
-  // Category actions
   const [activeCatAction, setActiveCatAction] = useState('add');
 
-  // Data states
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [stockList, setStockList] = useState([]);
@@ -93,24 +75,20 @@ export default function AdminPanel() {
   const [stats, setStats] = useState(null);
   const [orders, setOrders] = useState([]);
 
-  // Form states
   const [form, setForm] = useState(EMPTY_FORM);
   const [catForm, setCatForm] = useState(EMPTY_CAT_FORM);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  // Feedback messages
   const [message, setMessage] = useState('');
   const [catMessage, setCatMessage] = useState('');
   const [stockMessage, setStockMessage] = useState('');
   const [userMessage, setUserMessage] = useState('');
   const [orderMessage, setOrderMessage] = useState('');
 
-  // Image file state for product upload
   const [imageFile, setImageFile] = useState(null);
   const [uploading, setUploading] = useState(false);
 
-  // Load products, categories, and stats on mount
   useEffect(() => {
     fetchProducts();
     fetchCategories();
@@ -120,7 +98,6 @@ export default function AdminPanel() {
     fetchOrders();
   }, []);
 
-  // Load data when tab changes
   useEffect(() => {
     if (activeTab === 'category') fetchCategories();
     if (activeTab === 'products') fetchCategories();
@@ -136,12 +113,11 @@ export default function AdminPanel() {
     }
   }, [activeTab]);
 
-  // Fetch real orders
   const fetchOrders = async () => {
     try {
       const token = authService.getToken();
       const { data } = await axios.get('/api/admin/orders', {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
       setOrders(data);
     } catch (err) {
@@ -152,20 +128,20 @@ export default function AdminPanel() {
   const updateOrderStatus = async (id, status) => {
     try {
       const token = authService.getToken();
-      // Update UI immediately
-      setOrders(prev => prev.map(o =>
-        o.id === id ? { ...o, status: status.toUpperCase() } : o
-      ));
-      await axios.put(`/api/admin/orders/${id}/status`, { status: status.toUpperCase() }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      setOrders(prev =>
+        prev.map(o => (o.id === id ? { ...o, status: status.toUpperCase() } : o))
+      );
+      await axios.put(
+        `/api/admin/orders/${id}/status`,
+        { status: status.toUpperCase() },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
     } catch (err) {
       alert('Failed to update order status');
-      fetchOrders(); // Revert on error
+      fetchOrders();
     }
   };
 
-  // Fetch dashboard stats
   const fetchStats = async () => {
     try {
       const data = await adminGetStats();
@@ -175,7 +151,6 @@ export default function AdminPanel() {
     }
   };
 
-  // Fetch all products
   const fetchProducts = async () => {
     try {
       const data = await adminGetAllProducts();
@@ -185,7 +160,6 @@ export default function AdminPanel() {
     }
   };
 
-  // Fetch all categories
   const fetchCategories = async () => {
     try {
       const data = await adminGetAllCategories();
@@ -195,20 +169,18 @@ export default function AdminPanel() {
     }
   };
 
-  // Fetch stock list
   const fetchStock = async () => {
     try {
       const data = await adminGetAllStock();
       setStockList(data);
       const edits = {};
-      data.forEach((p) => { edits[p.productId] = p.stock; });
+      data.forEach(p => { edits[p.productId] = p.stock; });
       setStockEdits(edits);
     } catch (err) {
       setStockMessage('Failed to load stock data.');
     }
   };
 
-  // Fetch all users
   const fetchUsers = async () => {
     try {
       const data = await adminGetAllUsers();
@@ -218,41 +190,33 @@ export default function AdminPanel() {
     }
   };
 
-  // Handle stock input change
   const handleStockChange = (productId, value) => {
-    setStockEdits((prev) => ({ ...prev, [productId]: value }));
+    setStockEdits(prev => ({ ...prev, [productId]: value }));
   };
 
-  // Save updated stock
-  const handleStockSave = async (productId) => {
+  const handleStockSave = async productId => {
     try {
       const newStock = parseInt(stockEdits[productId]);
       await adminUpdateStock(productId, newStock);
       setStockMessage('Stock updated successfully!');
       fetchStock();
-      fetchStats(); // Refresh stats so low stock count updates
+      fetchStats();
     } catch (err) {
       setStockMessage('Failed to update stock.');
     }
   };
 
-  // Handle product form changes
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { name, value, type, checked } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
+    setForm(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
 
-  // Handle category form changes
-  const handleCatChange = (e) => {
+  const handleCatChange = e => {
     const { name, value } = e.target;
-    setCatForm((prev) => ({ ...prev, [name]: value }));
+    setCatForm(prev => ({ ...prev, [name]: value }));
   };
 
-  // Handle image file selection
-  const handleImageFileChange = (e) => {
+  const handleImageFileChange = e => {
     if (e.target.files && e.target.files[0]) {
       setImageFile(e.target.files[0]);
     } else {
@@ -260,8 +224,7 @@ export default function AdminPanel() {
     }
   };
 
-  // Handle Add Product
-  const handleAdd = async (e) => {
+  const handleAdd = async e => {
     e.preventDefault();
     if (!form.categoryId) {
       setMessage('Please select a category before saving the product.');
@@ -269,7 +232,6 @@ export default function AdminPanel() {
     }
     try {
       let imageUrl = form.imageUrl;
-      // Upload image to Cloudinary if a file was selected
       if (imageFile) {
         try {
           setUploading(true);
@@ -302,8 +264,7 @@ export default function AdminPanel() {
     }
   };
 
-  // Pre-fill form for editing
-  const handleSelectForEdit = (product) => {
+  const handleSelectForEdit = product => {
     setSelectedProduct(product);
     setForm({
       name: product.name || '',
@@ -319,8 +280,7 @@ export default function AdminPanel() {
     });
   };
 
-  // Handle Edit Product
-  const handleEdit = async (e) => {
+  const handleEdit = async e => {
     e.preventDefault();
     if (!selectedProduct) return;
     if (!form.categoryId) {
@@ -361,8 +321,7 @@ export default function AdminPanel() {
     }
   };
 
-  // Handle Delete Product
-  const handleDelete = async (productId) => {
+  const handleDelete = async productId => {
     if (!window.confirm('Are you sure you want to delete this product?')) return;
     try {
       await adminDeleteProduct(productId);
@@ -374,8 +333,7 @@ export default function AdminPanel() {
     }
   };
 
-  // Handle Add Category
-  const handleCatAdd = async (e) => {
+  const handleCatAdd = async e => {
     e.preventDefault();
     try {
       await adminCreateCategory(catForm);
@@ -388,8 +346,7 @@ export default function AdminPanel() {
     }
   };
 
-  // Pre-fill form for category edit
-  const handleSelectCatForEdit = (category) => {
+  const handleSelectCatForEdit = category => {
     setSelectedCategory(category);
     setCatForm({
       categoryName: category.categoryName || '',
@@ -397,8 +354,7 @@ export default function AdminPanel() {
     });
   };
 
-  // Handle Edit Category
-  const handleCatEdit = async (e) => {
+  const handleCatEdit = async e => {
     e.preventDefault();
     if (!selectedCategory) return;
     try {
@@ -412,8 +368,7 @@ export default function AdminPanel() {
     }
   };
 
-  // Handle Delete Category
-  const handleCatDelete = async (categoryId) => {
+  const handleCatDelete = async categoryId => {
     if (!window.confirm('Are you sure you want to delete this category?')) return;
     try {
       await adminDeleteCategory(categoryId);
@@ -425,8 +380,7 @@ export default function AdminPanel() {
     }
   };
 
-  // Handle Delete User
-  const handleDeleteUser = async (userId) => {
+  const handleDeleteUser = async userId => {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
     try {
       await adminDeleteUser(userId);
@@ -446,56 +400,43 @@ export default function AdminPanel() {
 
       {/* ── SIDEBAR ── */}
       <aside className="admin-sidebar">
-        {/* INKA brand logo in sidebar */}
         <div className="admin-sidebar-logo">INKA</div>
-
-        {/* Navigation items */}
         <nav className="admin-nav">
           <button
             className={activeTab === 'dashboard' ? 'admin-nav-item active' : 'admin-nav-item'}
             onClick={() => setActiveTab('dashboard')}
           >
-            {/* Dashboard icon */}
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /></svg>
             Dashboard
           </button>
-
           <button
             className={activeTab === 'products' ? 'admin-nav-item active' : 'admin-nav-item'}
             onClick={() => setActiveTab('products')}
           >
-            {/* Products icon */}
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 01-8 0" /></svg>
             Products
           </button>
-
           <button
             className={activeTab === 'category' ? 'admin-nav-item active' : 'admin-nav-item'}
             onClick={() => setActiveTab('category')}
           >
-            {/* Category icon */}
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
             Category
           </button>
-
           <button
             className={activeTab === 'stock' ? 'admin-nav-item active' : 'admin-nav-item'}
             onClick={() => setActiveTab('stock')}
           >
-            {/* Stock icon */}
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
             Stock
           </button>
-
           <button
             className={activeTab === 'users' ? 'admin-nav-item active' : 'admin-nav-item'}
             onClick={() => setActiveTab('users')}
           >
-            {/* Users icon */}
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" /></svg>
             Users
           </button>
-
           <button
             className={activeTab === 'orders' ? 'admin-nav-item active' : 'admin-nav-item'}
             onClick={() => setActiveTab('orders')}
@@ -504,8 +445,6 @@ export default function AdminPanel() {
             Orders
           </button>
         </nav>
-
-        {/* Back to site link at bottom of sidebar */}
         <a href="/" className="admin-back-link">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
           Back to site
@@ -518,15 +457,11 @@ export default function AdminPanel() {
         {/* ── DASHBOARD TAB ── */}
         {activeTab === 'dashboard' && (
           <div className="admin-content">
-            {/* Greeting header */}
             <div className="dashboard-header">
               <h1 className="dashboard-greeting">Overview</h1>
               <p className="dashboard-subtitle">Here's what's happening with your store today.</p>
             </div>
-
-            {/* Stat cards grid */}
             <div className="dashboard-stats">
-
               <div className="stat-card">
                 <div className="stat-icon stat-icon-products">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 01-8 0" /></svg>
@@ -536,7 +471,6 @@ export default function AdminPanel() {
                   <span className="stat-value">{stats?.totalProducts ?? '—'}</span>
                 </div>
               </div>
-
               <div className="stat-card">
                 <div className="stat-icon stat-icon-categories">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
@@ -546,7 +480,6 @@ export default function AdminPanel() {
                   <span className="stat-value">{stats?.totalCategories ?? '—'}</span>
                 </div>
               </div>
-
               <div className="stat-card">
                 <div className="stat-icon stat-icon-users">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" /></svg>
@@ -556,8 +489,6 @@ export default function AdminPanel() {
                   <span className="stat-value">{stats?.totalUsers ?? '—'}</span>
                 </div>
               </div>
-
-              {/* Low stock card — highlighted in amber if any */}
               <div className={`stat-card ${stats?.lowStockCount > 0 ? 'stat-card-warning' : ''}`}>
                 <div className="stat-icon stat-icon-stock">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12" /></svg>
@@ -567,25 +498,14 @@ export default function AdminPanel() {
                   <span className="stat-value">{stats?.lowStockCount ?? '—'}</span>
                 </div>
               </div>
-
             </div>
-
-            {/* Quick action buttons */}
             <div className="dashboard-quick-actions">
               <p className="dashboard-section-label">Quick Actions</p>
               <div className="quick-action-row">
-                <button className="quick-action-btn" onClick={() => { setActiveTab('products'); setActiveAction('add'); }}>
-                  + Add Product
-                </button>
-                <button className="quick-action-btn" onClick={() => { setActiveTab('category'); setActiveCatAction('add'); }}>
-                  + Add Category
-                </button>
-                <button className="quick-action-btn" onClick={() => setActiveTab('stock')}>
-                  Manage Stock
-                </button>
-                <button className="quick-action-btn" onClick={() => setActiveTab('users')}>
-                  View Users
-                </button>
+                <button className="quick-action-btn" onClick={() => { setActiveTab('products'); setActiveAction('add'); }}>+ Add Product</button>
+                <button className="quick-action-btn" onClick={() => { setActiveTab('category'); setActiveCatAction('add'); }}>+ Add Category</button>
+                <button className="quick-action-btn" onClick={() => setActiveTab('stock')}>Manage Stock</button>
+                <button className="quick-action-btn" onClick={() => setActiveTab('users')}>View Users</button>
               </div>
             </div>
           </div>
@@ -600,10 +520,8 @@ export default function AdminPanel() {
               <button className={activeAction === 'edit' ? 'active' : ''} onClick={() => setActiveAction('edit')}>Edit</button>
               <button className={activeAction === 'delete' ? 'active' : ''} onClick={() => setActiveAction('delete')}>Delete</button>
             </div>
-
             {message && <p className="admin-message">{message}</p>}
 
-            {/* ── ADD FORM ── */}
             {activeAction === 'add' && (
               <form className="admin-form" onSubmit={handleAdd}>
                 <label>Name</label>
@@ -617,17 +535,10 @@ export default function AdminPanel() {
                 <label>Category</label>
                 <select name="categoryId" value={form.categoryId} onChange={handleChange} required>
                   <option value="">Select a category</option>
-                  {categories.map((c) => (
-                    <option key={c.categoryId} value={c.categoryId}>{c.categoryName}</option>
-                  ))}
+                  {categories.map(c => <option key={c.categoryId} value={c.categoryId}>{c.categoryName}</option>)}
                 </select>
                 <label>Image URL (optional)</label>
-                <input
-                  name="imageUrl"
-                  value={form.imageUrl}
-                  onChange={handleChange}
-                  placeholder="https://example.com/product-image.jpg"
-                />
+                <input name="imageUrl" value={form.imageUrl} onChange={handleChange} placeholder="https://example.com/product-image.jpg" />
                 <label>Product Image</label>
                 <input type="file" accept="image/*" onChange={handleImageFileChange} />
                 {imageFile && <p style={{ fontSize: '0.8rem', color: '#666', margin: '0.25rem 0' }}>Selected: {imageFile.name}</p>}
@@ -636,42 +547,23 @@ export default function AdminPanel() {
                   {ALL_COLORS.map(color => (
                     <button type="button" key={color}
                       onClick={() => setForm(f => ({ ...f, availableColors: toggleArrayItem(f.availableColors, color) }))}
-                      style={{
-                        padding: '0.3rem 0.8rem', borderRadius: '20px', border: '1.5px solid',
-                        cursor: 'pointer', fontSize: '0.78rem', fontWeight: 700,
-                        background: form.availableColors.includes(color) ? '#111' : '#f5f5f5',
-                        color: form.availableColors.includes(color) ? '#fff' : '#333',
-                        borderColor: form.availableColors.includes(color) ? '#111' : '#ddd',
-                      }}>
+                      style={{ padding: '0.3rem 0.8rem', borderRadius: '20px', border: '1.5px solid', cursor: 'pointer', fontSize: '0.78rem', fontWeight: 700, background: form.availableColors.includes(color) ? '#111' : '#f5f5f5', color: form.availableColors.includes(color) ? '#fff' : '#333', borderColor: form.availableColors.includes(color) ? '#111' : '#ddd' }}>
                       {color}
                     </button>
                   ))}
                 </div>
-
                 <label>Available Sizes</label>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
                   {ALL_SIZES.map(size => (
                     <button type="button" key={size}
                       onClick={() => setForm(f => ({ ...f, availableSizes: toggleArrayItem(f.availableSizes, size) }))}
-                      style={{
-                        padding: '0.3rem 0.8rem', borderRadius: '20px', border: '1.5px solid',
-                        cursor: 'pointer', fontSize: '0.78rem', fontWeight: 700,
-                        background: form.availableSizes.includes(size) ? '#111' : '#f5f5f5',
-                        color: form.availableSizes.includes(size) ? '#fff' : '#333',
-                        borderColor: form.availableSizes.includes(size) ? '#111' : '#ddd',
-                      }}>
+                      style={{ padding: '0.3rem 0.8rem', borderRadius: '20px', border: '1.5px solid', cursor: 'pointer', fontSize: '0.78rem', fontWeight: 700, background: form.availableSizes.includes(size) ? '#111' : '#f5f5f5', color: form.availableSizes.includes(size) ? '#fff' : '#333', borderColor: form.availableSizes.includes(size) ? '#111' : '#ddd' }}>
                       {size}
                     </button>
                   ))}
                 </div>
-                <label className="checkbox-row">
-                  <input name="isAvailable" type="checkbox" checked={form.isAvailable} onChange={handleChange} />
-                  Available
-                </label>
-                <label className="checkbox-row">
-                  <input name="bestSeller" type="checkbox" checked={form.bestSeller} onChange={handleChange} />
-                  Best Seller
-                </label>
+                <label className="checkbox-row"><input name="isAvailable" type="checkbox" checked={form.isAvailable} onChange={handleChange} /> Available</label>
+                <label className="checkbox-row"><input name="bestSeller" type="checkbox" checked={form.bestSeller} onChange={handleChange} /> Best Seller</label>
                 <div className="admin-form-buttons">
                   <button type="submit" className="btn-save" disabled={uploading}>{uploading ? 'Uploading...' : 'Save'}</button>
                   <button type="button" className="btn-cancel" onClick={() => { setForm(EMPTY_FORM); setImageFile(null); }}>Cancel</button>
@@ -679,17 +571,12 @@ export default function AdminPanel() {
               </form>
             )}
 
-            {/* ── EDIT PANEL ── */}
             {activeAction === 'edit' && (
               <div className="admin-edit-panel">
                 {!selectedProduct && (
                   <div className="admin-product-list">
-                    {/* Clean table header instead of plain text ── */}
-                    <div className="admin-list-header">
-                      <span>Product Name</span>
-                      <span>Action</span>
-                    </div>
-                    {products.map((p) => (
+                    <div className="admin-list-header"><span>Product Name</span><span>Action</span></div>
+                    {products.map(p => (
                       <div key={p.productId} className="admin-product-row">
                         <span>{p.name}</span>
                         <button onClick={() => handleSelectForEdit(p)}>Edit</button>
@@ -711,17 +598,10 @@ export default function AdminPanel() {
                     <label>Category</label>
                     <select name="categoryId" value={form.categoryId} onChange={handleChange} required>
                       <option value="">Select a category</option>
-                      {categories.map((c) => (
-                        <option key={c.categoryId} value={c.categoryId}>{c.categoryName}</option>
-                      ))}
+                      {categories.map(c => <option key={c.categoryId} value={c.categoryId}>{c.categoryName}</option>)}
                     </select>
                     <label>Image URL (optional)</label>
-                    <input
-                      name="imageUrl"
-                      value={form.imageUrl}
-                      onChange={handleChange}
-                      placeholder="https://example.com/product-image.jpg"
-                    />
+                    <input name="imageUrl" value={form.imageUrl} onChange={handleChange} placeholder="https://example.com/product-image.jpg" />
                     <label>Product Image</label>
                     {form.imageUrl && <img src={form.imageUrl} alt="Current" style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 6, marginBottom: 8 }} />}
                     <input type="file" accept="image/*" onChange={handleImageFileChange} />
@@ -731,42 +611,23 @@ export default function AdminPanel() {
                       {ALL_COLORS.map(color => (
                         <button type="button" key={color}
                           onClick={() => setForm(f => ({ ...f, availableColors: toggleArrayItem(f.availableColors, color) }))}
-                          style={{
-                            padding: '0.3rem 0.8rem', borderRadius: '20px', border: '1.5px solid',
-                            cursor: 'pointer', fontSize: '0.78rem', fontWeight: 700,
-                            background: form.availableColors.includes(color) ? '#111' : '#f5f5f5',
-                            color: form.availableColors.includes(color) ? '#fff' : '#333',
-                            borderColor: form.availableColors.includes(color) ? '#111' : '#ddd',
-                          }}>
+                          style={{ padding: '0.3rem 0.8rem', borderRadius: '20px', border: '1.5px solid', cursor: 'pointer', fontSize: '0.78rem', fontWeight: 700, background: form.availableColors.includes(color) ? '#111' : '#f5f5f5', color: form.availableColors.includes(color) ? '#fff' : '#333', borderColor: form.availableColors.includes(color) ? '#111' : '#ddd' }}>
                           {color}
                         </button>
                       ))}
                     </div>
-
                     <label>Available Sizes</label>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
                       {ALL_SIZES.map(size => (
                         <button type="button" key={size}
                           onClick={() => setForm(f => ({ ...f, availableSizes: toggleArrayItem(f.availableSizes, size) }))}
-                          style={{
-                            padding: '0.3rem 0.8rem', borderRadius: '20px', border: '1.5px solid',
-                            cursor: 'pointer', fontSize: '0.78rem', fontWeight: 700,
-                            background: form.availableSizes.includes(size) ? '#111' : '#f5f5f5',
-                            color: form.availableSizes.includes(size) ? '#fff' : '#333',
-                            borderColor: form.availableSizes.includes(size) ? '#111' : '#ddd',
-                          }}>
+                          style={{ padding: '0.3rem 0.8rem', borderRadius: '20px', border: '1.5px solid', cursor: 'pointer', fontSize: '0.78rem', fontWeight: 700, background: form.availableSizes.includes(size) ? '#111' : '#f5f5f5', color: form.availableSizes.includes(size) ? '#fff' : '#333', borderColor: form.availableSizes.includes(size) ? '#111' : '#ddd' }}>
                           {size}
                         </button>
                       ))}
                     </div>
-                    <label className="checkbox-row">
-                      <input name="isAvailable" type="checkbox" checked={form.isAvailable} onChange={handleChange} />
-                      Available
-                    </label>
-                    <label className="checkbox-row">
-                      <input name="bestSeller" type="checkbox" checked={form.bestSeller} onChange={handleChange} />
-                      Best Seller
-                    </label>
+                    <label className="checkbox-row"><input name="isAvailable" type="checkbox" checked={form.isAvailable} onChange={handleChange} /> Available</label>
+                    <label className="checkbox-row"><input name="bestSeller" type="checkbox" checked={form.bestSeller} onChange={handleChange} /> Best Seller</label>
                     <div className="admin-form-buttons">
                       <button type="submit" className="btn-save" disabled={uploading}>{uploading ? 'Uploading...' : 'Save'}</button>
                       <button type="button" className="btn-cancel" onClick={() => { setSelectedProduct(null); setForm(EMPTY_FORM); setImageFile(null); }}>Cancel</button>
@@ -776,15 +637,10 @@ export default function AdminPanel() {
               </div>
             )}
 
-            {/* ── DELETE PANEL ── */}
             {activeAction === 'delete' && (
               <div className="admin-product-list">
-                {/* Clean table header instead of plain text ── */}
-                <div className="admin-list-header">
-                  <span>Product Name</span>
-                  <span>Action</span>
-                </div>
-                {products.map((p) => (
+                <div className="admin-list-header"><span>Product Name</span><span>Action</span></div>
+                {products.map(p => (
                   <div key={p.productId} className="admin-product-row">
                     <span>{p.name}</span>
                     <button className="btn-delete" onClick={() => handleDelete(p.productId)}>Delete</button>
@@ -804,10 +660,8 @@ export default function AdminPanel() {
               <button className={activeCatAction === 'edit' ? 'active' : ''} onClick={() => setActiveCatAction('edit')}>Edit</button>
               <button className={activeCatAction === 'delete' ? 'active' : ''} onClick={() => setActiveCatAction('delete')}>Delete</button>
             </div>
-
             {catMessage && <p className="admin-message">{catMessage}</p>}
 
-            {/* ── CATEGORY ADD FORM ── */}
             {activeCatAction === 'add' && (
               <form className="admin-form" onSubmit={handleCatAdd}>
                 <label>Category Name</label>
@@ -821,17 +675,12 @@ export default function AdminPanel() {
               </form>
             )}
 
-            {/* ── CATEGORY EDIT PANEL ── */}
             {activeCatAction === 'edit' && (
               <div className="admin-edit-panel">
                 {!selectedCategory && (
                   <div className="admin-product-list">
-                    {/* Clean table header instead of plain text ── */}
-                    <div className="admin-list-header">
-                      <span>Category Name</span>
-                      <span>Action</span>
-                    </div>
-                    {categories.map((c) => (
+                    <div className="admin-list-header"><span>Category Name</span><span>Action</span></div>
+                    {categories.map(c => (
                       <div key={c.categoryId} className="admin-product-row">
                         <span>{c.categoryName}</span>
                         <button onClick={() => handleSelectCatForEdit(c)}>Edit</button>
@@ -855,15 +704,10 @@ export default function AdminPanel() {
               </div>
             )}
 
-            {/* ── CATEGORY DELETE PANEL ── */}
             {activeCatAction === 'delete' && (
               <div className="admin-product-list">
-                {/* Clean table header instead of plain text ── */}
-                <div className="admin-list-header">
-                  <span>Category Name</span>
-                  <span>Action</span>
-                </div>
-                {categories.map((c) => (
+                <div className="admin-list-header"><span>Category Name</span><span>Action</span></div>
+                {categories.map(c => (
                   <div key={c.categoryId} className="admin-product-row">
                     <span>{c.categoryName}</span>
                     <button className="btn-delete" onClick={() => handleCatDelete(c.categoryId)}>Delete</button>
@@ -879,27 +723,18 @@ export default function AdminPanel() {
           <div className="admin-content">
             <h2 className="admin-section-title">Stock</h2>
             {stockMessage && <p className="admin-message">{stockMessage}</p>}
-
             <div className="admin-stock-table">
               <div className="admin-stock-header">
-                <span>Product</span>
-                <span>Stock</span>
-                <span></span>
+                <span>Product</span><span>Stock</span><span></span>
               </div>
-              {stockList.map((p) => (
+              {stockList.map(p => (
                 <div key={p.productId} className="admin-stock-row">
                   <div>
                     <span className="admin-stock-name">{p.name}</span>
                     {p.stock <= 5 && p.stock > 0 && <span className="stock-warning">Low</span>}
                     {p.stock === 0 && <span className="stock-out">Out</span>}
                   </div>
-                  <input
-                    type="number"
-                    min="0"
-                    value={stockEdits[p.productId] ?? p.stock}
-                    onChange={(e) => handleStockChange(p.productId, e.target.value)}
-                    className="stock-input"
-                  />
+                  <input type="number" min="0" value={stockEdits[p.productId] ?? p.stock} onChange={e => handleStockChange(p.productId, e.target.value)} className="stock-input" />
                   <button className="btn-save" onClick={() => handleStockSave(p.productId)}>Save</button>
                 </div>
               ))}
@@ -912,24 +747,15 @@ export default function AdminPanel() {
           <div className="admin-content">
             <h2 className="admin-section-title">Users</h2>
             {userMessage && <p className="admin-message">{userMessage}</p>}
-
-            {/* Users table */}
             <div className="admin-stock-table">
               <div className="admin-users-header">
-                <span>Name</span>
-                <span>Email</span>
-                <span>Role</span>
-                <span></span>
+                <span>Name</span><span>Email</span><span>Role</span><span></span>
               </div>
-              {users.map((u) => (
+              {users.map(u => (
                 <div key={u.customerId} className="admin-users-row">
                   <span className="admin-stock-name">{u.name || '—'}</span>
                   <span className="user-email">{u.email}</span>
-                  {/* Role badge — ADMIN gets black, USER gets grey */}
-                  <span className={u.role === 'ADMIN' ? 'role-badge role-admin' : 'role-badge role-user'}>
-                    {u.role}
-                  </span>
-                  {/* Prevent admin from deleting themselves */}
+                  <span className={u.role === 'ADMIN' ? 'role-badge role-admin' : 'role-badge role-user'}>{u.role}</span>
                   {u.email !== userDetails?.email ? (
                     <button className="btn-delete" onClick={() => handleDeleteUser(u.customerId)}>Delete</button>
                   ) : (
@@ -946,9 +772,9 @@ export default function AdminPanel() {
           <div className="admin-content">
             <h2 className="admin-section-title">Orders</h2>
             {orderMessage && <p className="admin-message">{orderMessage}</p>}
-
             <div className="admin-orders-list">
-              {orders.map((o) => (
+              {orders.length === 0 && <p>No orders found.</p>}
+              {orders.map(o => (
                 <div key={o.id} className="admin-order-card">
                   <div className="order-card-header">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -956,7 +782,7 @@ export default function AdminPanel() {
                       <select
                         className={`modern-status-select status-${o.status.toLowerCase()}`}
                         value={o.status}
-                        onChange={(e) => updateOrderStatus(o.id, e.target.value)}
+                        onChange={e => updateOrderStatus(o.id, e.target.value)}
                         style={{ padding: '4px 10px', borderRadius: '20px', fontSize: '0.85rem' }}
                       >
                         <option value="PENDING">Pending</option>
@@ -993,7 +819,7 @@ export default function AdminPanel() {
                           </tr>
                         </thead>
                         <tbody>
-                          {o.items?.map((item) => {
+                          {o.items?.map(item => {
                             const productImage = item.imageUrl || item.designImageUrl || 'https://via.placeholder.com/50';
                             const itemType = item.customOrderId ? 'Custom' : 'Standard';
                             const refId = item.customOrderId || item.productId || '—';
@@ -1019,22 +845,31 @@ export default function AdminPanel() {
                       </table>
                     </div>
 
-                    {o.items?.some(i => i.designImageUrl) && (
+                    {/* ── DESIGN DOWNLOADS — all views ── */}
+                    {o.items?.some(i => i.designImageUrl || i.allDesignImageUrls) && (
                       <div className="order-downloads" style={{ marginTop: '15px' }}>
                         <strong>Custom Design Downloads:</strong>
                         <div style={{ display: 'flex', gap: '10px', marginTop: '5px', flexWrap: 'wrap' }}>
-                          {o.items.filter(i => i.designImageUrl).map(item => (
-                            <a key={item.id} href={item.designImageUrl} target="_blank" rel="noreferrer" className="quick-action-btn">
-                              {item.name} Design
-                            </a>
-                          ))}
+                          {o.items
+                            .filter(i => i.designImageUrl || i.allDesignImageUrls)
+                            .map(item => {
+                              const shots = item.allDesignImageUrls
+                                ? JSON.parse(item.allDesignImageUrls)
+                                : { Front: item.designImageUrl };
+                              return Object.entries(shots).map(([view, url]) => (
+                                <a key={`${item.id}-${view}`} href={url}
+                                  target="_blank" rel="noreferrer"
+                                  className="quick-action-btn">
+                                  {item.name} – {view}
+                                </a>
+                              ));
+                            })}
                         </div>
                       </div>
                     )}
                   </div>
                 </div>
               ))}
-              {orders.length === 0 && <p>No orders found.</p>}
             </div>
           </div>
         )}
