@@ -110,7 +110,10 @@ public class AdminOrderController {
 
                 if (item.getCustomOrderId() != null) {
                     CustomOrder customOrder = customOrderMap.get(item.getCustomOrderId());
-                    if (customOrder != null) itemDTO.setDesignImageUrl(customOrder.getDesignImageUrl());
+                    if (customOrder != null) {
+                        itemDTO.setDesignImageUrl(customOrder.getDesignImageUrl());
+                        itemDTO.setAllDesignImageUrls(customOrder.getAllDesignImageUrls()); // ← add
+                    }
                 }
 
                 itemDTOs.add(itemDTO);

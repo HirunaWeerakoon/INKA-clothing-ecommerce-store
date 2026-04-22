@@ -53,4 +53,7 @@ public class CustomOrder {
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "all_design_image_urls", columnDefinition = "TEXT")
+    private String allDesignImageUrls;
 }

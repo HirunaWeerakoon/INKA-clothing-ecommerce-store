@@ -15,4 +15,5 @@ public class AdminOrderItemDTO {
     // Extracted from related entities directly for the admin panel
     private String imageUrl;
     private String designImageUrl;
+    private String allDesignImageUrls;
 }
