@@ -4,6 +4,8 @@ import axios from 'axios';
 import './ProductPage.css';
 import ReviewSection from './ReviewSection';   // ← NEW
 import { authService } from '../services/authService';
+import ProductCard from './ProductCard';
+import { getRelatedProducts } from '../services/productService';
 
 const HeartIcon = () => (
     <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -43,13 +45,15 @@ export default function ProductPage() {
     const [isCartError, setIsCartError] = useState(false);
     const [avgRating, setAvgRating] = useState(0);
     const [reviewCount, setReviewCount] = useState(0);
+    const [relatedProducts, setRelatedProducts] = useState([]);
 
     useEffect(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
         axios.get(`/api/products/${id}`)
             .then(response => setProduct(response.data))
             .catch(error => console.error('Error fetching product:', error));
     }, [id]);
- 
+
     // fetch average rating and review count when product loads ────
     useEffect(() => {
         if (!id) return;
@@ -62,11 +66,36 @@ export default function ProductPage() {
         }).catch(err => console.error('Error fetching review stats:', err));
     }, [id]);
 
+    useEffect(() => {
+        let mounted = true;
+
+        const loadRelatedProducts = async () => {
+            if (!product?.productId) return;
+            try {
+                const related = await getRelatedProducts(product);
+                if (mounted) {
+                    setRelatedProducts(related);
+                }
+            } catch (error) {
+                console.error('Error loading related products:', error);
+                if (mounted) {
+                    setRelatedProducts([]);
+                }
+            }
+        };
+
+        loadRelatedProducts();
+
+        return () => {
+            mounted = false;
+        };
+    }, [product]);
+
     const handleAddToCart = async () => {
         if (!selectedSize) {
             setCartMessage('Please select a size');
             setIsCartError(true);
-            setTimeout(() => {setCartMessage(''); setIsCartError(false);}, 2000);
+            setTimeout(() => { setCartMessage(''); setIsCartError(false); }, 2000);
             return;
         }
 
@@ -74,15 +103,18 @@ export default function ProductPage() {
         if (!user) {
             setCartMessage('Please log in to add to cart');
             setIsCartError(true);
-            setTimeout(() => {setCartMessage(''); setIsCartError(false);}, 2000);
+            setTimeout(() => { setCartMessage(''); setIsCartError(false); }, 2000);
             return;
         }
 
         setAddingToCart(true);
         try {
+            const selectedColorLabel = COLORS.find(c => c.hex === selectedColor)?.label || selectedColor;
             await axios.post(`/api/cart/${user.id}/add`, {
                 productId: product.productId,
-                quantity: 1
+                quantity: 1,
+                color: selectedColorLabel,
+                size: selectedSize
             });
             setCartMessage('Added to cart!');
             setIsCartError(false);
@@ -93,9 +125,20 @@ export default function ProductPage() {
             setIsCartError(true);
         } finally {
             setAddingToCart(false);
-            setTimeout(() => {setCartMessage(''); setIsCartError(false);}, 2000);
+            setTimeout(() => { setCartMessage(''); setIsCartError(false); }, 2000);
         }
     };
+
+    const categoryName = (product?.categoryName || product?.category?.categoryName || '').toLowerCase();
+    const categoryId = product?.categoryId || product?.category?.categoryId;
+    const isDenimProduct = categoryName.includes('denim') || categoryId === 2;
+    const hideSizeGuide = categoryName.includes('tote') || categoryName.includes('accessor') || categoryId === 3 || categoryId === 4;
+
+    useEffect(() => {
+        if (hideSizeGuide && activeTab === 'sizeguide') {
+            setActiveTab('description');
+        }
+    }, [hideSizeGuide, activeTab]);
 
     if (!product) return <div className="loading">Loading...</div>;
 
@@ -108,7 +151,7 @@ export default function ProductPage() {
 
     const TABS = [
         { id: 'description', label: 'Description' },
-        { id: 'sizeguide', label: 'Size Guide' },
+        ...(!hideSizeGuide ? [{ id: 'sizeguide', label: 'Size Guide' }] : []),
         { id: 'reviews', label: 'Reviews' },
     ];
 
@@ -127,21 +170,21 @@ export default function ProductPage() {
                         }
                     </div>
                     {thumbnails.length > 0 && (
-                    <div className="pp-thumbs">
-                        {thumbnails.map((img, i) => (
-                            <button
-                                key={i}
-                                className={`pp-thumb${activeThumb === i ? ' active' : ''}`}
-                                onClick={() => setActiveThumb(i)}
-                                style={{
-                                    backgroundImage: `url(${img})`,
-                                    backgroundSize: 'cover',
-                                    backgroundPosition: 'center',
-                                }}
-                                aria-label={`Thumbnail ${i + 1}`}
-                            />
-                        ))}
-                    </div>
+                        <div className="pp-thumbs">
+                            {thumbnails.map((img, i) => (
+                                <button
+                                    key={i}
+                                    className={`pp-thumb${activeThumb === i ? ' active' : ''}`}
+                                    onClick={() => setActiveThumb(i)}
+                                    style={{
+                                        backgroundImage: `url(${img})`,
+                                        backgroundSize: 'cover',
+                                        backgroundPosition: 'center',
+                                    }}
+                                    aria-label={`Thumbnail ${i + 1}`}
+                                />
+                            ))}
+                        </div>
                     )}
                 </div>
 
@@ -151,7 +194,7 @@ export default function ProductPage() {
                     <div className="pp-rating-row">
                         <StarRating rating={avgRating} />
                         <span>({reviewCount} reviews)</span>
-                        </div>
+                    </div>
                     <p className="pp-price">LKR {product.price?.toLocaleString()}</p>
                     <p className="pp-vat">Inclusive of VAT</p>
 
@@ -233,11 +276,19 @@ export default function ProductPage() {
             {/* TAB CONTENT */}
             <div className="pp-tab-content">
                 {activeTab === 'description' && (
-                    <div className="pp-tab-placeholder">
-                        <p style={{ padding: '20px', fontSize: '15px' }}>{product.description}</p>
+                    <div className="pp-tab-placeholder pp-description-wrap">
+                        <p className="pp-description-text">{product.description}</p>
                     </div>
                 )}
-                {activeTab === 'sizeguide' && <div className="pp-tab-placeholder" />}
+                {activeTab === 'sizeguide' && !hideSizeGuide && (
+                    <div className="pp-tab-placeholder pp-sizeguide-wrap">
+                        <img
+                            src={isDenimProduct ? '/denim-size-chart.jpeg' : '/size-chart.png'}
+                            alt={isDenimProduct ? 'Denim size chart' : 'Size chart'}
+                            className="pp-sizeguide-image"
+                        />
+                    </div>
+                )}
 
                 {/* ── REVIEWS TAB — now connected to the backend ── */}
                 {activeTab === 'reviews' && (
@@ -248,13 +299,15 @@ export default function ProductPage() {
             {/* RELATED PRODUCTS */}
             <section className="pp-related">
                 <h2 className="pp-related-title">Related Products</h2>
-                <div className="pp-related-grid">
-                    {[0, 1, 2, 3].map((i) => (
-                        <div key={i} className="pp-related-card">
-                            <div className="pp-related-img" />
-                        </div>
-                    ))}
-                </div>
+                {relatedProducts.length > 0 ? (
+                    <div className="pp-related-grid">
+                        {relatedProducts.map((relatedProduct) => (
+                            <ProductCard key={relatedProduct.productId} product={relatedProduct} />
+                        ))}
+                    </div>
+                ) : (
+                    <p className="pp-related-empty">No related products available right now.</p>
+                )}
             </section>
 
         </div>

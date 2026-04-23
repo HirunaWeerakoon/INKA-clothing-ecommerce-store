@@ -7,6 +7,7 @@ import AccountLayout from './pages/Account/AccountLayout';
 import MyDetails from './pages/Account/MyDetails';
 import MyOrders from './pages/Account/MyOrders';
 import MyReviews from './pages/Account/MyReviews';
+import AuthPage from './pages/Account/AuthPage';
 import ProductGrid from './components/ProductGrid';
 import ProductPage from './components/ProductPage';
 import HomePage from './pages/Home/HomePage';
@@ -15,10 +16,12 @@ import AdminPanel from './pages/Admin/AdminPanel';
 import CustomPage from './pages/Custom/CustomPage';
 import CheckoutSuccess from './pages/Checkout/CheckoutSuccess';
 import CheckoutCancel from './pages/Checkout/CheckoutCancel';
+import SearchResultsPage from './pages/Search/SearchResultsPage';
 import './App.css';
 import Cart from './pages/Cart/Cart';
 
 import { authService } from './services/authService';
+import AboutPage from './pages/About/AboutPage';
 
 // Initialize axios interceptors globally
 authService.setupAxiosInterceptors();
@@ -46,12 +49,14 @@ function App() {
           <Route path="shop" element={<ProductGrid />} />
           <Route path="product/:id" element={<ProductPage />} />
           <Route path="custom" element={<CustomPage />} />
-          <Route path="about" element={<div className="placeholder-page">About Placeholder</div>} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="search" element={<SearchResultsPage />} />
           <Route path="oauth2/redirect" element={<OAuth2RedirectHandler />} />
           <Route path="checkout/success" element={<CheckoutSuccess />} />
           <Route path="checkout/cancel" element={<CheckoutCancel />} />
 
           <Route path="cart" element={<Cart />} />
+          <Route path="login" element={<AuthPage />} />
 
           <Route path="account" element={<AccountLayout />}>
             <Route index element={<Navigate to="details" replace />} />

@@ -23,14 +23,16 @@ public class CartController {
         return ResponseEntity.ok(cartService.getCartByCustomerId(customerId));
     }
 
-    // POST /api/cart/{customerId}/add  body: { "productId": 1, "quantity": 2 }
+    // POST /api/cart/{customerId}/add  body: { "productId": 1, "quantity": 2, "color": "Black", "size": "M" }
     @PostMapping("/{customerId}/add")
     public ResponseEntity<CartItem> addToCart(
             @PathVariable Long customerId,
-            @RequestBody Map<String, Integer> body) {
-        Long productId = Long.valueOf(body.get("productId"));
-        int quantity = body.getOrDefault("quantity", 1);
-        CartItem item = cartService.addOrUpdateItem(customerId, productId, quantity);
+            @RequestBody Map<String, Object> body) {
+        Long productId = Long.valueOf(body.get("productId").toString());
+        int quantity = body.containsKey("quantity") ? (int) body.get("quantity") : 1;
+        String color = body.containsKey("color") ? body.get("color").toString() : null;
+        String size = body.containsKey("size") ? body.get("size").toString() : null;
+        CartItem item = cartService.addOrUpdateItem(customerId, productId, quantity, color, size);
         return ResponseEntity.ok(item);
     }
 

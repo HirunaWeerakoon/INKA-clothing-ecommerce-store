@@ -60,4 +60,11 @@ public class CheckoutController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("invalid");
         }
     }
+    @PostMapping("/mixed")
+    public ResponseEntity<CheckoutSessionResponse> checkoutMixed(
+            @RequestParam Long customerId,
+            @RequestBody CustomOrdersCheckoutRequest request) throws StripeException {
+        String url = checkoutService.createMixedCheckoutSession(customerId, request.getCustomOrderIds());
+        return ResponseEntity.ok(new CheckoutSessionResponse(url));
+    }
 }

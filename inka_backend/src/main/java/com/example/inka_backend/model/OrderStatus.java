@@ -3,5 +3,9 @@ package com.example.inka_backend.model;
 public enum OrderStatus {
     PENDING,
     PAID,
-    FAILED
+    FAILED,
+    PROCESSING,
+    DELIVERING,
+    DELIVERED,
+    CANCELLED
 }

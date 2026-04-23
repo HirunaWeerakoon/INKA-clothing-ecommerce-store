@@ -25,11 +25,11 @@ export default function CartSidebar({ isOpen, onClose }) {
             const customItems = customRes.data
                 .filter(co => co.status === 'IN_CART')
                 .map(co => ({
-                    id: `custom_${co.id}`,  
+                    id: `custom_${co.id}`,
                     isCustom: true,
                     originalId: co.id,
                     productName: `Custom ${co.categoryName} - ${co.subCategoryName || ''}`,
-                    price: co.totalPrice / Math.max(1, co.quantity), 
+                    price: co.totalPrice / Math.max(1, co.quantity),
                     quantity: co.quantity,
                     imageUrl: co.designImageUrl,
                     originalImageUrl: co.designImageUrl,
@@ -105,20 +105,27 @@ export default function CartSidebar({ isOpen, onClose }) {
             alert('Please log in to checkout.');
             return;
         }
-        
+
         try {
             const hasCustom = cartItems.some(item => item.isCustom);
             const standardItems = cartItems.filter(item => !item.isCustom);
-            
+
+            let response;
+
             if (hasCustom && standardItems.length === 0) {
-                 const customIds = cartItems.filter(i => i.isCustom).map(i => i.originalId);
-                 const response = await checkoutService.createCustomOrdersSession(customIds);
-                 if (response?.url) window.location.href = response.url;
+                const customIds = cartItems.filter(i => i.isCustom).map(i => i.originalId);
+                response = await checkoutService.createCustomOrdersSession(customIds);
             } else if (!hasCustom) {
-                 const response = await checkoutService.createCartSession(user.id);
-                 if (response?.url) window.location.href = response.url;
+                response = await checkoutService.createCartSession(user.id);
             } else {
-                 alert('For now, please checkout custom items and regular items separately.');
+
+                response = await checkoutService.createMixedSession(user.id,
+                    cartItems.filter(i => i.isCustom).map(i => i.originalId));
+            }
+
+            if (response?.url) {
+                setCartItems([]);
+                window.location.href = response.url;
             }
         } catch (error) {
             console.error('Error starting checkout:', error);
@@ -161,6 +168,8 @@ export default function CartSidebar({ isOpen, onClose }) {
                                     </div>
                                     <div className="cart-item__details">
                                         <p className="cart-item__name">{item.product?.name || item.productName}</p>
+                                        {item.color && <p className="cart-item__variant">Color: {item.color}</p>}
+                                        {item.size && <p className="cart-item__variant">Size: {item.size}</p>}
                                         <p className="cart-item__price">
                                             LKR {(item.product?.price || item.price)?.toLocaleString()}
                                         </p>

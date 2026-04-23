@@ -1,7 +1,7 @@
 HELP.md
 target/
-.env
 .mvn/wrapper/maven-wrapper.jar
+
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -50,4 +50,5 @@ Thumbs.db
 ### Spring Boot ###
 spring-shell.log
 
-src/main/resources/application.properties
+# React build
+frontend/build/
