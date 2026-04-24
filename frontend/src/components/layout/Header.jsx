@@ -59,7 +59,15 @@ export default function Header({ onCartOpen }) {
   return (
     <header className="header-container">
       <div className="header-logo">
-        <Link to="/">INKA</Link>
+        <Link to="/">
+          <img
+            src="/inka-logo.png"
+            alt="INKA Apparel"
+            style={{
+              height: '70px', width: 'auto'
+            }}
+          />
+        </Link>
       </div>
       <nav className="header-nav">
         <Link to="/" className={isActive('/') ? 'active' : ''}>HOME</Link>
