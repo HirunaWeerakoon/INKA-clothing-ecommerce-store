@@ -1,0 +1,61 @@
+# ============================================================
+# INKA Clothing Store — Helm Values
+# ============================================================
+
+# ------------------------------------------------------------
+# MySQL Database
+# ------------------------------------------------------------
+mysql:
+  image:
+    repository: mysql
+    tag: "8.0"
+    pullPolicy: IfNotPresent
+  database: inka_clothing_store
+  user: root
+  # Note: In Step 5 of the pipeline we will seal this with SealedSecrets/kubeseal
+  rootPassword: "0000"
+  storage:
+    size: 1Gi
+    storageClassName: local-path # Built-in default storage class in k3s/k3d
+
+# ------------------------------------------------------------
+# Spring Boot Backend
+# ------------------------------------------------------------
+backend:
+  replicaCount: 1
+  image:
+    repository: inka_clothing_ecommerce_store-backend
+    tag: latest
+    pullPolicy: Never # Uses local image imported via k3d
+  service:
+    type: ClusterIP
+    port: 8080
+  env:
+    GOOGLE_OAUTH_CLIENT_ID: "dummy-client-id"
+    GOOGLE_OAUTH_CLIENT_SECRET: "dummy-client-secret"
+    CLOUDINARY_CLOUD_NAME: "dummy-cloud-name"
+    CLOUDINARY_API_KEY: "dummy-api-key"
+    CLOUDINARY_API_SECRET: "dummy-api-secret"
+    STRIPE_SECRET_KEY: "dummy-stripe-key"
+    STRIPE_WEBHOOK_SECRET: "dummy-stripe-webhook"
+    STRIPE_SUCCESS_URL: "http://localhost:8080/checkout/success"
+    STRIPE_CANCEL_URL: "http://localhost:8080/checkout/cancel"
+
+# ------------------------------------------------------------
+# React Frontend
+# ------------------------------------------------------------
+frontend:
+  replicaCount: 1
+  image:
+    repository: inka_clothing_ecommerce_store-frontend
+    tag: latest
+    pullPolicy: Never # Uses local image imported via k3d
+  service:
+    type: ClusterIP
+    port: 80
+
+# ------------------------------------------------------------
+# Ingress (Traefik routing on localhost:8080)
+# ------------------------------------------------------------
+ingress:
+  enabled: true

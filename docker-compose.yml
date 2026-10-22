@@ -1,0 +1,106 @@
+# ============================================================
+# INKA Clothing Store — Docker Compose
+# ============================================================
+# This file lets you run the ENTIRE stack with one command:
+#
+#   docker compose up --build
+#
+# What gets created:
+#   - mysql:    MySQL 8 database (same as production)
+#   - backend:  Spring Boot API on port 8080
+#   - frontend: React app served by Nginx on port 3000
+#
+# The three services talk to each other over the "inka-network"
+# bridge network — they refer to each other by service name
+# (e.g. backend calls "mysql:3306", frontend proxies to "backend:8080")
+# ============================================================
+
+services:
+
+  # ----------------------------------------------------------
+  # DATABASE — MySQL 8
+  # ----------------------------------------------------------
+  mysql:
+    image: mysql:8.0
+    container_name: inka-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: inka_clothing_store
+    ports:
+      - "3307:3306"   # Mapped to 3307 so it doesn't clash with your local MySQL
+    volumes:
+      - mysql-data:/var/lib/mysql   # Data persists between restarts
+      - ./inka_backend/src/main/resources/data.seed.backup.sql:/docker-entrypoint-initdb.d/seed.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - inka-network
+
+  # ----------------------------------------------------------
+  # BACKEND — Spring Boot (Java 21)
+  # ----------------------------------------------------------
+  backend:
+    build:
+      context: ./inka_backend
+      dockerfile: ../docker/backend.Dockerfile
+    container_name: inka-backend
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy   # Wait for MySQL to be ready before starting
+    environment:
+      # Override the .env file URL so it points to the 'mysql' container
+      MYSQL_URL: jdbc:mysql://mysql:3306/inka_clothing_store?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      GOOGLE_OAUTH_CLIENT_ID: ${GOOGLE_OAUTH_CLIENT_ID}
+      GOOGLE_OAUTH_CLIENT_SECRET: ${GOOGLE_OAUTH_CLIENT_SECRET}
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
+      STRIPE_SUCCESS_URL: http://localhost:3000/checkout/success
+      STRIPE_CANCEL_URL: http://localhost:3000/checkout/cancel
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/api/products || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+    networks:
+      - inka-network
+
+  # ----------------------------------------------------------
+  # FRONTEND — React + Nginx
+  # ----------------------------------------------------------
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+    container_name: inka-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy   # Wait for backend API to be ready
+    ports:
+      - "3000:80"    # Visit http://localhost:3000
+    networks:
+      - inka-network
+
+# ----------------------------------------------------------
+# VOLUMES & NETWORKS
+# ----------------------------------------------------------
+volumes:
+  mysql-data:    # Named volume keeps DB data between "docker compose down" restarts
+
+networks:
+  inka-network:
+    driver: bridge

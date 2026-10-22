@@ -1,0 +1,11 @@
+# Don't send these into the Docker build context (keeps builds fast & secure)
+target/
+*.log
+*.txt
+.git/
+.idea/
+.vscode/
+.env
+data/
+boot_errors*.log
+build_log*.txt

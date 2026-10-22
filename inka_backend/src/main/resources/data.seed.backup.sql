@@ -82,8 +82,8 @@ INSERT IGNORE INTO products (product_id, category_id, name, description, price, 
 
 
 -- Customer (test user)
---INSERT INTO customer (customerid, name, email, address, role) VALUES
---(1, 'Lewis Hamilton', 'lewis@mercedes.com', '44 Stevenage Road, London, UK', 'USER');
+-- INSERT INTO customer (customerid, name, email, address, role) VALUES
+-- (1, 'Lewis Hamilton', 'lewis@mercedes.com', '44 Stevenage Road, London, UK', 'USER');
 
 -- Sub Categories for T-Shirts (category_id = 1)
 INSERT IGNORE INTO sub_category (id, name, image_url, category_id) VALUES (1, 'Crew Neck', NULL, 1);
