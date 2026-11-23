@@ -29,6 +29,5 @@ variable "db_username" {
 variable "db_password" {
   description = "Master password for RDS MySQL"
   type        = string
-  default     = "InkaStore2026!"
   sensitive   = true
 }
