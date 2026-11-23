@@ -1,0 +1,112 @@
+name: Build, Test and Push to Docker Hub
+
+on:
+  push:
+    branches: [main, dev]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docker-publish-dev
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Run Backend Tests
+        run: |
+          cd inka_backend
+          chmod +x mvnw
+          ./mvnw test -B
+
+      - name: Run Frontend Tests
+        run: |
+          cd frontend
+          npm ci
+          npm test -- --watchAll=false
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push Backend Image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./inka_backend
+          file: ./docker/backend.Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/inka-backend:${{ github.sha }}
+
+      - name: Build and Push Frontend Image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./docker/frontend.Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/inka-frontend:${{ github.sha }}
+
+  deploy:
+    needs: publish
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout GitOps Repository
+        uses: actions/checkout@v4
+        with:
+          repository: HirunaWeerakoon/inka-gitops
+          ref: main
+          token: ${{ secrets.GITOPS_TOKEN }}
+
+      - name: Update GitOps Image Tags
+        shell: bash
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+          DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+        run: |
+          set -euo pipefail
+          values_file="charts/microservices/dev/inka/values.yaml"
+
+          # Update image repositories and tags using yq
+          yq -i '.backend.image.repository = env(DOCKERHUB_USER) + "/inka-backend"' "$values_file"
+          yq -i '.backend.image.tag = env(IMAGE_TAG)' "$values_file"
+          yq -i '.backend.image.pullPolicy = "IfNotPresent"' "$values_file"
+
+          yq -i '.frontend.image.repository = env(DOCKERHUB_USER) + "/inka-frontend"' "$values_file"
+          yq -i '.frontend.image.tag = env(IMAGE_TAG)' "$values_file"
+          yq -i '.frontend.image.pullPolicy = "IfNotPresent"' "$values_file"
+
+          if git diff --quiet -- "$values_file"; then
+            echo "GitOps repository already uses image tag $IMAGE_TAG"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$values_file"
+          git commit -m "deploy(dev): update inka images to $IMAGE_TAG"
+          git push origin HEAD:main

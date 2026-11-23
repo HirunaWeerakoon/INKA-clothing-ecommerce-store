@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: inka-clothing-store
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/HirunaWeerakoon/inka-gitops.git
+    targetRevision: main
+    path: helm
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: inka
+  syncPolicy:
+    automated:
+      prune: true     # Automatically deletes K8s resources if you remove them from Git
+      selfHeal: true  # If someone manually edits/deletes a pod with kubectl, Argo CD restores it to match Git!
+    syncOptions:
+      - CreateNamespace=true
